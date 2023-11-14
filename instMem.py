@@ -53,7 +53,7 @@ class InstructionMemomry:
     def print_insts_bin(self):
         i = 0
         for inst in self.insts:
-            str_bin = "{0:032b}".format(inst)
+            str_bin = "{0:032b}".format(inst % (1<<32))
             str_i = "{0:3}".format(i)
             print(f"{str_i} Bin: {str_bin}")
             i += 1
@@ -61,7 +61,7 @@ class InstructionMemomry:
     def print_insts_hex(self):
         i = 0
         for inst in self.insts:
-            str_hex = "{0:08x}".format(inst)
+            str_hex = "{0:08x}".format(inst % (1<<32))
             str_i = "{0:3}".format(i)
             print(f"{str_i} Hex: {str_hex}")
             i += 1
@@ -87,7 +87,7 @@ class InstructionMemomry:
             i += 1    
 
 
-# If file run as python file, test class functions
+# If file is run as python file, test class functions
 if __name__ == "__main__":
 
     # Get path to test file
