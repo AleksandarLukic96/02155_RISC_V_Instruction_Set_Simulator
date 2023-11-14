@@ -1,4 +1,4 @@
-#  Implementation of Instruction Memory Class and functions 
+# Implementation of Instruction Memory Class and functions 
 import os
 
 # Instruction Memory Class
