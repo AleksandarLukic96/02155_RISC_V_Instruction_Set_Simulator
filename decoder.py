@@ -1,14 +1,40 @@
- #DECODER
- #Input: One 32 bit instruction 
- #Output: 3x4bit registers -> rs1, rs2 and rsd
-#         32 bit instruction and 6 bit opcode
+# Implementation of Decoder Class and functions 
 
-def decode(instruction): 
-    opcode = instruction & 0b1111111
-    rs1 = (instruction >> 15) & 0b11111
-    rs2 =  (instruction >> 20) & 0b11111
-    rsd =  (instruction >> 7) & 0b11111
+# Decoder Class
+class Decoder:
+    def __init__(self):
+        self.inst = 0
+        self.opcode = 0
+        self.reg_1 = 0
+        self.reg_2 = 0
+        self.rd = 0
+        
+    def set_inst(self, inst_in):
+        self.inst = inst_in
 
-    return rs1, rs2, rsd, opcode, instruction 
+    def get_inst(self):
+        return self.inst
+    
+    def set_opcode(self):
+        self.opcode = self.inst & 0b1111111    
+    
+    def get_opcode(self):
+        return self.opcode    
 
+    def set_reg_1(self):
+        self.reg_1 = (self.inst >> 15) & 0b11111    
+    
+    def get_reg_1(self):
+        return self.reg_1    
 
+    def set_reg_2(self):
+        self.reg_2 = (self.inst >> 20) & 0b11111    
+    
+    def get_reg_2(self):
+        return self.reg_2    
+
+    def set_rd(self):
+        self.rd = (self.inst >> 7) & 0b11111    
+    
+    def get_rd(self):
+        return self.rd    
