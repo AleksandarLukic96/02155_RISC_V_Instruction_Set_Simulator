@@ -23,14 +23,22 @@ class InstructionMemomry:
         i = 0
         while i < len(self.data):
             self.insts.append(
-                (self.data[i+3] << 24) | 
-                (self.data[i+2] << 16) | 
-                (self.data[i+1] << 8) | 
+                (self.data[i + 3] << 24) | 
+                (self.data[i + 2] << 16) | 
+                (self.data[i + 1] <<  8) | 
                 self.data[i])
             i += 4
         
         # Closing the opened file
         f.close()   
+    
+    # Update Program Counter to specific address    
+    def update_pc(self, pc = 0):
+        self.pc = pc
+    
+    # Return instruction at PC current address
+    def fetch_inst_at_pc(self):
+        return self.insts[self.pc // 4]
     
     # Printing to console functions
     def print_type(self):
@@ -76,8 +84,8 @@ class InstructionMemomry:
             str_opcode = "{0:07b}".format(inst & 127)
             str_i = "{0:3}".format(i)
             print(f"{str_i} Bin: {str_bin} Hex: {str_hex} Int: {str_int} Opcode: {str_opcode}")
-            i += 1
-    
+            i += 1    
+
 
 # If file run as python file, test class functions
 if __name__ == "__main__":
