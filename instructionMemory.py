@@ -33,7 +33,7 @@ class InstructionMemomry:
         f.close()   
     
     # Update current instruction address    
-    def update_addr(self, new_addr):
+    def set_addr(self, new_addr):
         self.addr = new_addr
     
     # Return instruction from current address

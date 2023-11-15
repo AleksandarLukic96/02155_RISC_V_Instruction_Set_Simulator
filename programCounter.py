@@ -28,16 +28,16 @@ if __name__ == "__main__":
         pc_str = "{0:3}".format(pc.addr)
         print(f"PC: {pc_str} Inst: {im.fetch_inst_at_addr()}")
         
-        # Testing Jump logic using update_pc().
-        if pc.get_addr() == 121:
+        # Testing Jump logic
+        if pc.get_addr() == 12:
             new_addr = 20
             print(f"Jump from {im.addr} to {new_addr}")
-            pc.update_addr(new_addr)
-            im.update_addr(pc.get_addr())
+            pc.set_addr(new_addr)
+            im.set_addr(pc.get_addr())
         else:
-            # Using update_addr(), increment PC with a word / 32-bits / 4 bytes
-            pc.update_addr(pc.get_addr() + 4)
-            im.update_addr(pc.get_addr())
+            # Increment PC and update address in inst memory
+            pc.set_addr(pc.get_addr() + 4)
+            im.set_addr(pc.get_addr())
             
         if((pc.addr >> 2) >= im.number_of_insts):
             break
