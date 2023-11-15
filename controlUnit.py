@@ -3,6 +3,22 @@
  #Output: 1bit: Do_Branch, Do_Jump. WrReg, Mux_Reg, Mux_ALU, WRmem, WBsel
 #          ALU_cnt 4:0,  mem_cnt 3:0, branch, imm 11:5 for I-types
 
+class ControlUnit:
+    def __init__(self):
+        # Opcode for decoding
+        self.opcode = 0
+        
+        # Control signals 
+        self.do_branch = 0
+        self.do_jump = 0
+        self.reg_write_enable = 0
+        self.reg_ctrl = 0
+        self.mem_read = 0
+        self.mem_write = 0
+        self.alu_op_1 = 0
+        self.alu_op_2 = 0
+        self.alu_ctrl = 0        
+
 def controlUnit(opcode, func3, func7):
     imm = func7 >> 5
     # R-Format

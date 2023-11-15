@@ -1,4 +1,4 @@
-#from controlUnit import ControlUnit
+from controlUnit import ControlUnit
 from dataMemory import DataMemory
 from decoder import Decoder
 from instructionMemory import InstructionMemomry
@@ -6,7 +6,7 @@ from programCounter import ProgramCounter
 from registers import Registers
 
 # Initialise processor components
-#cu = ControlUnit()
+cu = ControlUnit()
 dmem = DataMemory()
 dec = Decoder()
 imem = InstructionMemomry()
