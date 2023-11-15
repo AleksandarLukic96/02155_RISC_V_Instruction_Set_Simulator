@@ -5,6 +5,7 @@ from controlUnit import ControlUnit
 from dataMemory import DataMemory
 from decoder import Decoder
 from instructionMemory import InstructionMemomry
+from mux import Mux2, Mux3
 from programCounter import ProgramCounter
 from registers import Registers
 
@@ -17,6 +18,13 @@ dec = Decoder()
 imem = InstructionMemomry()
 pc = ProgramCounter()
 regs = Registers()
+
+# Initialise Multiplexors
+mux2_1 = Mux2(in_0 = 2, in_1 = 4)
+mux2_2 = Mux2()
+mux2_3 = Mux2()
+mux2_4 = Mux2()
+mux3 = Mux3()
 
 # Wires 
 # PC ----> InstructionMemory
