@@ -22,4 +22,62 @@ class ALU:
         
         # Output
         self.res = 0
+    
+    def set_ctrl(self, ctrl):
+        self.ctrl = ctrl
+    
+    def get_ctrl(self):
+        return self.ctrl
+    
+    def set_op_1(self, op_1):
+        self.op_1 = op_1
+    
+    def get_op_1(self):
+        return self.op_1
+
+    def set_op_2(self, op_2):
+        self.op_2 = op_2
+    
+    def get_op_2(self):
+        return self.op_2
+
+    def set_res(self, res):
+        self.res = res
+    
+    def get_res(self):
+        return self.res
+
+    def calc_res(self):
         
+        if self.get_ctrl() == ADD:
+            self.res = self.op_1 + self.op_2
+
+        elif self.get_ctrl() == SLL:
+            self.res = self.op_1 << self.op_2
+
+        elif self.get_ctrl() == XOR:
+            self.res = self.op_1 ^ self.op_2
+
+        elif self.get_ctrl() == OR:
+            self.res = self.op_1 | self.op_2
+
+        elif self.get_ctrl() == AND:
+            self.res = self.op_1 & self.op_2
+
+        elif self.get_ctrl() == SRL:
+            self.res = self.op_1 >> self.op_2
+
+        elif self.get_ctrl() == SUB:
+            self.res = self.op_1 - self.op_2                        
+
+        elif self.get_ctrl() == SRA:
+            self.res = (self.op_1 >> self.op_2) if (self.op_1 >= 0) else ((self.op_1 + (1 << self.op_2) - 1) >> self.op_2)
+
+        elif self.get_ctrl() == SLT: 
+            self.res = 0 | (self.op_1 < self.op_2) 
+
+        elif self.get_ctrl() == SLTU: 
+            self.res = 0 | (self.op_1 < self.op_2)
+
+        else:
+            self.res = 0
