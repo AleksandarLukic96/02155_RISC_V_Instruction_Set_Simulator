@@ -18,4 +18,24 @@ imem = InstructionMemomry()
 pc = ProgramCounter()
 regs = Registers()
 
+# Wires 
+# PC ----> InstructionMemory
+imem.set_addr(pc.get_addr())
 
+# InstructionMemory ----> Decoder 
+dec.set_inst(imem.fetch_inst_at_addr())
+
+# Decoder ----> Registers
+regs.set_reg_1(dec.get_reg_1())
+regs.set_reg_2(dec.get_reg_2())
+regs.set_rd(dec.get_rd())
+
+# Registers ----> Branch
+bra.set_op_1(regs.get_reg_1())
+bra.set_op_2(regs.get_reg_2())
+
+# Registers ----> DataMemory
+dmem.set_data_in(regs.get_reg_2())
+
+# ALU ----> DataMemory
+dmem.set_data_in(alu.get_res())
