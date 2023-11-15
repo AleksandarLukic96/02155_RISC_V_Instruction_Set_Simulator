@@ -100,10 +100,9 @@ if __name__ == "__main__":
     rs.print_regs_hex()
     rs.print_regs_int()
 
+    print("\nSetting and getting registers via function calls:")
     rs.set_reg_1(11)
     rs.set_reg_2(22)
-
-    print("\nSetting and getting registers via function calls:")
     print(f"x{rs.get_reg_1()}: {rs.return_reg_1()}")
     print(f"x{rs.get_reg_2()}: {rs.return_reg_2()}")
     

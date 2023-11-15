@@ -69,5 +69,4 @@ class DataMemory:
 # If file is run as python file, test class functions
 if __name__ == "__main__":
     dm = DataMemory()
-    
     print(f"Capacity: {dm.mem_size} kiB = {len(dm.mem_addrs)} x 32-bit words")

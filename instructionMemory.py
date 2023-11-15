@@ -3,7 +3,7 @@ import os
 
 # Instruction Memory Class
 class InstructionMemomry:
-    def __init__(self, file_path, pc = 0):
+    def __init__(self, file_path, addr = 0):
         
         # Load bin file into pyton
         f = open(file_path, mode = "rb")
@@ -14,8 +14,8 @@ class InstructionMemomry:
         # Total number of instructions in program        
         self.number_of_insts = len(self.data) // 4
         
-        # Set Program Counter as parsed, otherwise initialise to 0
-        self.pc = pc
+        # Set current address as parsed, otherwise initialise to 0
+        self.addr = addr
         
         # Concatinate bytes into 32-bit instructions as int-array
         self.insts = []
@@ -32,13 +32,13 @@ class InstructionMemomry:
         # Closing the opened file
         f.close()   
     
-    # Update Program Counter to specific address    
-    def update_pc(self, pc = 0):
-        self.pc = pc
+    # Update current instruction address    
+    def update_addr(self, new_addr):
+        self.addr = new_addr
     
-    # Return instruction at PC current address
-    def fetch_inst_at_pc(self):
-        return self.insts[self.pc // 4]
+    # Return instruction from current address
+    def fetch_inst_at_addr(self):
+        return self.insts[self.addr // 4]
     
     # Printing to console functions
     def print_type(self):
@@ -95,10 +95,13 @@ if __name__ == "__main__":
     test_folder = "tests"
 
     # Choose task
-    task_1 = "task1"
-    task_2 = "task2"
-    task_3 = "task3"
-    task_4 = "task4"
+    tasks = [
+        "task1"
+        ,"task2"
+        ,"task3"
+        ,"task4"        
+    ]
+    task = tasks[1 - 1]
 
     # Choose test file 
     file_names = [
@@ -113,7 +116,7 @@ if __name__ == "__main__":
     file_name = file_names[0]
 
     # Concat into full file path
-    file_path = os.path.join(dir, test_folder, task_1, file_name)
+    file_path = os.path.join(dir, test_folder, task, file_name)
     print(f"file_path:\n{file_path}")
     
     imem = InstructionMemomry(file_path = file_path)
