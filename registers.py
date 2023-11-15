@@ -49,10 +49,10 @@ class Registers:
     def set_rd(self, reg_no):
         self.rd = reg_no
     
-    def return_reg_1(self):
+    def return_reg_1_content(self):
         return self.regs[self.reg_1]
         
-    def return_reg_2(self):
+    def return_reg_2_content(self):
         return self.regs[self.reg_2]
     
     # Format content of register to string as Binary, Hex or Integer
