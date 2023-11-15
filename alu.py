@@ -1,16 +1,16 @@
 # Implementation of ALU Class and functions
 
 # Declare operation constants
-ADD  = 0b00000; # 0
-SLL  = 0b00001; # 1
-XOR  = 0b00100; # 4
-OR   = 0b00110; # 6
-AND  = 0b00111; # 7
-SRL  = 0b00101; # 5
-SUB  = 0b01000; # 8
-SRA  = 0b01101; # 13
-SLT  = 0b00010; # 2
-SLTU = 0b00011; # 3
+ADD  = 0b00000 # 0
+SLL  = 0b00001 # 1
+XOR  = 0b00100 # 4
+OR   = 0b00110 # 6
+AND  = 0b00111 # 7
+SRL  = 0b00101 # 5
+SUB  = 0b01000 # 8
+SRA  = 0b01101 # 13
+SLT  = 0b00010 # 2
+SLTU = 0b00011 # 3
 
 # ALU Class
 class ALU:
@@ -40,14 +40,11 @@ class ALU:
     
     def get_op_2(self):
         return self.op_2
-
-    def set_res(self, res):
-        self.res = res
     
     def get_res(self):
         return self.res
 
-    def calc_res(self):
+    def compute_res(self):
         
         if self.get_ctrl() == ADD:
             self.res = self.op_1 + self.op_2
@@ -80,4 +77,4 @@ class ALU:
             self.res = 0 | (self.op_1 < self.op_2)
 
         else:
-            self.res = 0
+            pass
