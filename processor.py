@@ -1,3 +1,4 @@
+# Implementation of Processor via connection between components 
 from controlUnit import ControlUnit
 from dataMemory import DataMemory
 from decoder import Decoder

@@ -3,6 +3,7 @@
  #Output: 1bit: Do_Branch, Do_Jump. WrReg, Mux_Reg, Mux_ALU, WRmem, WBsel
 #          ALU_cnt 4:0,  mem_cnt 3:0, branch, imm 11:5 for I-types
 
+# Control Unit Class
 class ControlUnit:
     def __init__(self):
         # Opcode for decoding
