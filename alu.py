@@ -1,5 +1,9 @@
 # Implementation of ALU Class and functions
 
+# Function to convert signed to unsigned int
+def to_uint32(num):
+    return num + 2**32
+
 # Declare operation constants
 ADD  = 0b00000 # 0
 SLL  = 0b00001 # 1
@@ -74,7 +78,7 @@ class ALU:
             self.res = 0 | (self.op_1 < self.op_2) 
 
         elif self.get_ctrl() == SLTU: 
-            self.res = 0 | (self.op_1 < self.op_2)
+            self.res = 0 | (to_uint32(self.op_1) < to_uint32(self.op_2))
 
         else:
             pass
