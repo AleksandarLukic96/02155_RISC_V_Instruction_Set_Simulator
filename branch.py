@@ -1,5 +1,6 @@
 # Implementation of Branch Class and functions
 
+# Function to convert signed to unsigned int
 def to_uint32(num):
     return num + 2**32
 

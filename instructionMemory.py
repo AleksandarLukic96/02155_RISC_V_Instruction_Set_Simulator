@@ -3,35 +3,38 @@ import os
 
 # Instruction Memory Class
 class InstructionMemomry:
-    def __init__(self, file_path, addr = 0):
+    def __init__(self, file_path = "", addr = 0):
+        try:
+            # Load bin file into pyton
+            f = open(file_path, mode = "rb")
+            
+            # Reading file data with read() method
+            self.data = f.read()
+            
+            # Total number of instructions in program        
+            self.number_of_insts = len(self.data) // 4
+            
+            # Set current address as parsed, otherwise initialise to 0
+            self.addr = addr
+            
+            # Concatinate bytes into 32-bit instructions as int-array
+            self.insts = []
+            
+            i = 0
+            while i < len(self.data):
+                self.insts.append(
+                    (self.data[i + 3] << 24) | 
+                    (self.data[i + 2] << 16) | 
+                    (self.data[i + 1] <<  8) | 
+                    self.data[i])
+                i += 4
+            
+            # Closing the opened file
+            f.close()
+
+        except:
+            print("Invalid path given!")
         
-        # Load bin file into pyton
-        f = open(file_path, mode = "rb")
-        
-        # Reading file data with read() method
-        self.data = f.read()
-        
-        # Total number of instructions in program        
-        self.number_of_insts = len(self.data) // 4
-        
-        # Set current address as parsed, otherwise initialise to 0
-        self.addr = addr
-        
-        # Concatinate bytes into 32-bit instructions as int-array
-        self.insts = []
-        
-        i = 0
-        while i < len(self.data):
-            self.insts.append(
-                (self.data[i + 3] << 24) | 
-                (self.data[i + 2] << 16) | 
-                (self.data[i + 1] <<  8) | 
-                self.data[i])
-            i += 4
-        
-        # Closing the opened file
-        f.close()   
-    
     # Update current instruction address    
     def set_addr(self, new_addr):
         self.addr = new_addr

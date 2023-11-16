@@ -13,48 +13,67 @@ class Registers:
         self.reg_2 = 0
         self.rd = 0
 
+        # Initialise data input
+        self.data_in = 0
+        
         # Write Enabled signal
         self.write_enabled = 0
         
         # Initialise 32 registers to 0
         self.regs = [0] * 32 
 
-    def write_enable(self):
-        self.write_enabled = 1
-    
-    def write_disable(self):
-        self.write_enabled = 0
-    
-    def write_to_reg(self, data_in = 0):
-        if self.write_enabled == 1:
-            # Hardwired x0 to zero
-            if self.rd == 0:
-                return
-            
-            # Write data_in to register
-            self.regs[self.rd] = int32(data_in)
-    
-    def set_reg_1(self, reg_no):
-        self.reg_1 = reg_no
-    
-    def set_reg_2(self, reg_no):
-        self.reg_2 = reg_no
+    def set_reg_1(self, reg_1):
+        self.reg_1 = reg_1
     
     def get_reg_1(self):
         return self.reg_1
     
+    def set_reg_2(self, reg_2):
+        self.reg_2 = reg_2
+    
     def get_reg_2(self):
         return self.reg_2
     
-    def set_rd(self, reg_no):
-        self.rd = reg_no
+    def set_rd(self, rd):
+        self.rd = rd
+    
+    def get_rd(self):
+        return self.rd
+    
+    def set_data_in(self, data_in):
+        self.data_in = data_in
+    
+    def get_data_in(self):
+        return self.data_in
+
+    def set_write_enabled(self, set):
+        self.write_enabled = set
+    
+    def get_write_enabled(self):
+        return self.write_enabled
+    
+    def write_enable(self):
+        self.set_write_enabled(1)
+        
+    def write_disable(self):
+        self.set_write_enabled(0)
     
     def return_reg_1_content(self):
-        return self.regs[self.reg_1]
+        return self.regs[self.get_reg_1()]
         
     def return_reg_2_content(self):
-        return self.regs[self.reg_2]
+        return self.regs[self.get_reg_2()]
     
+    def write_to_rd(self):
+        if self.get_write_enabled() == 1:
+            # Hardwired x0 to zero
+            if self.get_rd() == 0:
+                return
+            
+            # Write data_in to register
+            self.regs[self.get_rd()] = int32(self.get_data_in())
+
+      
     # Format content of register to string as Binary, Hex or Integer
     def reg_to_str_bin(self, index):
         return "{0:032b}".format(self.regs[index] % (1<<32))
@@ -91,9 +110,11 @@ if __name__ == "__main__":
         rs.write_enable()
         rs.set_rd(i)
         if i % 2 == 0:
-            rs.write_to_reg(data_in = i*4+4)
+            rs.set_data_in(i*4+4)
+            rs.write_to_rd()
         else:
-            rs.write_to_reg(data_in = -(i*4+4)) # Demostrating negative values
+            rs.set_data_in(-(i*4+4)) # Demostrating negative values
+            rs.write_to_rd()
         rs.write_disable()
 
     rs.print_regs_bin()
@@ -103,6 +124,6 @@ if __name__ == "__main__":
     print("\nSetting and getting registers via function calls:")
     rs.set_reg_1(11)
     rs.set_reg_2(22)
-    print(f"x{rs.get_reg_1()}: {rs.return_reg_1()}")
-    print(f"x{rs.get_reg_2()}: {rs.return_reg_2()}")
+    print(f"x{rs.get_reg_1()}: {rs.return_reg_1_content()}")
+    print(f"x{rs.get_reg_2()}: {rs.return_reg_2_content()}")
     
