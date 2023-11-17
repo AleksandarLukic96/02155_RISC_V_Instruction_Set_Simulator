@@ -315,6 +315,19 @@ class ControlUnit:
         self.set_all_signals(alu_ctrl = alu_ctrl) # <--- insert correct signals from the above line!
 
     def execute_s_type(self):
+        #SB
+        if self.get_func3() == 0:
+            s = 0 # What should happen here?
+        #SH
+        elif self.get_func3() == 1:
+            s = 1 # What should happen here?
+        #SW
+        elif  self.get_func3() == 2:
+            s = 2 # What should happen here?
+
+        else:
+            print("This S-Type instruction is not supported!")
+
         #{'doBranch': 0, 'doJump': 0, 'WrReg': 0, 'WRmem': 1, 'MUXReg': 1, 'MUXmem': 0, 'WBsel': 'MEM', 'branch': 0b000, 'ALUop': 'ADD', 'mem_read': 0}
         self.set_all_signals() # <--- insert correct signals from the above line!
 
