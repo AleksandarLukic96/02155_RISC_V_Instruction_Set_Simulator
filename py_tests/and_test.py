@@ -40,8 +40,8 @@ class Test_AND(object):
             
     @pytest.mark.parametrize("in_0, in_1, expected", [(0, 0, 0), (0, 1, 0), (1, 0, 0), (1, 1, 1)])
     def test_compute_out(self, in_0, in_1, expected):
-        self.and_.set_in_0(in_0)
-        self.and_.set_in_1(in_1)
+        self.and_.in_0 = in_0
+        self.and_.in_1 = in_1
         self.and_.compute_out()
         assert self.and_.out == expected
 

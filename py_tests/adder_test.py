@@ -28,9 +28,12 @@ class Test_Adder(object):
     def test_get_op_2(self, adder_op_2_test):
         assert self.adder.get_op_2() == adder_op_2_test
 
-    def test_compute_out(self, adder_val_out_test):
+    @pytest.mark.parametrize("op_1, op_2, expected", [(0, 0, 0), (0, 1, 1), (-1, 0, -1), (0x7FFFFFFF, 0x00000000, 0x7FFFFFFF), (0xFFFFFFFF, 0x00000001, 0x00000000)])
+    def test_compute_out(self, op_1, op_2, expected):
+        self.adder.op_1 = op_1
+        self.adder.op_2 = op_2
         self.adder.compute_out()
-        assert self.adder.out == adder_val_out_test
+        assert self.adder.out == expected
                 
     def test_get_out(self):
         assert self.adder.get_out() == 0
