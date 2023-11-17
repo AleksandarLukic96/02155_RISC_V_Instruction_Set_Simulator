@@ -20,7 +20,7 @@ class OR:
         return self.in_1
 
     def set_out(self, out):
-        self.out = out
+        self.out = 0 if out == 0 else 1
     
     def get_out(self):
         return self.out
