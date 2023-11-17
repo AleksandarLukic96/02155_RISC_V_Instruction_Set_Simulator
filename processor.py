@@ -63,52 +63,54 @@ imem.set_addr(pc.get_addr())
 dec.set_inst(imem.fetch_inst_at_addr())
 
 # Immidiate
+ # Needs implementation 
 
 # ControlUnit
+ # Needs implementation 
 
 # Registers
 regs.set_reg_1(dec.get_reg_1())
 regs.set_reg_2(dec.get_reg_2())
 regs.set_rd(dec.get_rd())
 regs.set_data_in(dec.get_rd())
-#regs.set_write_enabled(cu.get_reg_write()) # Needs implementation
+regs.set_write_enabled(cu.get_reg_write())
 
 # Mux2_3
 mux2_3.set_in_0(regs.get_reg_1())
 mux2_3.set_in_1(pc.get_addr())
-#mux2_3.set_select(cu.get_alu_op_1_ctrl()) # Needs implementation
+mux2_3.set_select(cu.get_alu_op_1_ctrl())
 
 # Branch
 bra.set_op_1(regs.get_reg_1())
 bra.set_op_2(regs.get_reg_2())
-#bra.set_branch_ctrl(cu.get_branch_ctrl()) # Needs implementation
+bra.set_branch_ctrl(cu.get_branch_ctrl())
 
 # Mux2_4
 mux2_4.set_in_0(regs.get_reg_2())
 #mux2_4.set_in_1(imm.get_imm_out()) # Needs implementation 
-#mux2_4.set_select(cu.get_alu_op_1_ctr2()) # Needs implementation
+mux2_4.set_select(cu.get_alu_op_1_ctr2())
 
 # ALU
 alu.set_op_1(mux2_3.get_out())
 alu.set_op_2(mux2_4.get_out())
-#alu.set_ctrl(cu.get_alu_ctrl()) # Needs implementation
+alu.set_ctrl(cu.get_alu_ctrl())
 
 # AND
 and_1.set_in_0(bra.get_branch_taken())
-#and_1.set_in_1(cu.get_do_branch()) # Needs implementation
+and_1.set_in_1(cu.get_do_branch())
 
 # OR
 or_1.set_in_0(and_1.get_out())
-#or_1.set_in_1(cu.get_do_jump()) # Needs implementation
+or_1.set_in_1(cu.get_do_jump())
 
 # DataMemory
 dmem.set_addr(alu.get_res())
 dmem.set_data_in(regs.get_reg_2())
-#dmem.set_read_enabled(cu.get_mem_read()) # Needs implementation
-#dmem.set_write_enabled(cu.get_mem_write()) # Needs implementation
+dmem.set_read_enabled(cu.get_mem_read())
+dmem.set_write_enabled(cu.get_mem_write())
 
 # Mux3
 mux3.set_in_0(dmem.get_data_out())
 mux3.set_in_1(alu.get_res())
 mux3.set_in_2(adder.get_out())
-#mux3.set_select(cu.get_reg_ctrl()) # Needs implementation
+mux3.set_select(cu.get_reg_ctrl())

@@ -6,10 +6,12 @@
 # Control Unit Class
 class ControlUnit:
     def __init__(self):
-        # Opcode for decoding
+        # Input for interpreting
+        self.func3 = 0
+        self.func7 = 0
         self.opcode = 0
         
-        # Control signals 
+        # Output Control signals 
         self.do_branch = 0
         self.do_jump = 0
         self.branch_ctrl = 0
@@ -20,6 +22,88 @@ class ControlUnit:
         self.alu_op_1_ctrl = 0
         self.alu_op_2_ctrl = 0
         self.alu_ctrl = 0       
+
+    # Input Setters and Getters
+    def set_func3(self, func3):
+        self.func3 = func3
+    
+    def get_func3(self):
+        return self.func3
+        
+    def set_func7(self, func7):
+        self.func7 = func7
+    
+    def get_func7(self):
+        return self.func7
+
+    def set_opcode(self, opcode):
+        self.opcode = opcode
+    
+    def get_opcode(self):
+        return self.opcode
+
+    # Output Setters and Getters
+    def set_do_branch(self, do_branch):
+        self.do_branch = do_branch 
+    
+    def get_do_branch(self):
+        return self.do_branch
+
+    def set_do_jump(self, do_jump):
+        self.do_jump = do_jump
+    
+    def get_do_jump(self):
+        return self.do_jump
+
+    def set_branch_ctrl(self, branch_ctrl):
+        self.branch_ctrl = branch_ctrl
+    
+    def get_branch_ctrl(self):
+        return self.branch_ctrl
+
+    def set_reg_write(self, reg_write):
+        self.reg_write = reg_write
+    
+    def get_reg_write(self):
+        return self.reg_write
+
+    def set_reg_ctrl(self, reg_ctrl):
+        self.reg_ctrl = reg_ctrl
+    
+    def get_reg_ctrl(self):
+        return self.reg_ctrl
+
+    def set_mem_read(self, mem_read):
+        self.mem_read = mem_read
+    
+    def get_mem_read(self):
+        return self.mem_read
+
+    def set_mem_write(self, mem_write):
+        self.mem_write = mem_write
+    
+    def get_mem_write(self):
+        return self.mem_write
+
+    def set_alu_op_1_ctrl(self, alu_op_1_ctrl):
+        self.alu_op_1_ctrl = alu_op_1_ctrl 
+    
+    def get_alu_op_1_ctrl(self):
+        return self.alu_op_1_ctrl
+
+    def set_alu_op_2_ctrl(self, alu_op_2_ctrl):
+        self.alu_op_2_ctrl = alu_op_2_ctrl
+    
+    def get_alu_op_2_ctrl(self):
+        return self.alu_op_2_ctrl
+
+    def set_alu_ctrl(self, alu_ctrl):
+        self.alu_ctrl = alu_ctrl
+    
+    def get_alu_ctrl(self):
+        return self.alu_ctrl
+
+
 
 def controlUnit(opcode, func3, func7):
     imm = func7 >> 5
