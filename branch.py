@@ -41,6 +41,12 @@ class Branch:
     def get_op_2(self):
         return self.op_2
 
+    def set_branch_taken(self, branch_taken):
+        self.branch_taken = branch_taken
+
+    def get_branch_taken(self):
+        return self.branch_taken
+    
     def branch_taken_enable(self):
         self.branch_taken = 1
     

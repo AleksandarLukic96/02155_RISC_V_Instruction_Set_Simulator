@@ -13,12 +13,12 @@ class ControlUnit:
         self.do_branch = 0
         self.do_jump = 0
         self.branch_ctrl = 0
-        self.reg_write_enable = 0
+        self.reg_write = 0
         self.reg_ctrl = 0
         self.mem_read = 0
         self.mem_write = 0
-        self.alu_op_1 = 0
-        self.alu_op_2 = 0
+        self.alu_op_1_ctrl = 0
+        self.alu_op_2_ctrl = 0
         self.alu_ctrl = 0       
 
 def controlUnit(opcode, func3, func7):

@@ -1,11 +1,6 @@
 # Implementation of Mux Class and functions
-from ctypes import c_int32
 
-# Function to handle 32-bit overflow
-def int32(val):
-    return c_int32(val).value
-
-# Multiplexor(Mux) Classes
+# Multiplexor(Mux 2-to-1) Class
 class Mux2:
     def __init__(self, in_0 = 0, in_1 = 1):
         self.in_0 = in_0
@@ -36,7 +31,8 @@ class Mux2:
     
     def get_out(self):
         return self.out    
-    
+
+# Multiplexor(Mux 3-to-1) Class 
 class Mux3:
     def __init__(self, in_0 = 0, in_1 = 1, in_2 = 2):
         self.in_0 = in_0
@@ -81,28 +77,3 @@ class Mux3:
     
     def get_out(self):
         return self.out    
-
-# Adder Class
-class Adder:
-    def __init__(self, op_1 = 0, op_2 = 0):
-        self.op_1 = op_1
-        self.op_2 = op_2
-        self.out = 0
-        
-    def set_op_1(self, op_1):
-        self.op_1 = op_1
-    
-    def get_op_1(self):
-        return self.op_1
-    
-    def set_op_2(self, op_2):
-        self.op_2 = op_2
-    
-    def get_op_2(self):
-        return self.op_2
-    
-    def compute_out(self):
-        self.out = int32(self.get_op_1 + self.get_op_2)
-    
-    def get_out(self):
-        return self.out

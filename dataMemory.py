@@ -15,7 +15,7 @@ class DataMemory:
         self.mem_addrs = [0] * (self.mem_size // 4)
         
         # Initialise I/O
-        self.address = 0
+        self.addr = 0
         self.data_in = 0
         self.data_out = 0
 
@@ -25,23 +25,35 @@ class DataMemory:
         # Read Enabled signal        
         self.read_enabled = 0
 
+    def set_write_enabled(self, enable):
+        self.write_enabled = enable
+    
+    def get_write_enabled(self):
+        return self.write_enabled
+    
     def write_enable(self):
-        self.write_enabled = 1
+        self.set_write_enabled(1)
     
     def write_disable(self):
-        self.write_enabled = 0
+        self.set_write_enabled(0)
 
+    def set_read_enabled(self, enable):
+        self.read_enabled = enable
+    
+    def get_read_enabled(self):
+        return self.read_enabled
+    
     def read_enable(self):
-        self.read_enabled = 1
+        self.set_read_enabled(1)
     
     def read_disable(self):
-        self.read_enabled = 0
+        self.set_read_enabled(0)
     
-    def set_address(self, addr):
-        self.address = addr
+    def set_addr(self, addr):
+        self.addr = addr
     
-    def get_address(self):
-        return self.address
+    def get_addr(self):
+        return self.addr
     
     def set_data_in(self, data_in):
         self.data_in = data_in
@@ -56,14 +68,14 @@ class DataMemory:
         return self.data_out
     
     def write_to_addr(self):
-        if self.write_enabled == 1:
+        if self.get_write_enabled() == 1:
             # Write data_in to address in memory
-            self.mem_addrs[self.address] = int32(self.data_in)    
+            self.mem_addrs[self.addr] = int32(self.data_in)    
     
     def read_from_addr(self):
-        if self.read_enabled == 1:
+        if self.get_read_enabled() == 1:
             # Read data_out from address in memory
-            self.data_out = int32(self.mem_addrs[self.address])
+            self.data_out = int32(self.mem_addrs[self.addr])
 
 
 # If file is run as python file, test class functions
