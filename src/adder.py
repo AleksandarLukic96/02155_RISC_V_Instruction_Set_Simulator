@@ -25,7 +25,7 @@ class Adder:
         return self.op_2
     
     def compute_out(self):
-        self.out = int32(self.get_op_1 + self.get_op_2)
+        self.out = int32(self.get_op_1() + self.get_op_2())
     
     def get_out(self):
         return self.out
