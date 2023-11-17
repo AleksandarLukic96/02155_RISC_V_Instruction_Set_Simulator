@@ -88,7 +88,7 @@ bra.set_branch_ctrl(cu.get_branch_ctrl())
 # Mux2_4
 mux2_4.set_in_0(regs.get_reg_2())
 #mux2_4.set_in_1(imm.get_imm_out()) # Needs implementation 
-mux2_4.set_select(cu.get_alu_op_1_ctr2())
+mux2_4.set_select(cu.get_alu_op_1_ctrl())
 
 # ALU
 alu.set_op_1(mux2_3.get_out())
