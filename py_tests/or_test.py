@@ -3,7 +3,7 @@ import src.or_ as or_
 
 class Test_OR(object):
 
-    or_ = or_.OR()
+    or_ = None
 
     @pytest.fixture(autouse=True)
     def setup_class(self):
@@ -14,6 +14,13 @@ class Test_OR(object):
         print(f"Tearing down {self}")
         del self.or_
 
+    def test_init(self):
+        assert (
+            (self.or_.in_0 == 0)
+            & (self.or_.in_1 == 0)
+            & (self.or_.out == 0)             
+            )
+    
     @pytest.mark.parametrize("input, expected", [(0, 0), (1, 1), (-12, 1), (42, 1)])
     def test_set_in_0(self, input, expected):
         self.or_.set_in_0(input)

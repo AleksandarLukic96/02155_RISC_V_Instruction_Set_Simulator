@@ -1,5 +1,5 @@
 # Implementation of Program Counter Class and functions 
-from instructionMemory import InstructionMemomry
+from src.instructionMemory import InstructionMemomry
 
 # Program Counter Class
 class ProgramCounter:
