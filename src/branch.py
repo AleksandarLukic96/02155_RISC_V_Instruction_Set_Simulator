@@ -22,13 +22,7 @@ class Branch:
         
         # Output
         self.branch_taken = 0
-        
-    def set_branch_ctrl(self, branch_ctrl):
-        self.branch_ctrl = branch_ctrl
-    
-    def get_branch_ctrl(self):
-        return self.branch_ctrl
-    
+            
     def set_op_1(self, op_1):
         self.op_1 = op_1
     
@@ -40,6 +34,12 @@ class Branch:
     
     def get_op_2(self):
         return self.op_2
+
+    def set_branch_ctrl(self, branch_ctrl):
+        self.branch_ctrl = branch_ctrl
+    
+    def get_branch_ctrl(self):
+        return self.branch_ctrl
 
     def set_branch_taken(self, branch_taken):
         self.branch_taken = branch_taken
@@ -74,3 +74,12 @@ class Branch:
             
         else:
             pass
+
+branch_ctrl = [BEQ, BNE, BLT, BGE, BLTU, BGEU]
+branch_ctrl_double = list(zip(branch_ctrl, branch_ctrl))
+val_1 = [0, 1, 0, -20, 4, 10]
+val_2 = [0, 0, 1, 3, 123, 10]
+expected = [0,0,0,0,0,0]
+branch_ctrl_expected = list(zip(branch_ctrl, val_1, val_2, expected))
+
+print(branch_ctrl_expected)
