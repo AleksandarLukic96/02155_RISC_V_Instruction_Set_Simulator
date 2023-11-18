@@ -45,40 +45,43 @@ class ALU:
     def get_op_2(self):
         return self.op_2
     
+    def set_res(self, res):
+        self.res = res
+    
     def get_res(self):
         return self.res
 
     def compute_res(self):
         
         if self.get_ctrl() == ADD:
-            self.res = self.op_1 + self.op_2
+            self.set_res(self.op_1 + self.op_2)
 
         elif self.get_ctrl() == SLL:
-            self.res = self.op_1 << self.op_2
+            self.set_res(self.op_1 << self.op_2)
 
         elif self.get_ctrl() == XOR:
-            self.res = self.op_1 ^ self.op_2
+            self.set_res(self.op_1 ^ self.op_2)
 
         elif self.get_ctrl() == OR:
-            self.res = self.op_1 | self.op_2
+            self.set_res(self.op_1 | self.op_2)
 
         elif self.get_ctrl() == AND:
-            self.res = self.op_1 & self.op_2
+            self.set_res(self.op_1 & self.op_2)
 
         elif self.get_ctrl() == SRL:
-            self.res = self.op_1 >> self.op_2
+            self.set_res(self.op_1 >> self.op_2)
 
         elif self.get_ctrl() == SUB:
-            self.res = self.op_1 - self.op_2                        
+            self.set_res(self.op_1 - self.op_2)                        
 
         elif self.get_ctrl() == SRA:
-            self.res = (self.op_1 >> self.op_2) if (self.op_1 >= 0) else ((self.op_1 + (1 << self.op_2) - 1) >> self.op_2)
+            self.set_res((self.op_1 >> self.op_2) if (self.op_1 >= 0) else ((self.op_1 + (1 << self.op_2) - 1) >> self.op_2))
 
         elif self.get_ctrl() == SLT: 
-            self.res = 0 | (self.op_1 < self.op_2) 
+            self.set_res(0 | (self.op_1 < self.op_2)) 
 
         elif self.get_ctrl() == SLTU: 
-            self.res = 0 | (to_uint32(self.op_1) < to_uint32(self.op_2))
+            self.set_res(0 | (to_uint32(self.op_1) < to_uint32(self.op_2)))
 
         else:
             pass
