@@ -114,7 +114,15 @@ class Test_ALU:
         assert self.alu.get_res() == 0
     
     @pytest.mark.parametrize("ctrl, op_1, op_2, expected", compute_test_values)
-    def test(self, ctrl, op_1, op_2, expected):
+    def test_copmute_res(self, ctrl, op_1, op_2, expected):
+        self.alu.ctrl = ctrl
+        self.alu.op_1 = op_1
+        self.alu.op_2 = op_2
+        self.alu.compute_res()
+        assert self.alu.get_res() == expected
+    
+    @pytest.mark.parametrize("ctrl, op_1, op_2, expected", [(ADD,0,0,0), (ADD,4,11,15), (ADD,4,-11,-7), (ADD, -4, -11, -15)])
+    def test_copmute_res_add(self, ctrl, op_1, op_2, expected):
         self.alu.ctrl = ctrl
         self.alu.op_1 = op_1
         self.alu.op_2 = op_2
