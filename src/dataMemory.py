@@ -11,7 +11,7 @@ class DataMemory:
         # Initialise size of memory
         self.mem_size = mem_size
         
-        # Initialise empty memory
+        # Initialise empty memory with indicies of bitdepth 4 bytes
         self.mem_addrs = [0] * (self.mem_size // 4)
         
         # Initialise I/O
@@ -24,7 +24,25 @@ class DataMemory:
         
         # Read Enabled signal        
         self.read_enabled = 0
-
+    
+    def set_addr(self, addr):
+        self.addr = addr
+    
+    def get_addr(self):
+        return self.addr
+    
+    def set_data_in(self, data_in):
+        self.data_in = data_in
+    
+    def get_data_in(self):
+        return self.data_in
+    
+    def set_data_out(self, data_out):
+        self.data_out = data_out
+    
+    def get_data_out(self):
+        return self.data_out
+    
     def set_write_enabled(self, enable):
         self.write_enabled = enable
     
@@ -49,24 +67,6 @@ class DataMemory:
     def read_disable(self):
         self.set_read_enabled(0)
     
-    def set_addr(self, addr):
-        self.addr = addr
-    
-    def get_addr(self):
-        return self.addr
-    
-    def set_data_in(self, data_in):
-        self.data_in = data_in
-    
-    def get_data_in(self):
-        return self.data_in
-    
-    def set_data_out(self, data_out):
-        self.data_out = data_out
-    
-    def get_data_out(self):
-        return self.data_out
-    
     def write_to_addr(self):
         if self.get_write_enabled() == 1:
             # Write data_in to address in memory
@@ -81,4 +81,4 @@ class DataMemory:
 # If file is run as python file, test class functions
 if __name__ == "__main__":
     dm = DataMemory()
-    print(f"Capacity: {dm.mem_size} kiB = {len(dm.mem_addrs)} x 32-bit words")
+    print(f"Capacity: {dm.mem_size} kB = {dm.mem_size//1024} MB = {len(dm.mem_addrs)} x 32-bit words")

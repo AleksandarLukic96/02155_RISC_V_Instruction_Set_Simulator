@@ -15,9 +15,9 @@ class Test_Branch(object):
     branch_ctrl = [BEQ, BNE, BLT, BGE, BLTU, BGEU]
     branch_ctrl_double = list(zip(branch_ctrl, branch_ctrl))
     branch_ctrl_triple = [BEQ, BEQ, BEQ, BEQ, BNE, BNE, BNE, BNE, BLT, BLT, BLT, BLT, BGE, BGE, BGE, BGE, BLTU, BLTU, BLTU, BLTU, BGEU, BGEU, BGEU, BGEU]
-    val_1 =     [0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,]
-    val_2 =     [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1,]
-    expected =  [1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1,]
+    val_1 =     [0, 2, 0, 4, 0, 2, 0, 4, 0, 2, 0, 4, 0, 2, 0, 4, 0, 2, 0, 4, 0, 2, 0, 4]
+    val_2 =     [0, 0, 3, 4, 0, 0, 3, 4, 0, 0, 3, 4, 0, 0, 3, 4, 0, 0, 3, 4, 0, 0, 3, 4]
+    expected =  [1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1]
     branch_ctrl_expected = list(zip(branch_ctrl_triple, val_1, val_2, expected))
         
     @pytest.fixture(autouse=True)
