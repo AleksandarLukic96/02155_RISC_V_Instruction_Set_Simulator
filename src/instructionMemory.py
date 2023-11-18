@@ -4,44 +4,45 @@ import os
 # Instruction Memory Class
 class InstructionMemomry:
     def __init__(self, file_path = "", addr = 0):
-        try:
-            # Load bin file into pyton
-            f = open(file_path, mode = "rb")
-            
-            # Reading file data with read() method
-            self.data = f.read()
-            
-            # Total number of instructions in program        
-            self.number_of_insts = len(self.data) // 4
-            
-            # Set current address as parsed, otherwise initialise to 0
-            self.addr = addr
-            
-            # Concatinate bytes into 32-bit instructions as int-array
-            self.insts = []
-            
-            i = 0
-            while i < len(self.data):
-                self.insts.append(
-                    (self.data[i + 3] << 24) | 
-                    (self.data[i + 2] << 16) | 
-                    (self.data[i + 1] <<  8) | 
-                    self.data[i])
-                i += 4
-            
-            # Closing the opened file
-            f.close()
-
-        except:
-            print("Invalid path given!")
+        # Load bin file into pyton
+        f = open(file_path, mode = "rb")
         
+
+        # Reading file data with read() method
+        self.data = f.read()
+        
+        # Total number of instructions in program        
+        self.number_of_insts = len(self.data) // 4
+        
+        # Set current address as parsed, otherwise initialise to 0
+        self.addr = addr
+        
+        # Concatinate bytes into 32-bit instructions as int-array
+        self.insts = []
+        
+        i = 0
+        while i < len(self.data):
+            self.insts.append(
+                (self.data[i + 3] << 24) | 
+                (self.data[i + 2] << 16) | 
+                (self.data[i + 1] <<  8) | 
+                self.data[i])
+            i += 4
+                
+        # Closing the opened file
+        f.close()
+        
+    
     # Update current instruction address    
     def set_addr(self, new_addr):
         self.addr = new_addr
     
+    def get_addr(self):
+        return self.addr
+    
     # Return instruction from current address
     def fetch_inst_at_addr(self):
-        return self.insts[self.addr // 4]
+        return self.insts[self.get_addr() // 4]
     
     # Printing to console functions
     def print_type(self):
@@ -95,7 +96,7 @@ if __name__ == "__main__":
 
     # Get path to test file
     dir = os.getcwd()
-    test_folder = "tests"
+    test_folder = "../tests"
 
     # Choose task
     tasks = [
@@ -122,20 +123,35 @@ if __name__ == "__main__":
     file_path = os.path.join(dir, test_folder, task, file_name)
     print(f"file_path:\n{file_path}")
     
-    imem = InstructionMemomry(file_path = file_path)
+    try:
+        imem = InstructionMemomry(file_path = file_path)
+        print("\nimem.print_type()")
+        imem.print_type()
+        print("\nimem.print_bytes()")
+        imem.print_bytes()
+        print("\nimem.print_total_insts()")
+        imem.print_total_insts()
+        print("\nimem.print_insts_bin()")
+        imem.print_insts_bin()
+        print("\nimem.print_insts_hex()")
+        imem.print_insts_hex()
+        print("\nimem.print_insts_int()")
+        imem.print_insts_int()
+        print("\nimem.print_insts():")
+        imem.print_insts()
+    except (IOError, ValueError, EOFError) as e:
+        print(e)
+    except:
+        pass    
     
-    print("\nimem.print_type()")
-    imem.print_type()
-    print("\nimem.print_bytes()")
-    imem.print_bytes()
-    print("\nimem.print_total_insts()")
-    imem.print_total_insts()
-    print("\nimem.print_insts_bin()")
-    imem.print_insts_bin()
-    print("\nimem.print_insts_hex()")
-    imem.print_insts_hex()
-    print("\nimem.print_insts_int()")
-    imem.print_insts_int()
-    print("\nimem.print_insts():")
-    imem.print_insts()
     
+    try:
+        imem = InstructionMemomry()
+        print(imem.addr)
+        print(imem.data)
+        print(imem.number_of_insts)
+        print(*imem.insts, sep = "\n")
+    except (IOError, ValueError, EOFError) as e:
+        print(e)
+    except:
+        pass
