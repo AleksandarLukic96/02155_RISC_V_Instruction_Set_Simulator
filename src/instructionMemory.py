@@ -3,7 +3,7 @@ import os
 
 # Instruction Memory Class
 class InstructionMemomry:
-    def __init__(self, file_path = "", addr = 0):
+    def __init__(self, file_path = "NO_FILE_GIVEN", addr = 0):
         # Load bin file into pyton
         f = open(file_path, mode = "rb")
         
@@ -32,8 +32,6 @@ class InstructionMemomry:
         # Closing the opened file
         f.close()
         
-    
-    # Update current instruction address    
     def set_addr(self, new_addr):
         self.addr = new_addr
     
@@ -96,7 +94,7 @@ if __name__ == "__main__":
 
     # Get path to test file
     dir = os.getcwd()
-    test_folder = "../tests"
+    test_folder = "tests"
 
     # Choose task
     tasks = [
