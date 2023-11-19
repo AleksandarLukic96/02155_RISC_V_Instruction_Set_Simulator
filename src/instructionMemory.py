@@ -17,6 +17,9 @@ class InstructionMemomry:
         # Set current address as parsed, otherwise initialise to 0
         self.addr = addr
         
+        # Instruction is fetched into holder variable
+        self.inst = 0
+        
         # Concatinate bytes into 32-bit instructions as int-array
         self.insts = []
         
@@ -32,15 +35,22 @@ class InstructionMemomry:
         # Closing the opened file
         f.close()
         
-    def set_addr(self, new_addr):
-        self.addr = new_addr
+    def set_addr(self, addr):
+        self.addr = addr
     
     def get_addr(self):
         return self.addr
     
+    def set_inst(self, inst):
+        self.inst = inst
+    
+    def get_inst(self):
+        return self.inst
+
     # Return instruction from current address
     def fetch_inst_at_addr(self):
-        return self.insts[self.get_addr() // 4]
+        self.set_inst(self.insts[self.get_addr() // 4])
+    
     
     # Printing to console functions
     def print_type(self):

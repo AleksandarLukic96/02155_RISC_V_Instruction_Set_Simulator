@@ -45,7 +45,16 @@ class Test_InstructionMemory(object):
     def test_get_addr(self):
         assert self.imem.get_addr() == 0
 
+    @pytest.mark.parametrize("inst, expected", [(0, 0), (4, 4), (0xFFFFFFFF, 0xFFFFFFFF)])
+    def test_set_addr(self, inst, expected):
+        self.imem.set_inst(inst)
+        assert self.imem.inst == expected
+    
+    def test_get_inst(self):
+        assert self.imem.get_inst() == 0
+    
     @pytest.mark.parametrize("addr, expeted", [(0, 0x80000537), (4, 0x00150513), (8, 0x800005b7), (12, 0xffe58593), (16, 0x00b50633), (20, 0x00a00893), (24, 0x00000073), (28, 0x00000004), (32, 0x00000014), (36, 0x00000003), (40, 0x00554e47), (44, 0xc9ce871c), (48, 0x44089d5d), (52, 0x7d6f3231), (56, 0x2788044c), (60, 0x3a48c48e)])
     def test_fetch_inst_at_addr(self, addr, expeted):  
         self.imem.addr = addr
-        assert self.imem.fetch_inst_at_addr() == expeted
+        self.imem.fetch_inst_at_addr()
+        assert self.imem.inst == expeted

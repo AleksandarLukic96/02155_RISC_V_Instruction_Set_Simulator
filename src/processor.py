@@ -60,7 +60,7 @@ adder.set_op_2(pc.get_addr())
 imem.set_addr(pc.get_addr())
 
 # Decoder 
-dec.set_inst(imem.fetch_inst_at_addr())
+dec.set_inst(imem.get_inst())
 
 # Immidiate
  # Needs implementation 
