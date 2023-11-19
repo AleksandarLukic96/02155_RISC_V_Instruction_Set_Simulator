@@ -15,10 +15,10 @@ class Registers:
 
         # Initialise data input
         self.data_in = 0
-        
+
         # Write Enabled signal
         self.write_enabled = 0
-        
+
         # Initialise 32 registers to 0
         self.regs = [0] * 32 
 
@@ -27,66 +27,66 @@ class Registers:
             pass
         else:
             self.reg_1 = reg_1
-    
+
     def get_reg_1(self):
         return self.reg_1
-    
+
     def set_reg_2(self, reg_2):
         if (reg_2 > 31) | (reg_2 < 0):
             pass
         else:
             self.reg_2 = reg_2
-    
+
     def get_reg_2(self):
         return self.reg_2
-    
+
     def set_rd(self, rd):
         if (rd > 31) | (rd < 0):
             pass
         else:
             self.rd = rd
-    
+
     def get_rd(self):
         return self.rd
-    
+
     def set_data_in(self, data_in):
         self.data_in = int32(data_in)
-    
+
     def get_data_in(self):
         return self.data_in
 
     def set_write_enabled(self, enable):
         self.write_enabled = enable
-    
+
     def get_write_enabled(self):
         return self.write_enabled
-    
+
     def write_enable(self):
         self.set_write_enabled(1)
-        
+
     def write_disable(self):
         self.set_write_enabled(0)
-    
+
     def return_reg_1_content(self):
         return self.regs[self.get_reg_1()]
-        
+
     def return_reg_2_content(self):
         return self.regs[self.get_reg_2()]
-    
+
     def write_to_rd(self):
         if self.get_write_enabled() == 1:
             # Hardwired x0 to zero
             if self.get_rd() == 0:
                 return
-            
+
             # Write data_in to register
             self.regs[self.get_rd()] = int32(self.get_data_in())
 
-      
+
     # Format content of register to string as Binary, Hex or Integer
     def reg_to_str_bin(self, index):
         return "{0:032b}".format(self.regs[index] % (1<<32))
-    
+
     def reg_to_str_hex(self, index):
         return "{0:08x}".format(self.regs[index] % (1<<32))
 
@@ -98,16 +98,16 @@ class Registers:
         for i in range(len(self.regs)):
             reg_name = "{0:3}".format("x" + str(i))
             print(f"{reg_name} : {self.reg_to_str_bin(i)}")
-    
+
     def print_regs_hex(self):
         for i in range(len(self.regs)):
             reg_name = "{0:3}".format("x" + str(i))
             print(f"{reg_name} : {self.reg_to_str_hex(i)}")
-    
+
     def print_regs_int(self):
         for i in range(len(self.regs)):
             reg_name = "{0:3}".format("x" + str(i))
-            print(f"{reg_name} : {self.reg_to_str_int(i)}")        
+            print(f"{reg_name} : {self.reg_to_str_int(i)}")
          
 
 # If file is run as python file, test class functions

@@ -10,7 +10,7 @@ BGEU = 0b00111 # 7
 
 class Test_Branch(object):
     
-    branch = branch.Branch()
+    branch = None
     
     branch_ctrl = [BEQ, BNE, BLT, BGE, BLTU, BGEU]
     branch_ctrl_double = list(zip(branch_ctrl, branch_ctrl))

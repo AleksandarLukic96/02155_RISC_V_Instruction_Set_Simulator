@@ -3,7 +3,7 @@ import src.mux as mux
 
 class Test_MUX2(object):
 
-    mux2 = mux.Mux2()
+    mux2 = None
 
     @pytest.fixture(autouse=True)
     def setup_class(self):

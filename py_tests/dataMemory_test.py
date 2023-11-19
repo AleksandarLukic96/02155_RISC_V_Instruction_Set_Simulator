@@ -4,7 +4,7 @@ import numpy as np
 
 class Test_DataMemory(object):
 
-    dmem = dmem.DataMemory()
+    dmem = None
 
     @pytest.fixture(autouse=True)
     def setup_class(self):
@@ -66,7 +66,7 @@ class Test_DataMemory(object):
     def test_write_disable(self):
         self.dmem.write_disable()
         assert self.dmem.write_enabled == 0
-    ########
+    
     @pytest.mark.parametrize("val, expected", [(0, 0), (1, 1), (42, 42)])
     def test_set_read_enabled(self, val, expected):
         self.dmem.set_read_enabled(val)

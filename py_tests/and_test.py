@@ -3,7 +3,7 @@ import src.and_ as and_
 
 class Test_AND(object):
 
-    and_ = and_.AND()
+    and_ = None
 
     @pytest.fixture(autouse=True)
     def setup_class(self):

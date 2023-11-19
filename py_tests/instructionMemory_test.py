@@ -28,7 +28,7 @@ class Test_InstructionMemory(object):
         print(f"Tearing down {self}")
         del self.imem
 
-    @pytest.mark.xfail(reason = "Invalid path given.")
+    @pytest.mark.xfail(reason = "Invalid path given. This is expected.")
     @pytest.mark.parametrize("file_path", file_path_task_all)
     def test_init(self, file_path):
         im = imem.InstructionMemomry(file_path = file_path)
