@@ -23,31 +23,40 @@ class Registers:
         self.regs = [0] * 32 
 
     def set_reg_1(self, reg_1):
-        self.reg_1 = reg_1
+        if (reg_1 > 31) | (reg_1 < 0):
+            pass
+        else:
+            self.reg_1 = reg_1
     
     def get_reg_1(self):
         return self.reg_1
     
     def set_reg_2(self, reg_2):
-        self.reg_2 = reg_2
+        if (reg_2 > 31) | (reg_2 < 0):
+            pass
+        else:
+            self.reg_2 = reg_2
     
     def get_reg_2(self):
         return self.reg_2
     
     def set_rd(self, rd):
-        self.rd = rd
+        if (rd > 31) | (rd < 0):
+            pass
+        else:
+            self.rd = rd
     
     def get_rd(self):
         return self.rd
     
     def set_data_in(self, data_in):
-        self.data_in = data_in
+        self.data_in = int32(data_in)
     
     def get_data_in(self):
         return self.data_in
 
-    def set_write_enabled(self, set):
-        self.write_enabled = set
+    def set_write_enabled(self, enable):
+        self.write_enabled = enable
     
     def get_write_enabled(self):
         return self.write_enabled
