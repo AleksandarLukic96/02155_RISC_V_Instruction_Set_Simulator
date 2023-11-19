@@ -1,16 +1,16 @@
 # Implementation of Processor via connection between components 
-from src.adder import Adder
-from src.alu import ALU
-from src.and_ import AND
-from src.branch import Branch
-from src.controlUnit import ControlUnit
-from src.dataMemory import DataMemory
-from src.decoder import Decoder
-from src.instructionMemory import InstructionMemomry
-from src.mux import Mux2, Mux3
-from src.or_ import OR
-from src.programCounter import ProgramCounter
-from src.registers import Registers
+from adder import Adder
+from alu import ALU
+from and_ import AND
+from branch import Branch
+from controlUnit import ControlUnit
+from dataMemory import DataMemory
+from decoder import Decoder
+from instructionMemory import InstructionMemomry
+from mux import Mux2, Mux3
+from or_ import OR
+from programCounter import ProgramCounter
+from registers import Registers
 
 # Test path
 import os
