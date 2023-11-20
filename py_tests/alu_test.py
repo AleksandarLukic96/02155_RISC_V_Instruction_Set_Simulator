@@ -1,16 +1,37 @@
 import pytest
 import src.alu as alu
+import src.signal_constants as const
 
-ADD  = 0b00000 # 0
-SLL  = 0b00001 # 1
-XOR  = 0b00100 # 4
-OR   = 0b00110 # 6
-AND  = 0b00111 # 7
-SRL  = 0b00101 # 5
-SUB  = 0b01000 # 8
-SRA  = 0b01101 # 13
-SLT  = 0b00010 # 2
-SLTU = 0b00011 # 3
+# Declare operation constants
+# R-type
+ADD   = 'ADD'   # 0b00000 # 0
+SUB   = 'SUB'   # 0b01000 # 8
+XOR   = 'XOR'   # 0b00100 # 4
+OR    = 'OR'    # 0b00110 # 6
+AND   = 'AND'   # 0b00111 # 7
+SLL   = 'SLL'   # 0b00001 # 1
+SRL   = 'SRL'   # 0b00101 # 5
+SRA   = 'SRA'   # 0b01101 # 13
+SLT   = 'SLT'   # 0b00010 # 2
+SLTU  = 'SLTU'  # 0b00011 # 3
+
+# I-type
+ADDI  = 'ADDI'  # 0b00000 # 0
+XORI  = 'XORI'  # 0b00100 # 4
+ORI   = 'ORI'   # 0b00110 # 6
+ANDI  = 'ANDI'  # 0b00111 # 7
+SLLI  = 'SLLI'  # 0b00001 # 1
+SRLI  = 'SRLI'  # 0b00101 # 5
+SRAI  = 'SRAI'  # 0b00101 # 5
+SLTI  = 'SLTI'  # 0b00010 # 2
+SLTIU = 'SLTIU' # 0b00011 # 3
+
+# I-type load
+LB    = 'LB'    # 0b00000 # 0
+LH    = 'LH'    # 0b00001 # 1
+LW    = 'LW'    # 0b00010 # 2
+LBU   = 'LBU'   # 0b00100 # 4
+LHU   = 'LHU'   # 0b00101 # 5
 
 class Test_ALU:
     
