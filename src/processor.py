@@ -56,6 +56,8 @@ class Processor:
         
         # Interpret decoded instruction in the Control Unit
         self.cu.set_opcode(self.dec.get_opcode())
+        self.cu.set_func3(self.dec.get_func3())
+        self.cu.set_func3(self.dec.get_func7())
         # >> stuff happening here <<
         # >> stuff happening here <<
         # Needs implementation!

@@ -2,7 +2,7 @@
 
 # NOTES:
 # Input: Opode 6:0, func7 6:0, func3 2:0
-# Output: 1bit: Do_Branch, Do_Jump. WrReg, Mux_Reg, Mux_ALU, WRmem, WBsel,
+# Output: 1bit: Do_Branch, Do_Jump. reg_write, Mux_Reg, Mux_ALU, mem_write, reg_ctrl,
 #          ALU_cnt 4:0,  mem_cnt 3:0, branch, imm 11:5 for I-types
 
 # OPCODES
@@ -56,6 +56,19 @@ BGE  = 0b00101 # 5
 BLTU = 0b00110 # 6
 BGEU = 0b00111 # 7
 
+# REG CTRL
+REG_FROM_DMEM = 0
+REG_FROM_ALU = 1
+REG_FROM_ADDER = 2
+
+# ALU OP 1 CTRL
+ALU_OP_1_FROM_REG = 0
+ALU_OP_1_FROM_PC = 1
+
+# ALU OP 2 CTRL
+ALU_OP_2_FROM_REG = 0
+ALU_OP_2_FROM_IMM = 1
+
 # Control Unit Class
 class ControlUnit:
     def __init__(self):
@@ -74,7 +87,7 @@ class ControlUnit:
         self.mem_write = 0
         self.alu_op_1_ctrl = 0
         self.alu_op_2_ctrl = 0
-        self.alu_ctrl = 0
+        self.alu_ctrl = 0 
 
         # Immidiate interpretation of func7
         self.imm = 0
@@ -179,6 +192,9 @@ class ControlUnit:
         self.set_alu_op_2_ctrl(alu_op_2_ctrl)
         self.set_alu_ctrl(alu_ctrl)
 
+    # alu_op_1_ctrl: when 0, PC and when 1 = DATA1
+    # alu_op_2_ctrl: When 0 = DATA2 and when 1 = Imm
+
     # Execution functions
     def execute_r_type(self):
         if (self.get_func3() == 0) & (self.get_func7() == 0):
@@ -214,10 +230,20 @@ class ControlUnit:
         else:
             print("This R-Type instruction is not supported!")
         
-        # MUXReg: when 0, PC and when 1 = DATA1
-        # MUXmem: When 0 = DATA2 and when 1 = Imm
-        #{'doBranch': 0, 'doJump': 0, 'WrReg': 0, 'WRmem': 1, 'MUXReg': 1, 'MUXmem': 0, 'WBsel': 'ALU', 'branch': 0b000, 'ALUop': ALUop, 'mem_read': 0}
-        self.set_all_signals(alu_ctrl = alu_ctrl) # <--- insert correct signals from the above line!
+        #{'do_branch': 0, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
+        # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'ALU', 
+        # 'branch_ctrl': 0b000, 'alu_ctrl': alu_ctrl, 'mem_read': 0}
+        self.set_all_signals(
+            do_branch = 0, 
+            do_jump = 0, 
+            branch_ctrl = BEQ, 
+            reg_write = 0, 
+            reg_ctrl = REG_FROM_ALU, 
+            mem_read = 0, 
+            mem_write = 1, 
+            alu_op_1_ctrl = ALU_OP_1_FROM_REG, 
+            alu_op_2_ctrl = ALU_OP_2_FROM_REG, 
+            alu_ctrl = alu_ctrl) # <--- insert correct signals from the above line!
 
     def execute_i_type(self):
         if self.get_func3() == 0:
@@ -250,8 +276,20 @@ class ControlUnit:
         else:
             print("This I-Type instruction is not supported!")
         
-        #{'doBranch': 0, 'doJump': 0, 'WrReg': 0, 'WRmem': 1, 'MUXReg': 1, 'MUXmem': 0, 'WBsel': 'ALU', 'branch': 0b000, 'ALUop': ALUop, 'mem_read': 0}
-        self.set_all_signals(alu_ctrl = alu_ctrl) # <--- insert correct signals from the above line!
+        #{'do_branch': 0, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
+        # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'ALU', 
+        # 'branch_ctrl': 0b000, 'alu_ctrl': alu_ctrl, 'mem_read': 0}
+        self.set_all_signals(
+            do_branch = 0, 
+            do_jump = 0, 
+            branch_ctrl = BEQ, 
+            reg_write = 0, 
+            reg_ctrl = REG_FROM_ALU, 
+            mem_read = 0, 
+            mem_write = 1, 
+            alu_op_1_ctrl = ALU_OP_1_FROM_REG, 
+            alu_op_2_ctrl = ALU_OP_2_FROM_REG, 
+            alu_ctrl = alu_ctrl)
 
     def execute_i_type_load(self):
         if self.get_func3() == 0:
@@ -272,8 +310,20 @@ class ControlUnit:
         else:
             print("This I-Type Load instruction is not supported!")
         
-        #{'doBranch': 0, 'doJump': 0, 'WrReg': 0, 'WRmem': 0, 'MUXReg': 1, 'MUXmem': 0, 'WBsel': 'MEM', 'branch': 0b000, 'ALUop': ALUop, 'mem_read': 1}
-        self.set_all_signals(alu_ctrl = alu_ctrl) # <--- insert correct signals from the above line!
+        #{'do_branch': 0, 'do_jump': 0, 'reg_write': 0, 'mem_write': 0, 
+        # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'MEM', 
+        # 'branch_ctrl': 0b000, 'alu_ctrl': alu_ctrl, 'mem_read': 1}
+        self.set_all_signals(
+            do_branch = 0, 
+            do_jump = 0, 
+            branch_ctrl = BEQ, 
+            reg_write = 0, 
+            reg_ctrl = REG_FROM_DMEM, 
+            mem_read = 1, 
+            mem_write = 0, 
+            alu_op_1_ctrl = ALU_OP_1_FROM_REG, 
+            alu_op_2_ctrl = ALU_OP_2_FROM_REG, 
+            alu_ctrl = alu_ctrl)
 
     def execute_s_type(self):
         #SB
@@ -289,49 +339,121 @@ class ControlUnit:
         else:
             print("This S-Type instruction is not supported!")
 
-        #{'doBranch': 0, 'doJump': 0, 'WrReg': 0, 'WRmem': 1, 'MUXReg': 1, 'MUXmem': 0, 'WBsel': 'MEM', 'branch': 0b000, 'ALUop': 'ADD', 'mem_read': 0}
-        self.set_all_signals() # <--- insert correct signals from the above line!
+        #{'do_branch': 0, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
+        # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'MEM', 
+        # 'branch_ctrl': 0b000, 'alu_ctrl': 'ADD', 'mem_read': 0}
+        self.set_all_signals(
+            do_branch = 0, 
+            do_jump = 0, 
+            branch_ctrl = BEQ, 
+            reg_write = 0, 
+            reg_ctrl = REG_FROM_DMEM, 
+            mem_read = 0, 
+            mem_write = 1, 
+            alu_op_1_ctrl = ALU_OP_1_FROM_REG, 
+            alu_op_2_ctrl = ALU_OP_2_FROM_REG, 
+            alu_ctrl = ADD)
 
     def execute_b_type(self):
         if self.get_func3() == 0:
-            branch = BEQ
+            branch_ctrl = BEQ
         
         elif self.get_func3() == 1:
-            branch = BNE
+            branch_ctrl = BNE
         
         elif self.get_func3()== 4:
-            branch = BLT
+            branch_ctrl = BLT
         
         elif self.get_func3() == 5:
-            branch = BGE
+            branch_ctrl = BGE
         
         elif self.get_func3() == 6:
-            branch = BLTU
+            branch_ctrl = BLTU
         
         elif self.get_func3() == 7:
-            branch = BGEU
+            branch_ctrl = BGEU
         
         else:
             print("This B-Type instruction is not supported!")
         
-        #{'doBranch': 1, 'doJump': 0, 'WrReg': 0, 'WRmem': 0, 'MUXReg': 0, 'MUXmem': 0, 'WBsel': 'MEM', 'branch': branch, 'ALUop': 'ADD', 'mem_read': 0}
-        self.set_all_signals() # <--- insert correct signals from the above line!
+        #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 0, 
+        # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'MEM', 
+        # 'branch_ctrl': branch, 'alu_ctrl': 'ADD', 'mem_read': 0}
+        self.set_all_signals(
+            do_branch = 1, 
+            do_jump = 0, 
+            branch_ctrl = branch_ctrl, 
+            reg_write = 0, 
+            reg_ctrl = REG_FROM_DMEM, 
+            mem_read = 0, 
+            mem_write = 0, 
+            alu_op_1_ctrl = ALU_OP_1_FROM_PC, 
+            alu_op_2_ctrl = ALU_OP_2_FROM_REG, 
+            alu_ctrl = ADD)
 
     def excute_j_type(self):
-        #{'doBranch': 1, 'doJump': 0, 'WrReg': 0, 'WRmem': 1, 'MUXReg': 0, 'MUXmem': 0, 'WBsel': 'PC4', 'branch': 0b111, 'ALUop': 'ADD', 'mem_read': 0}
-        self.set_all_signals() # <--- insert correct signals from the above line!
+        #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
+        # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'PC4', 
+        # 'branch_ctrl': 0b111, 'alu_ctrl': 'ADD', 'mem_read': 0}
+        self.set_all_signals(
+            do_branch = 1, 
+            do_jump = 0, 
+            branch_ctrl = BGEU, 
+            reg_write = 0, 
+            reg_ctrl = REG_FROM_ADDER, 
+            mem_read = 0, 
+            mem_write = 1, 
+            alu_op_1_ctrl = ALU_OP_1_FROM_PC, 
+            alu_op_2_ctrl = ALU_OP_2_FROM_REG, 
+            alu_ctrl = ADD)
 
     def excute_i_type_jump(self):
-        #{'doBranch': 1, 'doJump': 0, 'WrReg': 0, 'WRmem': 1, 'MUXReg': 1, 'MUXmem': 0, 'WBsel': 'PC4', 'branch': 0b111, 'ALUop': 'ADD', 'mem_read': 0}
-        self.set_all_signals() # <--- insert correct signals from the above line!
+        #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
+        # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'PC4', 
+        # 'branch_ctrl': 0b111, 'alu_ctrl': 'ADD', 'mem_read': 0}
+        self.set_all_signals(
+            do_branch = 1, 
+            do_jump = 0, 
+            branch_ctrl = BGEU, 
+            reg_write = 0, 
+            reg_ctrl = REG_FROM_ADDER, 
+            mem_read = 0, 
+            mem_write = 1, 
+            alu_op_1_ctrl = ALU_OP_1_FROM_REG, 
+            alu_op_2_ctrl = ALU_OP_2_FROM_REG, 
+            alu_ctrl = ADD)
 
     def excute_u_type_load(self):
-        #{'doBranch': 1, 'doJump': 0, 'WrReg': 0, 'WRmem': 0, 'MUXReg': 0, 'MUXmem': 1, 'WBsel': 'IMM', 'branch': 0b000, 'ALUop': 'ADD', 'mem_read': 0}
-        self.set_all_signals() # <--- insert correct signals from the above line!
+        #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 0, 
+        # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 1, 'reg_ctrl': 'IMM', 
+        # 'branch_ctrl': 0b000, 'alu_ctrl': 'ADD', 'mem_read': 0}
+        self.set_all_signals(
+            do_branch = 1, 
+            do_jump = 0, 
+            branch_ctrl = BEQ, 
+            reg_write = 0, 
+            reg_ctrl = REG_FROM_ALU, 
+            mem_read = 0, 
+            mem_write = 0, 
+            alu_op_1_ctrl = ALU_OP_1_FROM_PC, 
+            alu_op_2_ctrl = ALU_OP_2_FROM_IMM, 
+            alu_ctrl = ADD)
 
     def excute_u_type_add(self):        
-        #{'doBranch': 1, 'doJump': 0, 'WrReg': 0, 'WRmem': 0, 'MUXReg': 0, 'MUXmem': 1, 'WBsel': 'ALU', 'branch': 0b000, 'ALUop': 'ADD', 'mem_read': 0}
-        self.set_all_signals() # <--- insert correct signals from the above line!
+        #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 0, 
+        # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 1, 'reg_ctrl': 'ALU', 
+        # 'branch_ctrl': 0b000, 'alu_ctrl': 'ADD', 'mem_read': 0}
+        self.set_all_signals(
+            do_branch = 1, 
+            do_jump = 0, 
+            branch_ctrl = BEQ, 
+            reg_write = 0, 
+            reg_ctrl = REG_FROM_ALU, 
+            mem_read = 0, 
+            mem_write = 0, 
+            alu_op_1_ctrl = ALU_OP_1_FROM_PC, 
+            alu_op_2_ctrl = ALU_OP_2_FROM_IMM, 
+            alu_ctrl = ADD)
 
     def excute_i_type_env(self):
         if self.get_imm() == 0:
