@@ -6,6 +6,7 @@ from branch import Branch
 from controlUnit import ControlUnit
 from dataMemory import DataMemory
 from decoder import Decoder
+#from immidiate import Immidiate
 from instructionMemory import InstructionMemomry
 from mux import Mux2, Mux3
 from or_ import OR
@@ -20,6 +21,7 @@ class Processor:
         self.cu = ControlUnit()
         self.dmem = DataMemory()
         self.dec = Decoder()
+        #self.imm = Immidiate()
         self.imem = InstructionMemomry(file_path = file_path)
         self.pc = ProgramCounter()
         self.regs = Registers()
@@ -39,7 +41,7 @@ class Processor:
         self.mux2_2.set_in_0(2)
         self.mux2_2.set_in_1(4)
         self.mux2_2.set_select(1) # Needs implementation from decoder? / Currently hardwired
-        self.mux2_2.compute_out
+        self.mux2_2.compute_out()
         
         # Calculate next address for ProgramCounter
         self.adder.set_op_1(self.mux2_2.get_out())
@@ -61,9 +63,9 @@ class Processor:
         self.cu.excute()
         
         # Handle imidiate interpretation from instruction
-        # >> stuff happening here <<
-        # Need implementation!
-        # >> stuff happening here <<
+        #self.imm.set_inst(self.dec.)
+        
+        self.dec.
         
         # Prepare Registers for instruction execution
         self.regs.set_write_enabled(self.cu.get_reg_write())

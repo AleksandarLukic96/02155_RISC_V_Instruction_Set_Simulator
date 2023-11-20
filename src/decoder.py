@@ -1,6 +1,5 @@
 # Implementation of Decoder Class and functions 
 
-# Decoder Class
 class Decoder:
     def __init__(self):
         # Read 32-bit instruction
