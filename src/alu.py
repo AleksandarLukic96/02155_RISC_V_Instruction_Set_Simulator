@@ -6,16 +6,16 @@ def to_uint32(num):
 
 # Declare operation constants
 # R-type
-ADD   = 'ADD'  # 0b00000 # 0
-SUB   = 'SUB'  # 0b01000 # 8
-XOR   = 'XOR'  # 0b00100 # 4
-OR    = 'OR'   # 0b00110 # 6
-AND   = 'AND'  # 0b00111 # 7
-SLL   = 'SLL'  # 0b00001 # 1
-SRL   = 'SRL'  # 0b00101 # 5
-SRA   = 'SRA'  # 0b01101 # 13
-SLT   = 'SLT'  # 0b00010 # 2
-SLTU  = 'SLTU' # 0b00011 # 3
+ADD   = 'ADD'   # 0b00000 # 0
+SUB   = 'SUB'   # 0b01000 # 8
+XOR   = 'XOR'   # 0b00100 # 4
+OR    = 'OR'    # 0b00110 # 6
+AND   = 'AND'   # 0b00111 # 7
+SLL   = 'SLL'   # 0b00001 # 1
+SRL   = 'SRL'   # 0b00101 # 5
+SRA   = 'SRA'   # 0b01101 # 13
+SLT   = 'SLT'   # 0b00010 # 2
+SLTU  = 'SLTU'  # 0b00011 # 3
 
 # I-type
 ADDI  = 'ADDI'  # 0b00000 # 0
@@ -27,6 +27,13 @@ SRLI  = 'SRLI'  # 0b00101 # 5
 SRAI  = 'SRAI'  # 0b00101 # 5
 SLTI  = 'SLTI'  # 0b00010 # 2
 SLTIU = 'SLTIU' # 0b00011 # 3
+
+# I-type load
+LB    = 'LB'    # 0b00000 # 0
+LH    = 'LH'    # 0b00001 # 1
+LW    = 'LW'    # 0b00010 # 2
+LBU   = 'LBU'   # 0b00100 # 4
+LHU   = 'LHU'   # 0b00101 # 5
 
 # ALU Class
 class ALU:
