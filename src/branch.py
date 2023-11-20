@@ -1,16 +1,9 @@
 # Implementation of Branch Class and functions
+import src.signal_constants as const
 
 # Function to convert signed to unsigned int
 def to_uint32(num):
     return num + 2**32
-
-# Declare branch constants
-BEQ  = 0b00000 # 0
-BNE  = 0b00001 # 1
-BLT  = 0b00100 # 4
-BGE  = 0b00101 # 5
-BLTU = 0b00110 # 6
-BGEU = 0b00111 # 7
 
 # Branch Class
 class Branch:
@@ -54,22 +47,22 @@ class Branch:
         self.branch_taken = 0
     
     def compute_branch_taken(self):
-        if self.get_branch_ctrl() == BEQ:
+        if self.get_branch_ctrl() == const.BEQ:
             self.branch_taken_enable() if self.op_1 == self.op_2 else self.branch_taken_disable()
 
-        elif self.get_branch_ctrl() == BNE:
+        elif self.get_branch_ctrl() == const.BNE:
             self.branch_taken_enable() if self.op_1 != self.op_2 else self.branch_taken_disable()
 
-        elif self.get_branch_ctrl() == BLT:
+        elif self.get_branch_ctrl() == const.BLT:
             self.branch_taken_enable() if self.op_1 < self.op_2 else self.branch_taken_disable()
         
-        elif self.get_branch_ctrl() == BGE:
+        elif self.get_branch_ctrl() == const.BGE:
             self.branch_taken_enable() if self.op_1 >= self.op_2 else self.branch_taken_disable()
         
-        elif self.get_branch_ctrl() == BLTU:
+        elif self.get_branch_ctrl() == const.BLTU:
             self.branch_taken_enable() if to_uint32(self.op_1) < to_uint32(self.op_2) else self.branch_taken_disable()
         
-        elif self.get_branch_ctrl() == BGEU:
+        elif self.get_branch_ctrl() == const.BGEU:
             self.branch_taken_enable() if to_uint32(self.op_1) >= to_uint32(self.op_2) else self.branch_taken_disable()
             
         else:

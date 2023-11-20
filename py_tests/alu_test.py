@@ -2,53 +2,22 @@ import pytest
 import src.alu as alu
 import src.signal_constants as const
 
-# Declare operation constants
-# R-type
-ADD   = 'ADD'   # 0b00000 # 0
-SUB   = 'SUB'   # 0b01000 # 8
-XOR   = 'XOR'   # 0b00100 # 4
-OR    = 'OR'    # 0b00110 # 6
-AND   = 'AND'   # 0b00111 # 7
-SLL   = 'SLL'   # 0b00001 # 1
-SRL   = 'SRL'   # 0b00101 # 5
-SRA   = 'SRA'   # 0b01101 # 13
-SLT   = 'SLT'   # 0b00010 # 2
-SLTU  = 'SLTU'  # 0b00011 # 3
-
-# I-type
-ADDI  = 'ADDI'  # 0b00000 # 0
-XORI  = 'XORI'  # 0b00100 # 4
-ORI   = 'ORI'   # 0b00110 # 6
-ANDI  = 'ANDI'  # 0b00111 # 7
-SLLI  = 'SLLI'  # 0b00001 # 1
-SRLI  = 'SRLI'  # 0b00101 # 5
-SRAI  = 'SRAI'  # 0b00101 # 5
-SLTI  = 'SLTI'  # 0b00010 # 2
-SLTIU = 'SLTIU' # 0b00011 # 3
-
-# I-type load
-LB    = 'LB'    # 0b00000 # 0
-LH    = 'LH'    # 0b00001 # 1
-LW    = 'LW'    # 0b00010 # 2
-LBU   = 'LBU'   # 0b00100 # 4
-LHU   = 'LHU'   # 0b00101 # 5
-
 class Test_ALU:
     
     alu = None
     
-    alu_ctrl = [ADD, SLL, XOR, OR, AND, SRL, SUB, SRA, SLT, SLTU]
+    alu_ctrl = [const.ADD, const.SLL, const.XOR, const.OR, const.AND, const.SRL, const.SUB, const.SRA, const.SLT, const.SLTU]
     alu_ctrl_double = list(zip(alu_ctrl, alu_ctrl))
-    alu_ctrl_quad = [ADD, ADD, ADD, ADD, 
-                     SLL, SLL, SLL, SLL, 
-                     XOR, XOR, XOR, XOR,
-                     OR, OR, OR, OR,
-                     AND, AND, AND, AND,
-                     SRL, SRL, SRL, SRL, 
-                     SUB, SUB, SUB, SUB, 
-                     SRA, SRA, SRA, SRA,
-                     SLT, SLT, SLT, SLT,
-                     SLTU, SLTU, SLTU, SLTU]
+    alu_ctrl_quad = [const.ADD, const.ADD, const.ADD, const.ADD, 
+                     const.SLL, const.SLL, const.SLL, const.SLL, 
+                     const.XOR, const.XOR, const.XOR, const.XOR,
+                     const.OR, const.OR, const.OR, const.OR,
+                     const.AND, const.AND, const.AND, const.AND,
+                     const.SRL, const.SRL, const.SRL, const.SRL, 
+                     const.SUB, const.SUB, const.SUB, const.SUB, 
+                     const.SRA, const.SRA, const.SRA, const.SRA,
+                     const.SLT, const.SLT, const.SLT, const.SLT,
+                     const.SLTU, const.SLTU, const.SLTU, const.SLTU]
     
     alu_op_1 = [0, 4, 4, -4,
                 0, 4, 4, -4,
@@ -143,7 +112,7 @@ class Test_ALU:
         self.alu.compute_res()
         assert self.alu.get_res() == expected
     
-    @pytest.mark.parametrize("ctrl, op_1, op_2, expected", [(ADD,0,0,0), (ADD,4,11,15), (ADD,4,-11,-7), (ADD, -4, -11, -15)])
+    @pytest.mark.parametrize("ctrl, op_1, op_2, expected", [(const.ADD,0,0,0), (const.ADD,4,11,15), (const.ADD,4,-11,-7), (const.ADD, -4, -11, -15)])
     def test_copmute_res_add(self, ctrl, op_1, op_2, expected):
         self.alu.ctrl = ctrl
         self.alu.op_1 = op_1

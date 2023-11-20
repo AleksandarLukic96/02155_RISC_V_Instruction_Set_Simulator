@@ -1,20 +1,14 @@
 import pytest
 import src.branch as branch
-
-BEQ  = 0b00000 # 0
-BNE  = 0b00001 # 1
-BLT  = 0b00100 # 4
-BGE  = 0b00101 # 5
-BLTU = 0b00110 # 6
-BGEU = 0b00111 # 7
+import src.signal_constants as const
 
 class Test_Branch(object):
     
     branch = None
     
-    branch_ctrl = [BEQ, BNE, BLT, BGE, BLTU, BGEU]
+    branch_ctrl = [const.BEQ, const.BNE, const.BLT, const.BGE, const.BLTU, const.BGEU]
     branch_ctrl_double = list(zip(branch_ctrl, branch_ctrl))
-    branch_ctrl_triple = [BEQ, BEQ, BEQ, BEQ, BNE, BNE, BNE, BNE, BLT, BLT, BLT, BLT, BGE, BGE, BGE, BGE, BLTU, BLTU, BLTU, BLTU, BGEU, BGEU, BGEU, BGEU]
+    branch_ctrl_triple = [const.BEQ, const.BEQ, const.BEQ, const.BEQ, const.BNE, const.BNE, const.BNE, const.BNE, const.BLT, const.BLT, const.BLT, const.BLT, const.BGE, const.BGE, const.BGE, const.BGE, const.BLTU, const.BLTU, const.BLTU, const.BLTU, const.BGEU, const.BGEU, const.BGEU, const.BGEU]
     val_1 =     [0, 2, 0, 4, 0, 2, 0, 4, 0, 2, 0, 4, 0, 2, 0, 4, 0, 2, 0, 4, 0, 2, 0, 4]
     val_2 =     [0, 0, 3, 4, 0, 0, 3, 4, 0, 0, 3, 4, 0, 0, 3, 4, 0, 0, 3, 4, 0, 0, 3, 4]
     expected =  [1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1]
