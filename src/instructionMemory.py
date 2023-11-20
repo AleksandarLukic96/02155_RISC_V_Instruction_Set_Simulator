@@ -3,7 +3,7 @@ import os
 
 # Instruction Memory Class
 class InstructionMemomry:
-    def __init__(self, file_path = "NO_FILE_GIVEN", addr = 0):
+    def __init__(self, file_path = "NO_FILE_GIVEN", addr = 0, little_endian = True):
         # Load bin file into pyton
         f = open(file_path, mode = "rb")
         
@@ -20,18 +20,34 @@ class InstructionMemomry:
         # Instruction is fetched into holder variable
         self.inst = 0
         
+        # If False, then big endian
+        self.little_endian = little_endian
+        
         # Concatinate bytes into 32-bit instructions as int-array
         self.insts = []
         
         i = 0
-        while i < len(self.data):
-            self.insts.append(
-                (self.data[i + 3] << 24) | 
-                (self.data[i + 2] << 16) | 
-                (self.data[i + 1] <<  8) | 
-                self.data[i])
-            i += 4
-                
+        
+        # Meta data at the end of bin file in bytes
+        self.meta_data = 36
+        
+        if self.little_endian:
+            while i < (len(self.data) - self.meta_data):
+                self.insts.append(
+                    (self.data[i + 3] << 24) | 
+                    (self.data[i + 2] << 16) | 
+                    (self.data[i + 1] <<  8) | 
+                    self.data[i])
+                i += 4
+        else:        
+            while i < (len(self.data) - self.meta_data):
+                self.insts.append(
+                    (self.data[i] << 24) | 
+                    (self.data[i + 1] << 16) | 
+                    (self.data[i + 2] <<  8) | 
+                    self.data[i + 3])
+                i += 4
+          
         # Closing the opened file
         f.close()
         
@@ -125,28 +141,28 @@ if __name__ == "__main__":
         ,"shift.bin"
         ,"shift2.bin"
         ]
-    file_name = file_names[0]
+    file_name = file_names[1-1]
 
     # Concat into full file path
     file_path = os.path.join(dir, test_folder, task, file_name)
     print(f"file_path:\n{file_path}")
     
     try:
-        imem = InstructionMemomry(file_path = file_path)
+        imem = InstructionMemomry(file_path = file_path, little_endian = True)
         print("\nimem.print_type()")
         imem.print_type()
         print("\nimem.print_bytes()")
         imem.print_bytes()
         print("\nimem.print_total_insts()")
         imem.print_total_insts()
-        print("\nimem.print_insts_bin()")
-        imem.print_insts_bin()
+        #print("\nimem.print_insts_bin()")
+        #imem.print_insts_bin()
         print("\nimem.print_insts_hex()")
         imem.print_insts_hex()
-        print("\nimem.print_insts_int()")
-        imem.print_insts_int()
-        print("\nimem.print_insts():")
-        imem.print_insts()
+        #print("\nimem.print_insts_int()")
+        #imem.print_insts_int()
+        #print("\nimem.print_insts():")
+        #imem.print_insts()
     except (IOError, ValueError, EOFError) as e:
         print(e)
     except:
