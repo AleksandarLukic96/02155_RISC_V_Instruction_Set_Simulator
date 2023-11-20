@@ -26,13 +26,9 @@ class InstructionMemomry:
         # Concatinate bytes into 32-bit instructions as int-array
         self.insts = []
         
-        i = 0
-        
-        # Meta data at the end of bin file in bytes
-        self.meta_data = 36
-        
+        i = 0   
         if self.little_endian:
-            while i < (len(self.data) - self.meta_data):
+            while i < (len(self.data)):
                 self.insts.append(
                     (self.data[i + 3] << 24) | 
                     (self.data[i + 2] << 16) | 
@@ -40,7 +36,7 @@ class InstructionMemomry:
                     self.data[i])
                 i += 4
         else:        
-            while i < (len(self.data) - self.meta_data):
+            while i < (len(self.data)):
                 self.insts.append(
                     (self.data[i] << 24) | 
                     (self.data[i + 1] << 16) | 
@@ -82,7 +78,7 @@ class InstructionMemomry:
         i = 0
         for inst in self.insts:
             str_bin = "{0:032b}".format(inst % (1<<32))
-            str_i = "{0:3}".format(i)
+            str_i = "{0:03x}".format(i*4)
             print(f"{str_i} Bin: {str_bin}")
             i += 1
     
@@ -90,7 +86,7 @@ class InstructionMemomry:
         i = 0
         for inst in self.insts:
             str_hex = "{0:08x}".format(inst % (1<<32))
-            str_i = "{0:3}".format(i)
+            str_i = "{0:03x}".format(i*4)
             print(f"{str_i} Hex: {str_hex}")
             i += 1
     
@@ -98,7 +94,7 @@ class InstructionMemomry:
         i = 0
         for inst in self.insts:
             str_int = "{0:10}".format(inst)
-            str_i = "{0:3}".format(i)
+            str_i = "{0:03x}".format(i*4)
             print(f"{str_i} Int: {str_int}")
             i += 1
     
@@ -110,7 +106,7 @@ class InstructionMemomry:
             str_hex = "{0:08x}".format(inst)
             str_int = "{0:10}".format(inst)
             str_opcode = "{0:07b}".format(inst & 127)
-            str_i = "{0:3}".format(i)
+            str_i = "{0:03x}".format(i*4)
             print(f"{str_i} Bin: {str_bin} Hex: {str_hex} Int: {str_int} Opcode: {str_opcode}")
             i += 1    
 
@@ -142,7 +138,10 @@ if __name__ == "__main__":
         ,"shift2.bin"
         ]
     file_name = file_names[1-1]
-
+    
+    task = "task3"
+    file_name = "string.bin"
+    
     # Concat into full file path
     file_path = os.path.join(dir, test_folder, task, file_name)
     print(f"file_path:\n{file_path}")
