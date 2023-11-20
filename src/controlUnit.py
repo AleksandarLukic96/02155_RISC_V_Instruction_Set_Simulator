@@ -49,12 +49,12 @@ LBU = 'LBU'
 LHU = 'LHU'
 
 # BRANCH CTRL
-BEQ  = 0b00000 # 0
-BNE  = 0b00001 # 1
-BLT  = 0b00100 # 4
-BGE  = 0b00101 # 5
-BLTU = 0b00110 # 6
-BGEU = 0b00111 # 7
+BEQ  = 'BEQ' # 0b00000 # 0
+BNE  = 'BNE' # 0b00001 # 1
+BLT  = 'BLT' # 0b00100 # 4
+BGE  = 'BGE' # 0b00101 # 5
+BLTU = 'BLTU' # 0b00110 # 6
+BGEU = 'BGEU' # 0b00111 # 7
 
 # REG CTRL
 REG_FROM_DMEM = 0
@@ -233,6 +233,7 @@ class ControlUnit:
         #{'do_branch': 0, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
         # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'ALU', 
         # 'branch_ctrl': 0b000, 'alu_ctrl': alu_ctrl, 'mem_read': 0}
+        
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
@@ -505,3 +506,30 @@ class ControlUnit:
         else:
             print("Opcode not supported")
             # TODO: Implement NOP - In case of invalid instruction, simply skip instruction by disabling any write/read signals!
+
+    def print_fields(self):
+        print(f"do_branch : {self.get_do_branch()}")
+        print(f"do_jump: {self.get_do_jump()}")
+        print(f"branch_ctrl: {self.get_branch_ctrl()}")
+        print(f"reg_write: {self.get_reg_write()}")
+        print(f"reg_ctrl: {self.get_reg_ctrl()}")
+        print(f"mem_read: {self.get_mem_read()}")
+        print(f"mem_write: {self.get_mem_write()}")
+        print(f"alu_op_1_ctrl: {self.get_alu_op_1_ctrl()}")
+        print(f"alu_op_2_ctrl: {self.get_alu_op_2_ctrl()}")
+        print(f"alu_ctrl: {self.get_alu_ctrl()}")
+        print()
+        
+# If file is run as python file, test class functions
+if __name__ == "__main__":
+    cu = ControlUnit()
+    cu.print_fields()
+    
+    cu.set_opcode(19)
+    cu.set_func3(0)
+    cu.set_func7(3)
+    cu.excute()
+    cu.print_fields()
+    
+        
+    

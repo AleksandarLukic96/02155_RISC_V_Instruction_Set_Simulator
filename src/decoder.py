@@ -63,3 +63,28 @@ class Decoder:
         self.set_rd((self.inst >> 7) & 0b11111)
         self.set_func3((self.inst >> 12) & 0b111)
         self.set_func7((self.inst >> 25) & 0b1111111)
+
+    def print_fields(self):
+        print(f"get_inst(): {self.get_inst()}")
+        print(f"get_opcode(): {self.get_opcode()}")
+        print(f"get_reg_1(): {self.get_reg_1()}")
+        print(f"get_reg_2(): {self.get_reg_2()}")
+        print(f"get_rd(): {self.get_rd()}")
+        print(f"get_func3(): {self.get_func3()}")
+        print(f"get_func7(): {self.get_func7()}")
+        print()
+        
+        
+        
+# If file is run as python file, test class functions
+if __name__ == "__main__":
+    dec = Decoder()
+    dec.print_fields()
+    
+    test_inst = 0x07b10093
+    dec.set_inst(test_inst)
+    dec.print_fields()
+    
+    dec.compute_decoding()
+    dec.print_fields()
+    
