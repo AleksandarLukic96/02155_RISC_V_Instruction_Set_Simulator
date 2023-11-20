@@ -1,5 +1,5 @@
 # Implementation of Branch Class and functions
-import src.signal_constants as const
+import signal_constants as const
 
 # Function to convert signed to unsigned int
 def to_uint32(num):

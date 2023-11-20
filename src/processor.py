@@ -25,8 +25,8 @@ class Processor:
         self.regs = Registers()
         
         # Initialise Multiplexors, Adder and logic gates
-        self.mux2_1 = Mux2(in_0 = 2, in_1 = 4)
-        self.mux2_2 = Mux2()
+        self.mux2_1 = Mux2()
+        self.mux2_2 = Mux2(in_0 = 2, in_1 = 4)
         self.mux2_3 = Mux2()
         self.mux2_4 = Mux2()
         self.mux3 = Mux3()
@@ -58,41 +58,42 @@ class Processor:
         self.cu.set_opcode(self.dec.get_opcode())
         self.cu.set_func3(self.dec.get_func3())
         self.cu.set_func3(self.dec.get_func7())
-        # >> stuff happening here <<
-        # >> stuff happening here <<
-        # Needs implementation!
-        # >> stuff happening here <<
-        # >> stuff happening here <<
         self.cu.excute()
         
         # Handle imidiate interpretation from instruction
         # >> stuff happening here <<
         # Need implementation!
         # >> stuff happening here <<
+        
+        # Prepare Registers for instruction execution
+        self.regs.set_write_enabled(self.cu.get_reg_write())
+        self.regs.set_rd(self.dec.get_rd())
+        self.regs.set_reg_1(self.dec.get_reg_1())
+        self.regs.set_reg_2(self.dec.get_reg_2())
                 
         # Prepare MUX for alu
         self.mux2_3.set_in_0(self.pc.get_addr())
         self.mux2_3.set_in_1(self.regs.get_reg_1())
-        self.mux2_3.set_select() # <--- Needs implementation!
+        self.mux2_3.set_select(self.cu.get_alu_op_1_ctrl())
         self.mux2_3.compute_out()
         
         # Prepare MUX for alu
         self.mux2_4.set_in_0(self.regs.get_reg_2())
         self.mux2_4.set_in_1() # <--- Needs implementation!
-        self.mux2_4.set_select() # <--- Needs implementation!
+        self.mux2_4.set_select(self.cu.get_alu_op_2_ctrl())
         self.mux2_4.compute_out()
         
         # Execute operation in the ALU
         self.alu.set_op_1(self.mux2_3.get_out())      
         self.alu.set_op_2(self.mux2_4.get_out())
-        self.alu.set_ctrl() # <--- Needs implementation!
+        self.alu.set_ctrl(self.cu.get_alu_ctrl())
         self.alu.compute_res()
         
         # Write to or read from DataMemory if enabled
         self.dmem.set_addr(self.alu.get_res())
         self.dmem.set_data_in(self.regs.get_reg_2())
-        self.dmem.set_read_enabled() # <--- Needs implementation!
-        self.dmem.set_write_enabled() # <--- Needs implementation!        
+        self.dmem.set_read_enabled(self.cu.get_mem_read())
+        self.dmem.set_write_enabled(self.cu.get_mem_write())
         self.dmem.read_from_addr()
         self.dmem.write_to_addr()
         
@@ -100,7 +101,7 @@ class Processor:
         self.mux3.set_in_0(self.dmem.get_data_out())
         self.mux3.set_in_1(self.alu.get_res())
         self.mux3.set_in_2(self.adder.get_out())
-        self.mux3.set_select() # <--- Needs implementation!
+        self.mux3.set_select(self.cu.get_reg_ctrl())
         self.mux3.compute_out()
         
         # If writing is enabled then write to register rd
@@ -109,14 +110,14 @@ class Processor:
         # Update branch and assert if jump should be done
         self.bra.set_op_1(self.regs.get_reg_1())
         self.bra.set_op_2(self.regs.get_reg_2())
-        self.bra.set_branch_ctrl() # <--- Needs implementation!
+        self.bra.set_branch_ctrl(self.cu.get_branch_ctrl())
         
         self.and_1.set_in_0(self.bra.get_branch_taken())
-        self.and_1.set_in_1() # <--- Needs implementation!
+        self.and_1.set_in_1(self.cu.get_do_branch())
         self.and_1.compute_out()
         
         self.or_1.set_in_0(self.and_1.get_out())
-        self.or_1.set_in_1() # <--- Needs implementation!
+        self.or_1.set_in_1(self.cu.get_do_jump())
         self.or_1.compute_out()
         
         # Prepare MUX for ProgramCounter
