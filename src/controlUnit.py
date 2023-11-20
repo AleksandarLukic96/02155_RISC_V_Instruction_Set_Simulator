@@ -329,7 +329,7 @@ class ControlUnit:
         #{'doBranch': 1, 'doJump': 0, 'WrReg': 0, 'WRmem': 0, 'MUXReg': 0, 'MUXmem': 1, 'WBsel': 'IMM', 'branch': 0b000, 'ALUop': 'ADD', 'mem_read': 0}
         self.set_all_signals() # <--- insert correct signals from the above line!
 
-    def excute_excute_u_type_add(self):        
+    def excute_u_type_add(self):        
         #{'doBranch': 1, 'doJump': 0, 'WrReg': 0, 'WRmem': 0, 'MUXReg': 0, 'MUXmem': 1, 'WBsel': 'ALU', 'branch': 0b000, 'ALUop': 'ADD', 'mem_read': 0}
         self.set_all_signals() # <--- insert correct signals from the above line!
 
