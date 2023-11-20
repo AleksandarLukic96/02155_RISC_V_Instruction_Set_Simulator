@@ -12,105 +12,132 @@ from or_ import OR
 from programCounter import ProgramCounter
 from registers import Registers
 
-# Test path
-import os
-file_path = os.path.join(
-    os.getcwd(), "tests", "task1", "addlarge.bin")
+class Processor:
+    def __init__(self, file_path = "NO_FILE_PROVIDED!"):
+        # Initialise processor components
+        self.alu = ALU()
+        self.bra = Branch()
+        self.cu = ControlUnit()
+        self.dmem = DataMemory()
+        self.dec = Decoder()
+        self.imem = InstructionMemomry(file_path = file_path)
+        self.pc = ProgramCounter()
+        self.regs = Registers()
+        
+        # Initialise Multiplexors, Adder and logic gates
+        self.mux2_1 = Mux2(in_0 = 2, in_1 = 4)
+        self.mux2_2 = Mux2()
+        self.mux2_3 = Mux2()
+        self.mux2_4 = Mux2()
+        self.mux3 = Mux3()
+        self.adder = Adder()
+        self.and_1 = AND()
+        self.or_1 = OR()
+    
+    def execute_step(self):        
+        # Prepare MUX for Adder (currently hardwired to 4)
+        self.mux2_2.set_in_0(2)
+        self.mux2_2.set_in_1(4)
+        self.mux2_2.set_select(1) # Needs implementation from decoder? / Currently hardwired
+        self.mux2_2.compute_out
+        
+        # Calculate next address for ProgramCounter
+        self.adder.set_op_1(self.mux2_2.get_out())
+        self.adder.set_op_2(self.pc.get_addr())
+        self.adder.compute_out
+                
+        # Fetch instruction at current PC in instruction memory
+        self.imem.set_addr(self.pc.get_addr())
+        self.imem.fetch_inst_at_addr()
+        
+        # Decode instruction
+        self.dec.set_inst(self.imem.get_inst())
+        self.dec.compute_decoding()
+        
+        # Interpret decoded instruction in the Control Unit
+        self.cu.set_opcode(self.dec.get_opcode())
+        # >> stuff happening here <<
+        # >> stuff happening here <<
+        # Needs implementation!
+        # >> stuff happening here <<
+        # >> stuff happening here <<
+        self.cu.excute()
+        
+        # Handle imidiate interpretation from instruction
+        # >> stuff happening here <<
+        # Need implementation!
+        # >> stuff happening here <<
+                
+        # Prepare MUX for alu
+        self.mux2_3.set_in_0(self.pc.get_addr())
+        self.mux2_3.set_in_1(self.regs.get_reg_1())
+        self.mux2_3.set_select() # <--- Needs implementation!
+        self.mux2_3.compute_out()
+        
+        # Prepare MUX for alu
+        self.mux2_4.set_in_0(self.regs.get_reg_2())
+        self.mux2_4.set_in_1() # <--- Needs implementation!
+        self.mux2_4.set_select() # <--- Needs implementation!
+        self.mux2_4.compute_out()
+        
+        # Execute operation in the ALU
+        self.alu.set_op_1(self.mux2_3.get_out())      
+        self.alu.set_op_2(self.mux2_4.get_out())
+        self.alu.set_ctrl() # <--- Needs implementation!
+        self.alu.compute_res()
+        
+        # Write to or read from DataMemory if enabled
+        self.dmem.set_addr(self.alu.get_res())
+        self.dmem.set_data_in(self.regs.get_reg_2())
+        self.dmem.set_read_enabled() # <--- Needs implementation!
+        self.dmem.set_write_enabled() # <--- Needs implementation!        
+        self.dmem.read_from_addr()
+        self.dmem.write_to_addr()
+        
+        # Prepare MUX for Registers
+        self.mux3.set_in_0(self.dmem.get_data_out())
+        self.mux3.set_in_1(self.alu.get_res())
+        self.mux3.set_in_2(self.adder.get_out())
+        self.mux3.set_select() # <--- Needs implementation!
+        self.mux3.compute_out()
+        
+        # If writing is enabled then write to register rd
+        self.regs.write_to_rd(self.mux3.get_out())
+        
+        # Update branch and assert if jump should be done
+        self.bra.set_op_1(self.regs.get_reg_1())
+        self.bra.set_op_2(self.regs.get_reg_2())
+        self.bra.set_branch_ctrl() # <--- Needs implementation!
+        
+        self.and_1.set_in_0(self.bra.get_branch_taken())
+        self.and_1.set_in_1() # <--- Needs implementation!
+        self.and_1.compute_out()
+        
+        self.or_1.set_in_0(self.and_1.get_out())
+        self.or_1.set_in_1() # <--- Needs implementation!
+        self.or_1.compute_out()
+        
+        # Prepare MUX for ProgramCounter
+        self.mux2_1.set_in_0(self.adder.get_out())
+        self.mux2_1.set_in_1(self.alu.get_res())
+        self.mux2_1.set_select(self.or_1.get_out())
+        
+        # End sequence by updating PC
+        self.pc.set_addr(self.mux2_1.get_out())
+        pass
+    
+    def execute_program():
+        # TODO: Implement loop which executes every instruction in InstructionMemory
+        pass
 
-# Initialise processor components
-alu = ALU()
-bra = Branch()
-cu = ControlUnit()
-dmem = DataMemory()
-dec = Decoder()
-imem = InstructionMemomry(file_path = file_path)
-pc = ProgramCounter()
-regs = Registers()
 
-# Initialise Multiplexors, Adder and logic gates
-mux2_1 = Mux2(in_0 = 2, in_1 = 4)
-mux2_2 = Mux2()
-mux2_3 = Mux2()
-mux2_4 = Mux2()
-mux3 = Mux3()
-adder = Adder()
-and_1 = AND()
-or_1 = OR()
+# If file is run as python file, test class functions
+if __name__ == "__main__":
 
-# Wires listed by component inputs
+    # Test path
+    import os
+    file_path = os.path.join(
+        os.getcwd(), "tests", "task1", "addlarge.bin")
 
-# Mux2_1
-mux2_1.set_in_0(adder.get_out())
-mux2_1.set_in_1(alu.get_res())
-mux2_1.set_select(or_1.get_out())
-
-# Mux2_2
-mux2_2.set_in_0(2)
-mux2_2.set_in_1(4)
-mux2_2.set_select(1) # Needs implementation from decoder? / Currently hardwired
-
-# PC
-pc.set_addr(mux2_1.get_out())
-
-# Adder
-adder.set_op_1(mux2_2.get_out)
-adder.set_op_2(pc.get_addr())
-
-# InstructionMemory
-imem.set_addr(pc.get_addr())
-
-# Decoder 
-dec.set_inst(imem.get_inst())
-
-# Immidiate
- # Needs implementation 
-
-# ControlUnit
- # Needs implementation 
-
-# Registers
-regs.set_reg_1(dec.get_reg_1())
-regs.set_reg_2(dec.get_reg_2())
-regs.set_rd(dec.get_rd())
-regs.set_data_in(dec.get_rd())
-regs.set_write_enabled(cu.get_reg_write())
-
-# Mux2_3
-mux2_3.set_in_0(regs.get_reg_1())
-mux2_3.set_in_1(pc.get_addr())
-mux2_3.set_select(cu.get_alu_op_1_ctrl())
-
-# Branch
-bra.set_op_1(regs.get_reg_1())
-bra.set_op_2(regs.get_reg_2())
-bra.set_branch_ctrl(cu.get_branch_ctrl())
-
-# Mux2_4
-mux2_4.set_in_0(regs.get_reg_2())
-#mux2_4.set_in_1(imm.get_imm_out()) # Needs implementation 
-mux2_4.set_select(cu.get_alu_op_1_ctrl())
-
-# ALU
-alu.set_op_1(mux2_3.get_out())
-alu.set_op_2(mux2_4.get_out())
-alu.set_ctrl(cu.get_alu_ctrl())
-
-# AND
-and_1.set_in_0(bra.get_branch_taken())
-and_1.set_in_1(cu.get_do_branch())
-
-# OR
-or_1.set_in_0(and_1.get_out())
-or_1.set_in_1(cu.get_do_jump())
-
-# DataMemory
-dmem.set_addr(alu.get_res())
-dmem.set_data_in(regs.get_reg_2())
-dmem.set_read_enabled(cu.get_mem_read())
-dmem.set_write_enabled(cu.get_mem_write())
-
-# Mux3
-mux3.set_in_0(dmem.get_data_out())
-mux3.set_in_1(alu.get_res())
-mux3.set_in_2(adder.get_out())
-mux3.set_select(cu.get_reg_ctrl())
+    proc = Processor(file_path = file_path)
+    proc.execute_step()

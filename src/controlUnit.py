@@ -180,45 +180,6 @@ class ControlUnit:
         self.set_alu_ctrl(alu_ctrl)
 
     # Execution functions
-    def excute(self):
-        # Interpret immidiate
-        self.set_imm(self.get_func7() >> 5 )
-        
-        # Interpret opcode and update output signals accordingly
-        if self.get_opcode() == R_TYPE:
-            self.execute_r_type()
-            
-        elif self.get_opcode() == I_TYPE:
-            self.execute_i_type()
-        
-        elif self.get_opcode() == I_TYPE_LOAD:
-            self.execute_i_type_load()
-
-        elif self.get_opcode() == S_TYPE:
-            self.execute_s_type()
-        
-        elif self.get_opcode() == B_TYPE:
-            self.execute_b_type()
-        
-        elif self.get_opcode() == J_TYPE:
-            self.excute_j_type()
-        
-        elif self.get_opcode() == I_TYPE_JUMP: # and self.get_func3() == 0: <--- Is this neccessary?
-            self.excute_i_type_jump()
-        
-        elif self.get_opcode() == U_TYPE_LOAD:
-            self.excute_u_type_load()
-        
-        elif self.get_opcode() == U_TYPE_ADD:
-            self.excute_u_type_add()
-        
-        elif self.get_opcode() == I_TYPE_ENV:
-            self.excute_i_type_env()
-        
-        else:
-            print("Opcode not supported")
-            # TODO: Implement NOP - In case of invalid instruction, simply skip instruction by disabling any write/read signals!
-
     def execute_r_type(self):
         if (self.get_func3() == 0) & (self.get_func7() == 0):
             alu_ctrl = ADD
@@ -383,3 +344,42 @@ class ControlUnit:
         
         else:
             print("This I-Type Environment instruction is not supported!")
+    
+    def excute(self):
+        # Interpret immidiate
+        self.set_imm(self.get_func7() >> 5 )
+        
+        # Interpret opcode and update output signals accordingly
+        if self.get_opcode() == R_TYPE:
+            self.execute_r_type()
+            
+        elif self.get_opcode() == I_TYPE:
+            self.execute_i_type()
+        
+        elif self.get_opcode() == I_TYPE_LOAD:
+            self.execute_i_type_load()
+
+        elif self.get_opcode() == S_TYPE:
+            self.execute_s_type()
+        
+        elif self.get_opcode() == B_TYPE:
+            self.execute_b_type()
+        
+        elif self.get_opcode() == J_TYPE:
+            self.excute_j_type()
+        
+        elif self.get_opcode() == I_TYPE_JUMP: # and self.get_func3() == 0: <--- Is this neccessary?
+            self.excute_i_type_jump()
+        
+        elif self.get_opcode() == U_TYPE_LOAD:
+            self.excute_u_type_load()
+        
+        elif self.get_opcode() == U_TYPE_ADD:
+            self.excute_u_type_add()
+        
+        elif self.get_opcode() == I_TYPE_ENV:
+            self.excute_i_type_env()
+        
+        else:
+            print("Opcode not supported")
+            # TODO: Implement NOP - In case of invalid instruction, simply skip instruction by disabling any write/read signals!

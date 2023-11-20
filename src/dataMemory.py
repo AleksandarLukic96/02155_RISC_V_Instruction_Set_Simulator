@@ -5,9 +5,17 @@ from ctypes import c_int32
 def int32(val):
     return c_int32(val).value
 
+# Memory sizes in bytes
+KB  = 1000
+KiB = 1024
+MB  = 1000000
+MiB = 1048576
+GB  = 1000000000
+GiB = 1073741824
+
 # Instruction Memory Class
 class DataMemory:
-    def __init__(self, mem_size = 1024):
+    def __init__(self, mem_size = MiB):
         # Initialise size of memory
         self.mem_size = mem_size
         
