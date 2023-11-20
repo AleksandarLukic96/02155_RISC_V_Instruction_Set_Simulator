@@ -6,7 +6,7 @@ from branch import Branch
 from controlUnit import ControlUnit
 from dataMemory import DataMemory
 from decoder import Decoder
-#from immidiate import Immidiate
+from immidiate import Immidiate
 from instructionMemory import InstructionMemomry
 from mux import Mux2, Mux3
 from or_ import OR
@@ -21,7 +21,7 @@ class Processor:
         self.cu = ControlUnit()
         self.dmem = DataMemory()
         self.dec = Decoder()
-        #self.imm = Immidiate()
+        self.imm = Immidiate()
         self.imem = InstructionMemomry(file_path = file_path)
         self.pc = ProgramCounter()
         self.regs = Registers()
@@ -63,9 +63,13 @@ class Processor:
         self.cu.excute()
         
         # Handle imidiate interpretation from instruction
-        #self.imm.set_inst(self.dec.)
-        
-        self.dec.
+        self.imm.set_opcode(self.dec.get_opcode())
+        self.imm.set_func3(self.dec.get_func3())
+        self.imm.set_func7(self.dec.get_func7())
+        self.imm.set_rd(self.dec.get_rd())
+        self.imm.set_reg_1(self.dec.get_reg_1())
+        self.imm.set_reg_2(self.dec.get_reg_2())
+        self.imm.compute_res()
         
         # Prepare Registers for instruction execution
         self.regs.set_write_enabled(self.cu.get_reg_write())
@@ -81,7 +85,7 @@ class Processor:
         
         # Prepare MUX for alu
         self.mux2_4.set_in_0(self.regs.get_reg_2())
-        self.mux2_4.set_in_1() # <--- Needs implementation!
+        self.mux2_4.set_in_1(self.imm.get_res())
         self.mux2_4.set_select(self.cu.get_alu_op_2_ctrl())
         self.mux2_4.compute_out()
         
@@ -107,7 +111,8 @@ class Processor:
         self.mux3.compute_out()
         
         # If writing is enabled then write to register rd
-        self.regs.write_to_rd(self.mux3.get_out())
+        self.regs.set_data_in(self.mux3.get_out())
+        self.regs.write_to_rd()
         
         # Update branch and assert if jump should be done
         self.bra.set_op_1(self.regs.get_reg_1())
