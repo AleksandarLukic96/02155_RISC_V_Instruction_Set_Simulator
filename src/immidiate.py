@@ -4,13 +4,13 @@ import signal_constants as const
 class Immidiate:
     def __init__(self):
         # inputs
-        self.opcode = 0
-        self.func3 = 0
         self.func7 = 0
-        self.rd = 0
-        self.reg_1 = 0
         self.reg_2 = 0
-        
+        self.reg_1 = 0
+        self.rd = 0
+        self.func3 = 0
+        self.opcode = 0
+
         #Instruction
         self.inst = 0 # <---- Should not be needed!
 

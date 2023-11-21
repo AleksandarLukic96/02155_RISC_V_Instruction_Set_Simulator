@@ -128,36 +128,93 @@ class Test_Immidiate(object):
         assert self.imm.res == expected
 
 ####################################################
-    @pytest.mark.parametrize("opcodes, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters)
-    def test_print_test_values(self, opcodes, func7, reg_2, reg_1, rd, func3, expected):
-        print(opcodes, func7, reg_2, reg_1, rd, func3, expected)
+    @pytest.mark.skip(reason = "Unmark to print the parameters!")
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters)
+    def test_print_test_values(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+        print(opcode, func7, reg_2, reg_1, rd, func3, expected)
         assert True
 ####################################################
 
-    def test_execute_r_type(self):
-        # TODO
-        pass
+    @pytest.mark.xfail(reason = "Doesn't work yet!")
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[0:4])
+    def test_execute_r_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+        self.imm.opcode = opcode
+        self.imm.func7 = func7
+        self.imm.reg_2 = reg_2
+        self.imm.reg_1 = reg_1
+        self.imm.rd = rd
+        self.imm.func3 = func3
+        self.imm.execute_r_type()
+        assert self.imm.res == expected 
+    
+    @pytest.mark.xfail(reason = "Doesn't work yet!")
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[4:8])
+    def test_execute_i_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+        self.imm.opcode = opcode
+        self.imm.func7 = func7
+        self.imm.reg_2 = reg_2
+        self.imm.reg_1 = reg_1
+        self.imm.rd = rd
+        self.imm.func3 = func3        
+        self.imm.execute_i_type()
+        assert self.imm.res == expected 
 
-    def test_execute_i_type(self):
-        # TODO
-        pass
+    @pytest.mark.xfail(reason = "Doesn't work yet!")
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[8:12])
+    def test_execute_s_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+        self.imm.opcode = opcode
+        self.imm.func7 = func7
+        self.imm.reg_2 = reg_2
+        self.imm.reg_1 = reg_1
+        self.imm.rd = rd
+        self.imm.func3 = func3
+        self.imm.execute_s_type()
+        assert self.imm.res == expected
 
-    def test_execute_s_type(self):
-        # TODO
-        pass
+    @pytest.mark.xfail(reason = "Doesn't work yet!")
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[12:16])
+    def test_execute_b_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+        self.imm.opcode = opcode
+        self.imm.func7 = func7
+        self.imm.reg_2 = reg_2
+        self.imm.reg_1 = reg_1
+        self.imm.rd = rd
+        self.imm.func3 = func3
+        self.imm.execute_b_type()
+        assert self.imm.res == expected
 
-    def test_execute_b_type(self):
-        # TODO
-        pass
+    @pytest.mark.xfail(reason = "Doesn't work yet!")
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[16:24])
+    def test_execute_u_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+        self.imm.opcode = opcode
+        self.imm.func7 = func7
+        self.imm.reg_2 = reg_2
+        self.imm.reg_1 = reg_1
+        self.imm.rd = rd
+        self.imm.func3 = func3
+        self.imm.execute_u_type()
+        assert self.imm.res == expected
 
-    def test_execute_u_type(self):
-        # TODO
-        pass
-        
-    def test_execute_j_type(self):
-        # TODO
-        pass
+    @pytest.mark.xfail(reason = "Doesn't work yet!")
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[24:28])
+    def test_execute_j_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+        self.imm.opcode = opcode
+        self.imm.func7 = func7
+        self.imm.reg_2 = reg_2
+        self.imm.reg_1 = reg_1
+        self.imm.rd = rd
+        self.imm.func3 = func3
+        self.imm.execute_j_type()
+        assert self.imm.res == expected
 
-    def test_compute_res(self):
-        # TODO
-        pass
+    @pytest.mark.xfail(reason = "Doesn't work yet!")
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters)
+    def test_compute_res(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+        self.imm.opcode = opcode
+        self.imm.func7 = func7
+        self.imm.reg_2 = reg_2
+        self.imm.reg_1 = reg_1
+        self.imm.rd = rd
+        self.imm.func3 = func3
+        self.imm.compute_res()
+        assert self.imm.res == expected
