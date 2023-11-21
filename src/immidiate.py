@@ -53,13 +53,6 @@ class Immidiate:
     def get_reg_2(self):
         return self.reg_2
     
-    #Instruction
-    def set_inst(self, inst):
-        self.inst = inst
-
-    def get_inst(self):
-        return self.inst
-    
     def set_res(self, res):
         self.res = res
     
@@ -77,29 +70,43 @@ class Immidiate:
     def execute_i_type(self):
         #Special case for shambi?
         # -- What is shambi?
-        imm_sign = (self.get_inst() >> 31) & 0b1
-        imm_sign_fill = (imm_sign << 19) & 0x1FFFFF
-        imm_11_0 = (self.get_inst() >> 20) & 0b11111111111
-        imm = (imm_sign_fill << 11) | imm_11_0
-        self.set_res(imm)
+        # imm_sign = (self.get_inst() >> 31) & 0b1
+        # imm_sign_fill = (imm_sign << 19) & 0x1FFFFF
+        # imm_11_0 = (self.get_inst() >> 20) & 0b11111111111
+        # imm = (imm_sign_fill << 11) | imm_11_0      
+        # self.set_res(imm)
+        self.set_res((self.get_func7() << 5) | self.get_reg_2())
 
     def execute_s_type(self):
-        imm_sign = (self.get_inst() >> 31) & 0b1
-        imm_sign_fill = (imm_sign << 19) & 0xFFFFF
-        imm_11_5 = (self.get_inst >> 25) & 0b111111
-        imm_4_0 = (self.get_inst >> 7) & 0b11111
-        imm = imm_sign_fill | imm_11_5 | imm_4_0
-        self.set_res(imm)
+        # imm_sign = (self.get_inst() >> 31) & 0b1
+        # imm_sign_fill = (imm_sign << 19) & 0xFFFFF
+        # imm_11_5 = (self.get_inst >> 25) & 0b111111
+        # imm_4_0 = (self.get_inst >> 7) & 0b11111
+        # imm = imm_sign_fill | imm_11_5 | imm_4_0
+        # self.set_res(imm)
+        self.set_res((self.get_func7() << 5) | self.get_rd())
 
     def execute_b_type(self):
-        imm_sign = (self.get_inst() >> 31) & 0b1
-        imm_sign_fill = (imm_sign << 20) & 0x7FFFF
-        imm11 = (self.get_inst() >> 7) & 0b1
-        imm_10_5 = (self.get_inst() >> 20) & 0b111111
-        imm_4_1 = (self.get_inst() >> 7) & 0b1111
-        imm = imm_sign_fill | imm11 | imm_10_5 | imm_4_1 | 0
-        self.set_res(imm)
-
+        # imm_sign = (self.get_inst() >> 31) & 0b1
+        # imm_sign_fill = (imm_sign << 20) & 0x7FFFF
+        # imm11 = (self.get_inst() >> 7) & 0b1
+        # imm_10_5 = (self.get_inst() >> 20) & 0b111111
+        # imm_4_1 = (self.get_inst() >> 7) & 0b1111
+        # imm = imm_sign_fill | imm11 | imm_10_5 | imm_4_1 | 0
+        # self.set_res(imm)
+        
+        # func7_6 = (self.get_func7() & 0b1000000) << 5
+        # rd_0 = (self.get_rd() & 0b1) << 10
+        # func7_5_0 = (self.get_func7() & 0b0111111) << 4
+        # rd_4_1 = self.get_rd() >> 1
+        # self.set_res((func7_6 | rd_0 | func7_5_0 | rd_4_1) << 1)
+        self.set_res((
+            ((self.get_func7() & 0b1000000) << 5) 
+            | ((self.get_rd() & 0b1) << 10)
+            | ((self.get_func7() & 0b0111111) << 4)
+            | (self.get_rd() >> 1)
+            ) << 1)
+        
     def execute_u_type(self):
         imm = self.get_inst & 0xFFFFF000
         self.set_res(imm)
@@ -126,6 +133,22 @@ class Immidiate:
         elif self.get_opcode() == const.B_TYPE:
             self.execute_b_type()
         
+        elif self.get_opcode() == const.U_TYPE_LOAD | const.U_TYPE_ADD:
+            self.execute_u_type()
+        
         elif self.get_opcode() == const.J_TYPE:
             self.execute_j_type()
-        
+
+
+if __name__ == "__main__":
+    im = Immidiate()
+    
+
+    
+    val = 0
+    im.set_func7(0b0001010)
+    im.set_rd(0b00101)
+    print(f"func7     : {im.get_func7()}")
+    print(f"rd        : {im.get_rd()}")
+    
+    
