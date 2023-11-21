@@ -6,19 +6,61 @@ class Test_Immidiate(object):
 
     imm = None
 
-    opcodes = [const.R_TYPE, const.I_TYPE, const.S_TYPE, const.B_TYPE, const.J_TYPE]
-    func3   = [0b000,       0b001,      0b100,      0b111]
+    opcodes = [const.R_TYPE, const.I_TYPE, const.S_TYPE, const.B_TYPE, const.U_TYPE_LOAD, const.U_TYPE_ADD, const.J_TYPE]
     func7   = [0b0000000,   0b0001010,  0b1000000,  0b1111111]
-    rd      = [0b00000,     0b00101,    0b10001,    0b11111]
-    reg_1   = [0b00000,     0b00101,    0b10000,    0b11111]
     reg_2   = [0b00000,     0b01010,    0b10100,    0b11111]
+    reg_1   = [0b00000,     0b00101,    0b10000,    0b11111]
+    rd      = [0b00000,     0b00101,    0b10001,    0b11111]
+    func3   = [0b000,       0b001,      0b100,      0b111]
+
     
-    all_inputs = list(zip(func3, func7, rd, reg_1, reg_2))
+    test_inputs = list(zip(func7, reg_2, reg_1, rd, func3))
     
-    test_values = []
+    all_inputs = []
     for i in range(len(opcodes)):
-        for j in range(len(all_inputs)):
-            test_values.append((opcodes[i],) + all_inputs[j])
+        for j in range(len(test_inputs)):
+            all_inputs.append((opcodes[i],) + test_inputs[j])
+    
+    #           R   I               S               B                   U_load                              U_add                               J          
+    expected = [0,  0,              0,              0,                  0,                                  0,                                  0,
+                0,  0b000101001010, 0b000101000101, 0b0100101000100,    0b00010100101000101001000000000000, 0b00010100101000101001000000000000, 0b000101001000101001010,
+                0,  0b100000010100, 0b100000010001, 0b1100000010000,    0b10000001010010000100000000000000, 0b10000001010010000100000000000000, 0b110000100000000010100,
+                0,  0b111111111111, 0b111111111111, 0b1111111111110,    0b11111111111111111111000000000000, 0b11111111111111111111000000000000, 0b111111111111111111110]
+    
+    # Decoding expected results:    
+    # I Type (func7 & reg_2)
+    # 0000000 00000 = 0
+    # 0001010 01010 = 330
+    # 1000000 10100 = 2068
+    # 1111111 11111 = 4095
+
+    # S Type (func7 & rd)
+    # 0000000 00000 = 0
+    # 0001010 00101 = 325
+    # 1000000 10001 = 2065
+    # 1111111 11111 = 4095
+
+    # B Type ((func7[6] rd[0] func7[5:0] rd[4:1]) << 1)
+    # [0]000000 0000[0] 0 -> [0][0]000000 0000 0 = 0 
+    # [0]001010 0010[1] 0 -> [0][1]001010 0010 0 = 0100101000100 = 2372
+    # [1]000000 1000[1] 0 -> [1][1]000000 1000 0 = 1100000010000 = 6160
+    # [1]111111 1111[1] 0 -> [1][1]111111 1111 0 = 1111111111110 = 8190
+
+    # U Type ((func7 & reg_2 & reg_1 & func3) << 12)
+    # 0000000 00000 00000 000 = 0
+    # 0001010 01010 00101 001 -> 0001010 01010 00101 001 000000000000 = 346198016
+    # 1000000 10100 10000 100 -> 1000000 10100 10000 100 000000000000 = 2168995840
+    # 1111111 11111 11111 111 -> 1111111 11111 11111 111 000000000000 = 4294963200
+
+    # J Type ((func7[6] reg_1[4:0] func3[2:0] reg_2[0] func7[5:0] reg_2[4:1]) << 1)
+    # [0][000000] [0000[0] [00000 000] [0] -> [0] [00000 000] [0] [000000] [0000] [0] = 0
+    # [0][001010] [0101[0] [00101 001] [0] -> [0] [00101 001] [0] [001010] [0101] [0] = 168266
+    # [1][000000] [1010[0] [10000 100] [0] -> [1] [10000 100] [0] [000000] [1010] [0] = 1589268
+    # [1][111111] [1111[1] [11111 111] [0] -> [1] [11111 111] [1] [111111] [1111] [0] = 2097150
+
+    all_test_parameters = []
+    for i in range(len(all_inputs)):
+        all_test_parameters.append(all_inputs[i] + (expected[i],))
     
     @pytest.fixture(autouse=True)
     def setup_class(self):
@@ -86,9 +128,9 @@ class Test_Immidiate(object):
         assert self.imm.res == expected
 
 ####################################################
-    @pytest.mark.parametrize("opcodes, func3, func7, rd, reg_1, reg_2", test_values)
-    def test_print_test_values(self, opcodes, func3, func7, rd, reg_1, reg_2):
-        print(opcodes, func3, func7, rd, reg_1, reg_2)
+    @pytest.mark.parametrize("opcodes, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters)
+    def test_print_test_values(self, opcodes, func7, reg_2, reg_1, rd, func3, expected):
+        print(opcodes, func7, reg_2, reg_1, rd, func3, expected)
         assert True
 ####################################################
 
