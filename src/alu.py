@@ -115,6 +115,21 @@ class ALU:
     def compute_lhu(self):
         pass
     
+    # J_TYPE
+    def compute_jal(self):
+        pass
+    
+    # I_TYPE_JUMP
+    def compute_jalr(self):
+        pass
+    
+    # U_TYPE_LOAD
+    def compute_lui(self):
+        pass
+    
+    # U_TYPE_ADD
+    def compute_auipc(self):
+        pass    
     
     def compute_res(self):
         # R-type
@@ -191,6 +206,23 @@ class ALU:
         
         elif self.get_ctrl() == const.LHU: 
             self.compute_lhu()
+        
+        # J_TYPE
+        elif self.get_ctrl() == const.J_TYPE:
+            self.compute_jal()
+            
+        # I_TYPE_JUMP
+        elif self.get_ctrl() == const.I_TYPE_JUMP:
+            self.compute_jalr()
+            
+        # U_TYPE_LOAD
+        elif self.get_ctrl() == const.U_TYPE_LOAD:
+            self.compute_lui()
+            
+
+        # U_TYPE_ADD
+        elif self.get_ctrl() == const.U_TYPE_ADD:
+            self.compute_auipc()
         
         # Unsupported operations
         else:
