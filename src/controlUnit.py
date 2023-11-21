@@ -326,7 +326,7 @@ class ControlUnit:
             alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
             alu_ctrl = const.ADD)
 
-    def excute_j_type(self):
+    def execute_j_type(self):
         #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
         # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'PC4', 
         # 'branch_ctrl': 0b111, 'alu_ctrl': 'ADD', 'mem_read': 0}
@@ -342,7 +342,7 @@ class ControlUnit:
             alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
             alu_ctrl = const.ADD)
 
-    def excute_i_type_jump(self):
+    def execute_i_type_jump(self):
         #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
         # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'PC4', 
         # 'branch_ctrl': 0b111, 'alu_ctrl': 'ADD', 'mem_read': 0}
@@ -358,7 +358,7 @@ class ControlUnit:
             alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
             alu_ctrl = const.ADD)
 
-    def excute_u_type_load(self):
+    def execute_u_type_load(self):
         #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 0, 
         # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 1, 'reg_ctrl': 'IMM', 
         # 'branch_ctrl': 0b000, 'alu_ctrl': 'ADD', 'mem_read': 0}
@@ -374,7 +374,7 @@ class ControlUnit:
             alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM, 
             alu_ctrl = const.ADD)
 
-    def excute_u_type_add(self):        
+    def execute_u_type_add(self):        
         #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 0, 
         # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 1, 'reg_ctrl': 'ALU', 
         # 'branch_ctrl': 0b000, 'alu_ctrl': 'ADD', 'mem_read': 0}
@@ -390,7 +390,7 @@ class ControlUnit:
             alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM, 
             alu_ctrl = const.ADD)
 
-    def excute_i_type_env(self):
+    def execute_i_type_env(self):
         if self.get_imm() == 0:
             # CALL
             self.set_all_signals(
@@ -427,19 +427,19 @@ class ControlUnit:
             self.execute_b_type()
         
         elif self.get_opcode() == const.J_TYPE:
-            self.excute_j_type()
+            self.execute_j_type()
         
         elif self.get_opcode() == const.I_TYPE_JUMP: # and self.get_func3() == 0: <--- Is this neccessary?
-            self.excute_i_type_jump()
+            self.execute_i_type_jump()
         
         elif self.get_opcode() == const.U_TYPE_LOAD:
-            self.excute_u_type_load()
+            self.execute_u_type_load()
         
         elif self.get_opcode() == const.U_TYPE_ADD:
-            self.excute_u_type_add()
+            self.execute_u_type_add()
         
         elif self.get_opcode() == const.I_TYPE_ENV:
-            self.excute_i_type_env()
+            self.execute_i_type_env()
         
         else:
             print("Opcode not supported")

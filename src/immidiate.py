@@ -1,4 +1,5 @@
 # Implementation of Immidiate Class and functions 
+import signal_constants as const
 
 class Immidiate:
     def __init__(self):
@@ -9,8 +10,9 @@ class Immidiate:
         self.rd = 0
         self.reg_1 = 0
         self.reg_2 = 0
+        
         #Instruction
-        self.inst = 0
+        self.inst = 0 # <---- Should not be needed!
 
         # Output
         self.res = 0
@@ -63,30 +65,23 @@ class Immidiate:
     
     def get_res(self):
         return self.res
+
+    #Need some help to make sure it identifies the instruction
+    # -- The instruction is never parsed.
+    # -- The functions should rely on the decoded values.
+    # -- Please use the provided get/set methods.
     
-    def compute_res(self):
+    def execute_r_type(self):
         pass
-
-
-#Need some help to make sure it identifies the instruction
-    def execute_u_type(self):
-        self.res = self.get_inst & 0xFFFFF000
-        
-    def execute_j_type(self):
-        imm20 = (self.get_inst() >> 31) &0b1
-        imm11 = (self.get_inst() >> 20) & 0b1
-        imm_1_10 = (self.get_inst() >> 21) & 0b1111111111
-        imm_19_12 = (self.get_inst() >> 12) & 0b111111111111
-        imm = (imm20 << 19) | (imm_19_12 << 11) | (imm11 << 10) | (imm_1_10 << 1) | 0b0
-        self.res = imm
 
     def execute_i_type(self):
         #Special case for shambi?
+        # -- What is shambi?
         imm_sign = (self.get_inst() >> 31) & 0b1
         imm_sign_fill = (imm_sign << 19) & 0x1FFFFF
         imm_11_0 = (self.get_inst() >> 20) & 0b11111111111
         imm = (imm_sign_fill << 11) | imm_11_0
-        self.res = imm
+        self.set_res(imm)
 
     def execute_s_type(self):
         imm_sign = (self.get_inst() >> 31) & 0b1
@@ -94,7 +89,7 @@ class Immidiate:
         imm_11_5 = (self.get_inst >> 25) & 0b111111
         imm_4_0 = (self.get_inst >> 7) & 0b11111
         imm = imm_sign_fill | imm_11_5 | imm_4_0
-        self.res = imm
+        self.set_res(imm)
 
     def execute_b_type(self):
         imm_sign = (self.get_inst() >> 31) & 0b1
@@ -103,10 +98,34 @@ class Immidiate:
         imm_10_5 = (self.get_inst() >> 20) & 0b111111
         imm_4_1 = (self.get_inst() >> 7) & 0b1111
         imm = imm_sign_fill | imm11 | imm_10_5 | imm_4_1 | 0
-        self.res = imm
+        self.set_res(imm)
 
-    #No one for R
+    def execute_u_type(self):
+        imm = self.get_inst & 0xFFFFF000
+        self.set_res(imm)
+        
+    def execute_j_type(self):
+        imm20 = (self.get_inst() >> 31) &0b1
+        imm11 = (self.get_inst() >> 20) & 0b1
+        imm_1_10 = (self.get_inst() >> 21) & 0b1111111111
+        imm_19_12 = (self.get_inst() >> 12) & 0b111111111111
+        imm = (imm20 << 19) | (imm_19_12 << 11) | (imm11 << 10) | (imm_1_10 << 1) | 0b0
+        self.set_res(imm)
 
-
-
-
+    def compute_res(self):
+        # Interpret opcode and set immidiate accordingly
+        if self.get_opcode() == const.R_TYPE:
+            self.execute_r_type()
+            
+        elif self.get_opcode() == const.I_TYPE:
+            self.execute_i_type()
+        
+        elif self.get_opcode() == const.S_TYPE:
+            self.execute_s_type()
+        
+        elif self.get_opcode() == const.B_TYPE:
+            self.execute_b_type()
+        
+        elif self.get_opcode() == const.J_TYPE:
+            self.execute_j_type()
+        
