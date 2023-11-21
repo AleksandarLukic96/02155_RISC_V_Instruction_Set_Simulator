@@ -94,37 +94,45 @@ class Immidiate:
         # imm_4_1 = (self.get_inst() >> 7) & 0b1111
         # imm = imm_sign_fill | imm11 | imm_10_5 | imm_4_1 | 0
         # self.set_res(imm)
-        
-        # func7_6 = (self.get_func7() & 0b1000000) << 5
-        # rd_0 = (self.get_rd() & 0b1) << 10
-        # func7_5_0 = (self.get_func7() & 0b0111111) << 4
-        # rd_4_1 = self.get_rd() >> 1
-        # self.set_res((func7_6 | rd_0 | func7_5_0 | rd_4_1) << 1)
         self.set_res((
-            ((self.get_func7() & 0b1000000) << 5) 
-            | ((self.get_rd() & 0b1) << 10)
-            | ((self.get_func7() & 0b0111111) << 4)
-            | (self.get_rd() >> 1)
-            ) << 1)
+            ((self.get_func7() & 0b1000000) << 5) # func7_6
+            | ((self.get_rd() & 0b1) << 10) # rd_0
+            | ((self.get_func7() & 0b0111111) << 4) # func7_5_0
+            | (self.get_rd() >> 1) # rd_4_1
+            ) << 1) 
         
     def execute_u_type(self):
-        imm = self.get_inst & 0xFFFFF000
-        self.set_res(imm)
+        # imm = self.get_inst & 0xFFFFF000
+        # self.set_res(imm)
+        self.set_res(
+            (self.get_func7() << 25) 
+            | (self.get_reg_2() << 20)
+            | (self.get_reg_1() << 15)
+            | (self.get_func3() << 12)
+            )
         
     def execute_j_type(self):
-        imm20 = (self.get_inst() >> 31) &0b1
-        imm11 = (self.get_inst() >> 20) & 0b1
-        imm_1_10 = (self.get_inst() >> 21) & 0b1111111111
-        imm_19_12 = (self.get_inst() >> 12) & 0b111111111111
-        imm = (imm20 << 19) | (imm_19_12 << 11) | (imm11 << 10) | (imm_1_10 << 1) | 0b0
-        self.set_res(imm)
+        # imm20 = (self.get_inst() >> 31) &0b1
+        # imm11 = (self.get_inst() >> 20) & 0b1
+        # imm_1_10 = (self.get_inst() >> 21) & 0b1111111111
+        # imm_19_12 = (self.get_inst() >> 12) & 0b111111111111
+        # imm = (imm20 << 19) | (imm_19_12 << 11) | (imm11 << 10) | (imm_1_10 << 1) | 0b0
+        # self.set_res(imm)
+        self.set_res((
+            ((self.get_func7() & 0b1000000) << 13) # (func7[6]
+            | (self.get_reg_1() << 14) # reg_1[4:0] 
+            | (self.get_func3() << 11) # func3[2:0]
+            | ((self.get_reg_2() & 0b00001) << 10) # reg_2[0]
+            | ((self.get_func7() & 0b0111111) << 4) # func7[5:0]
+            | (self.get_reg_2() >> 1) # reg_2[4:1]
+            ) << 1)
 
     def compute_res(self):
         # Interpret opcode and set immidiate accordingly
         if self.get_opcode() == const.R_TYPE:
             self.execute_r_type()
             
-        elif self.get_opcode() == const.I_TYPE:
+        elif (self.get_opcode() == const.I_TYPE) | (self.get_opcode() == const.I_TYPE_LOAD) | (self.get_opcode() == const.I_TYPE_JUMP) | (self.get_opcode() == const.I_TYPE_ENV):
             self.execute_i_type()
         
         elif self.get_opcode() == const.S_TYPE:
@@ -133,22 +141,9 @@ class Immidiate:
         elif self.get_opcode() == const.B_TYPE:
             self.execute_b_type()
         
-        elif self.get_opcode() == const.U_TYPE_LOAD | const.U_TYPE_ADD:
+        elif (self.get_opcode() == const.U_TYPE_LOAD) | (self.get_opcode() == const.U_TYPE_ADD):
             self.execute_u_type()
         
         elif self.get_opcode() == const.J_TYPE:
             self.execute_j_type()
-
-
-if __name__ == "__main__":
-    im = Immidiate()
-    
-
-    
-    val = 0
-    im.set_func7(0b0001010)
-    im.set_rd(0b00101)
-    print(f"func7     : {im.get_func7()}")
-    print(f"rd        : {im.get_rd()}")
-    
     

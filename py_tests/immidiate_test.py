@@ -7,14 +7,14 @@ class Test_Immidiate(object):
     imm = None
 
     opcodes = [const.R_TYPE, const.I_TYPE, const.S_TYPE, const.B_TYPE, const.U_TYPE_LOAD, const.U_TYPE_ADD, const.J_TYPE]
-    func7s   = [0b0000000,   0b0001010,  0b1000000,  0b1111111]
-    reg_2s   = [0b00000,     0b01010,    0b10100,    0b11111]
-    reg_1s   = [0b00000,     0b00101,    0b10000,    0b11111]
-    rds      = [0b00000,     0b00101,    0b10001,    0b11111]
-    func3s   = [0b000,       0b001,      0b100,      0b111]
+    func7s  = [0b0000000,   0b0001010,  0b1000000,  0b1111111]
+    reg_2s  = [0b00000,     0b01010,    0b10100,    0b11111]
+    reg_1s  = [0b00000,     0b00101,    0b10000,    0b11111]
+    func3s  = [0b000,       0b001,      0b100,      0b111]
+    rds     = [0b00000,     0b00101,    0b10001,    0b11111]
 
     
-    test_inputs = list(zip(func7s, reg_2s, reg_1s, rds, func3s))
+    test_inputs = list(zip(func7s, reg_2s, reg_1s, func3s, rds))
     
     all_inputs = []
     for i in range(len(opcodes)):
@@ -98,14 +98,6 @@ class Test_Immidiate(object):
     
     def test_get_reg_1(self):
         assert self.imm.get_reg_1() == 0
-    
-    @pytest.mark.parametrize("rd, expected", zip(rds, rds))
-    def test_set_rd(self, rd, expected):
-        self.imm.set_rd(rd)
-        assert self.imm.rd == expected
-
-    def test_get_rd(self):
-        assert self.imm.get_rd() == 0
 
     @pytest.mark.parametrize("func3, expected", zip(func3s, func3s))
     def test_set_func3(self, func3, expected):
@@ -114,6 +106,14 @@ class Test_Immidiate(object):
     
     def test_get_func3(self):
         assert self.imm.get_func3() == 0    
+    
+    @pytest.mark.parametrize("rd, expected", zip(rds, rds))
+    def test_set_rd(self, rd, expected):
+        self.imm.set_rd(rd)
+        assert self.imm.rd == expected
+
+    def test_get_rd(self):
+        assert self.imm.get_rd() == 0
     
     @pytest.mark.parametrize("opcode, expected", zip(opcodes, opcodes))
     def test_set_opcode(self, opcode, expected):
@@ -130,17 +130,9 @@ class Test_Immidiate(object):
 
     def test_get_res(self):
         assert self.imm.get_res() == 0
-    
-####################################################
-    @pytest.mark.skip(reason = "Unmark to print the parameters!")
-    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters)
-    def test_print_test_values(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
-        print(opcode, func7, reg_2, reg_1, rd, func3, expected)
-        assert True
-####################################################
 
-    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[0:4])
-    def test_execute_r_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, func3, rd, expected", all_test_parameters[0:4])
+    def test_execute_r_type(self, opcode, func7, reg_2, reg_1, func3, rd, expected):
         self.imm.opcode = opcode
         self.imm.func7 = func7
         self.imm.reg_2 = reg_2
@@ -150,8 +142,8 @@ class Test_Immidiate(object):
         self.imm.execute_r_type()
         assert self.imm.res == expected 
 
-    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[4:8])
-    def test_execute_i_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, func3, rd, expected", all_test_parameters[4:8])
+    def test_execute_i_type(self, opcode, func7, reg_2, reg_1, func3, rd, expected):
         self.imm.opcode = opcode
         self.imm.func7 = func7
         self.imm.reg_2 = reg_2
@@ -161,8 +153,8 @@ class Test_Immidiate(object):
         self.imm.execute_i_type()
         assert self.imm.res == expected 
 
-    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[8:12])
-    def test_execute_s_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, func3, rd, expected", all_test_parameters[8:12])
+    def test_execute_s_type(self, opcode, func7, reg_2, reg_1, func3, rd, expected):
         self.imm.opcode = opcode
         self.imm.func7 = func7
         self.imm.reg_2 = reg_2
@@ -172,8 +164,8 @@ class Test_Immidiate(object):
         self.imm.execute_s_type()
         assert self.imm.res == expected
 
-    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[12:16])
-    def test_execute_b_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, func3, rd, expected", all_test_parameters[12:16])
+    def test_execute_b_type(self, opcode, func7, reg_2, reg_1, func3, rd, expected):
         self.imm.opcode = opcode
         self.imm.func7 = func7
         self.imm.reg_2 = reg_2
@@ -183,9 +175,8 @@ class Test_Immidiate(object):
         self.imm.execute_b_type()
         assert self.imm.res == expected
 
-    @pytest.mark.xfail(reason = "Doesn't work yet!")
-    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[16:24])
-    def test_execute_u_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, func3, rd, expected", all_test_parameters[16:24])
+    def test_execute_u_type(self, opcode, func7, reg_2, reg_1, func3, rd, expected):
         self.imm.opcode = opcode
         self.imm.func7 = func7
         self.imm.reg_2 = reg_2
@@ -195,9 +186,8 @@ class Test_Immidiate(object):
         self.imm.execute_u_type()
         assert self.imm.res == expected
 
-    @pytest.mark.xfail(reason = "Doesn't work yet!")
-    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters[24:28])
-    def test_execute_j_type(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, func3, rd, expected", all_test_parameters[24:28])
+    def test_execute_j_type(self, opcode, func7, reg_2, reg_1, func3, rd, expected):
         self.imm.opcode = opcode
         self.imm.func7 = func7
         self.imm.reg_2 = reg_2
@@ -207,9 +197,8 @@ class Test_Immidiate(object):
         self.imm.execute_j_type()
         assert self.imm.res == expected
 
-    @pytest.mark.xfail(reason = "Doesn't work yet!")
-    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, rd, func3, expected", all_test_parameters)
-    def test_compute_res(self, opcode, func7, reg_2, reg_1, rd, func3, expected):
+    @pytest.mark.parametrize("opcode, func7, reg_2, reg_1, func3, rd, expected", all_test_parameters)
+    def test_compute_res(self, opcode, func7, reg_2, reg_1, func3, rd, expected):
         self.imm.opcode = opcode
         self.imm.func7 = func7
         self.imm.reg_2 = reg_2
