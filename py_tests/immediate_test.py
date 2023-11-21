@@ -1,8 +1,8 @@
 import pytest
-import src.immidiate as imm
+import src.immediate as imm
 import src.signal_constants as const
 
-class Test_Immidiate(object):
+class Test_Immediate(object):
 
     imm = None
 
@@ -38,7 +38,7 @@ class Test_Immidiate(object):
     @pytest.fixture(autouse=True)
     def setup_class(self):
         print(f"Setting up {self}")
-        self.imm = imm.Immidiate()
+        self.imm = imm.Immediate()
 
     def teardown_class(self):
         print(f"Tearing down {self}")

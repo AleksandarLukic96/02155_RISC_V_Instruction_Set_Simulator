@@ -5,6 +5,7 @@ from .branch import *
 from .controlUnit import *
 from .dataMemory import *
 from .decoder import *
+from .immediate import *
 from .instructionMemory import *
 from .mux import *
 from .or_ import *

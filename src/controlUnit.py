@@ -26,7 +26,7 @@ class ControlUnit:
         self.alu_op_2_ctrl = 0
         self.alu_ctrl = 0 
 
-        # Immidiate interpretation of func7
+        # Immediate interpretation of func7
         self.imm = 0
 
     # Input Setters and Getters
@@ -109,7 +109,7 @@ class ControlUnit:
     def get_alu_ctrl(self):
         return self.alu_ctrl
 
-    # Immidiate
+    # Immediate
     def set_imm(self, imm):
         self.imm = imm
 
@@ -407,7 +407,7 @@ class ControlUnit:
             print("This I-Type Environment instruction is not supported!")
     
     def excute(self):
-        # Interpret immidiate
+        # Interpret immediate
         self.set_imm(self.get_func7() >> 5 )
         
         # Interpret opcode and update output signals accordingly
@@ -463,9 +463,11 @@ if __name__ == "__main__":
     cu = ControlUnit()
     cu.print_fields()
     
-    cu.set_opcode(19)
+
+    
+    cu.set_opcode(55)
     cu.set_func3(0)
-    cu.set_func7(3)
+    cu.set_func7(64)
     cu.excute()
     cu.print_fields()
     

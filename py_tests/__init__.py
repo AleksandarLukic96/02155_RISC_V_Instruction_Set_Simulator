@@ -9,6 +9,7 @@ from src.branch import *
 from src.controlUnit import *
 from src.dataMemory import *
 from src.decoder import *
+from src.immediate import *
 from src.instructionMemory import *
 from src.mux import *
 from src.or_ import *

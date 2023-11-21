@@ -1,7 +1,7 @@
-# Implementation of Immidiate Class and functions 
+# Implementation of Immediate Class and functions 
 import signal_constants as const
 
-class Immidiate:
+class Immediate:
     def __init__(self):
         # inputs
         self.func7 = 0
@@ -92,7 +92,7 @@ class Immidiate:
             ) << 1)
 
     def compute_res(self):
-        # Interpret opcode and set immidiate according to instruction type
+        # Interpret opcode and set immediate according to instruction type
         if self.get_opcode() == const.R_TYPE:
             self.execute_r_type()
             

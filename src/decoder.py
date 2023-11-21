@@ -80,7 +80,7 @@ if __name__ == "__main__":
     dec = Decoder()
     dec.print_fields()
     
-    test_inst = 0x07b10093
+    test_inst = 0x80000537
     dec.set_inst(test_inst)
     dec.print_fields()
     

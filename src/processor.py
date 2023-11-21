@@ -6,7 +6,7 @@ from branch import Branch
 from controlUnit import ControlUnit
 from dataMemory import DataMemory
 from decoder import Decoder
-from immidiate import Immidiate
+from immediate import Immediate
 from instructionMemory import InstructionMemomry
 from mux import Mux2, Mux3
 from or_ import OR
@@ -21,7 +21,7 @@ class Processor:
         self.cu = ControlUnit()
         self.dmem = DataMemory()
         self.dec = Decoder()
-        self.imm = Immidiate()
+        self.imm = Immediate()
         self.imem = InstructionMemomry(file_path = file_path)
         self.pc = ProgramCounter()
         self.regs = Registers()
@@ -156,9 +156,9 @@ if __name__ == "__main__":
     for i in range(len(proc.regs.regs)):
         proc.regs.regs[i] = i
     
-    proc.imem.insts[0] = 0x00b50633
-    proc.imem.insts[1] = 0x00c68733
-    proc.imem.insts[2] = 0x00f808b3
+    #proc.imem.insts[0] = 0x00b50633
+    #proc.imem.insts[1] = 0x00c68733
+    #proc.imem.insts[2] = 0x00f808b3
     
     for i in range(3):
         print(f"\nAfter step execution ({i}):")
