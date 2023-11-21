@@ -46,7 +46,7 @@ class Processor:
         # Calculate next address for ProgramCounter
         self.adder.set_op_1(self.mux2_2.get_out())
         self.adder.set_op_2(self.pc.get_addr())
-        self.adder.compute_out
+        self.adder.compute_out()
                 
         # Fetch instruction at current PC in instruction memory
         self.imem.set_addr(self.pc.get_addr())
@@ -131,10 +131,11 @@ class Processor:
         self.mux2_1.set_in_0(self.adder.get_out())
         self.mux2_1.set_in_1(self.alu.get_res())
         self.mux2_1.set_select(self.or_1.get_out())
+        self.mux2_1.compute_out()
         
         # End sequence by updating PC
         self.pc.set_addr(self.mux2_1.get_out())
-        pass
+        
     
     def execute_program():
         # TODO: Implement loop which executes every instruction in InstructionMemory
@@ -148,6 +149,27 @@ if __name__ == "__main__":
     import os
     file_path = os.path.join(
         os.getcwd(), "tests", "task1", "addlarge.bin")
+        #os.getcwd(), "tests", "task4", "t15.bin")
 
     proc = Processor(file_path = file_path)
-    proc.execute_step()
+    
+    for i in range(len(proc.regs.regs)):
+        proc.regs.regs[i] = i
+    
+    proc.imem.insts[0] = 0x00b50633
+    proc.imem.insts[1] = 0x00c68733
+    proc.imem.insts[2] = 0x00f808b3
+    
+    for i in range(3):
+        print(f"\nAfter step execution ({i}):")
+        print(f"PC addr: {proc.pc.get_addr()}")
+        print(f"mux2_2 out: {proc.mux2_2.get_out()}")
+        print(f"adder out: {proc.adder.get_out()}")
+        print(f"imem inst: {proc.imem.get_inst()}")
+        print(f"dec Opcode: {proc.dec.get_opcode()}, func3: {proc.dec.get_func3()}, func7: {proc.dec.get_func7()}, rd: {proc.dec.get_rd()}, reg_1: {proc.dec.get_reg_1()}, reg_2: {proc.dec.get_reg_2()}")
+        print(f"cu do_branch: {proc.cu.get_do_branch()}, do_jump: {proc.cu.get_do_jump()}, branch_ctrl: {proc.cu.get_branch_ctrl()}, reg_write: {proc.cu.get_reg_write()}, reg_ctrl: {proc.cu.get_reg_ctrl()}, mem_read: {proc.cu.get_mem_read()}, mem_write: {proc.cu.get_mem_write()}, alu_op_1_ctrl: {proc.cu.get_alu_op_1_ctrl()}, alu_op_2_ctrl: {proc.cu.get_alu_op_2_ctrl()}. alu_ctrl: {proc.cu.get_alu_ctrl()}")
+        print(f"ALU ctrl: {proc.alu.get_ctrl()}, op_1: {proc.alu.get_op_1()}, op_2: {proc.alu.get_op_2()}, res: {proc.alu.get_res()}")
+        print(f"Mux3 : {proc.mux3.get_select()}, out: {proc.mux3.get_out()}")
+        
+        proc.execute_step()
+    proc.regs.print_regs_int()

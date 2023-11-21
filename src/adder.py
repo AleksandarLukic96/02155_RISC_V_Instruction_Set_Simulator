@@ -29,3 +29,10 @@ class Adder:
     
     def get_out(self):
         return self.out
+
+# If file is run as python file, test class functions
+if __name__ == "__main__":
+    adder = Adder(op_1 = 2, op_2 = 4)
+    print(adder.get_out())
+    adder.compute_out()
+    print(adder.get_out())
