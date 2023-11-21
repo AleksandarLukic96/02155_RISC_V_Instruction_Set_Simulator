@@ -12,16 +12,16 @@ I_TYPE_ENV  = 0b1110011 # 115
 
 # ALU CTRL
 # R-type
-ADD   = 'ADD'   # 0b00000 # 0
-SUB   = 'SUB'   # 0b01000 # 8
-XOR   = 'XOR'   # 0b00100 # 4
-OR    = 'OR'    # 0b00110 # 6
-AND   = 'AND'   # 0b00111 # 7
-SLL   = 'SLL'   # 0b00001 # 1
-SRL   = 'SRL'   # 0b00101 # 5
+ADD   = 'ADD'   # 0b00000 #  0
+SUB   = 'SUB'   # 0b01000 #  8
+XOR   = 'XOR'   # 0b00100 #  4
+OR    = 'OR'    # 0b00110 #  6
+AND   = 'AND'   # 0b00111 #  7
+SLL   = 'SLL'   # 0b00001 #  1
+SRL   = 'SRL'   # 0b00101 #  5
 SRA   = 'SRA'   # 0b01101 # 13
-SLT   = 'SLT'   # 0b00010 # 2
-SLTU  = 'SLTU'  # 0b00011 # 3
+SLT   = 'SLT'   # 0b00010 #  2
+SLTU  = 'SLTU'  # 0b00011 #  3
 
 # I-type
 ADDI  = 'ADDI'  # 0b00000 # 0
@@ -42,12 +42,12 @@ LBU   = 'LBU'   # 0b00100 # 4
 LHU   = 'LHU'   # 0b00101 # 5
 
 # BRANCH CTRL
-BEQ  = 'BEQ' # 0b00000 # 0
-BNE  = 'BNE' # 0b00001 # 1
-BLT  = 'BLT' # 0b00100 # 4
-BGE  = 'BGE' # 0b00101 # 5
-BLTU = 'BLTU' # 0b00110 # 6
-BGEU = 'BGEU' # 0b00111 # 7
+BEQ  = 'BEQ'    # 0b00000 # 0
+BNE  = 'BNE'    # 0b00001 # 1
+BLT  = 'BLT'    # 0b00100 # 4
+BGE  = 'BGE'    # 0b00101 # 5
+BLTU = 'BLTU'   # 0b00110 # 6
+BGEU = 'BGEU'   # 0b00111 # 7
 
 # REG CTRL (Mux3)
 REG_FROM_DMEM = 0

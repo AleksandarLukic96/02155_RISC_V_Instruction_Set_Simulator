@@ -11,9 +11,6 @@ class Immidiate:
         self.func3 = 0
         self.opcode = 0
 
-        #Instruction
-        self.inst = 0 # <---- Should not be needed!
-
         # Output
         self.res = 0
 
@@ -58,52 +55,25 @@ class Immidiate:
     
     def get_res(self):
         return self.res
-
-    #Need some help to make sure it identifies the instruction
-    # -- The instruction is never parsed.
-    # -- The functions should rely on the decoded values.
-    # -- Please use the provided get/set methods.
     
     def execute_r_type(self):
         pass
 
     def execute_i_type(self):
-        #Special case for shambi?
-        # -- What is shambi?
-        # imm_sign = (self.get_inst() >> 31) & 0b1
-        # imm_sign_fill = (imm_sign << 19) & 0x1FFFFF
-        # imm_11_0 = (self.get_inst() >> 20) & 0b11111111111
-        # imm = (imm_sign_fill << 11) | imm_11_0      
-        # self.set_res(imm)
         self.set_res((self.get_func7() << 5) | self.get_reg_2())
 
     def execute_s_type(self):
-        # imm_sign = (self.get_inst() >> 31) & 0b1
-        # imm_sign_fill = (imm_sign << 19) & 0xFFFFF
-        # imm_11_5 = (self.get_inst >> 25) & 0b111111
-        # imm_4_0 = (self.get_inst >> 7) & 0b11111
-        # imm = imm_sign_fill | imm_11_5 | imm_4_0
-        # self.set_res(imm)
         self.set_res((self.get_func7() << 5) | self.get_rd())
 
     def execute_b_type(self):
-        # imm_sign = (self.get_inst() >> 31) & 0b1
-        # imm_sign_fill = (imm_sign << 20) & 0x7FFFF
-        # imm11 = (self.get_inst() >> 7) & 0b1
-        # imm_10_5 = (self.get_inst() >> 20) & 0b111111
-        # imm_4_1 = (self.get_inst() >> 7) & 0b1111
-        # imm = imm_sign_fill | imm11 | imm_10_5 | imm_4_1 | 0
-        # self.set_res(imm)
         self.set_res((
-            ((self.get_func7() & 0b1000000) << 5) # func7_6
-            | ((self.get_rd() & 0b1) << 10) # rd_0
-            | ((self.get_func7() & 0b0111111) << 4) # func7_5_0
-            | (self.get_rd() >> 1) # rd_4_1
+            ((self.get_func7() & 0b1000000) << 5)
+            | ((self.get_rd() & 0b1) << 10)
+            | ((self.get_func7() & 0b0111111) << 4)
+            | (self.get_rd() >> 1)
             ) << 1) 
         
     def execute_u_type(self):
-        # imm = self.get_inst & 0xFFFFF000
-        # self.set_res(imm)
         self.set_res(
             (self.get_func7() << 25) 
             | (self.get_reg_2() << 20)
@@ -112,23 +82,17 @@ class Immidiate:
             )
         
     def execute_j_type(self):
-        # imm20 = (self.get_inst() >> 31) &0b1
-        # imm11 = (self.get_inst() >> 20) & 0b1
-        # imm_1_10 = (self.get_inst() >> 21) & 0b1111111111
-        # imm_19_12 = (self.get_inst() >> 12) & 0b111111111111
-        # imm = (imm20 << 19) | (imm_19_12 << 11) | (imm11 << 10) | (imm_1_10 << 1) | 0b0
-        # self.set_res(imm)
         self.set_res((
-            ((self.get_func7() & 0b1000000) << 13) # (func7[6]
-            | (self.get_reg_1() << 14) # reg_1[4:0] 
-            | (self.get_func3() << 11) # func3[2:0]
-            | ((self.get_reg_2() & 0b00001) << 10) # reg_2[0]
-            | ((self.get_func7() & 0b0111111) << 4) # func7[5:0]
-            | (self.get_reg_2() >> 1) # reg_2[4:1]
+            ((self.get_func7() & 0b1000000) << 13)
+            | (self.get_reg_1() << 14)
+            | (self.get_func3() << 11)
+            | ((self.get_reg_2() & 0b00001) << 10)
+            | ((self.get_func7() & 0b0111111) << 4)
+            | (self.get_reg_2() >> 1)
             ) << 1)
 
     def compute_res(self):
-        # Interpret opcode and set immidiate accordingly
+        # Interpret opcode and set immidiate according to instruction type
         if self.get_opcode() == const.R_TYPE:
             self.execute_r_type()
             
