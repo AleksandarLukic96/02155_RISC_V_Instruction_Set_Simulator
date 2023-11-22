@@ -164,10 +164,6 @@ class ControlUnit:
         else:
             print("This R-Type instruction is not supported!")
         
-        #{'do_branch': 0, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
-        # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'ALU', 
-        # 'branch_ctrl': 0b000, 'alu_ctrl': alu_ctrl, 'mem_read': 0}
-        
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
@@ -178,7 +174,7 @@ class ControlUnit:
             mem_write = 0, 
             alu_op_1_ctrl = const.ALU_OP_1_FROM_REG, 
             alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
-            alu_ctrl = alu_ctrl) # <--- insert correct signals from the above line!
+            alu_ctrl = alu_ctrl)
 
     def execute_i_type(self):
         if self.get_func3() == 0:
@@ -210,20 +206,17 @@ class ControlUnit:
 
         else:
             print("This I-Type instruction is not supported!")
-        
-        #{'do_branch': 0, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
-        # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'ALU', 
-        # 'branch_ctrl': 0b000, 'alu_ctrl': alu_ctrl, 'mem_read': 0}
+
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
             branch_ctrl = const.BEQ, 
-            reg_write = 0, 
+            reg_write = 1, 
             reg_ctrl = const.REG_FROM_ALU, 
             mem_read = 0, 
-            mem_write = 1, 
+            mem_write = 0, 
             alu_op_1_ctrl = const.ALU_OP_1_FROM_REG, 
-            alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
+            alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM, 
             alu_ctrl = alu_ctrl)
 
     def execute_i_type_load(self):
@@ -245,38 +238,31 @@ class ControlUnit:
         else:
             print("This I-Type Load instruction is not supported!")
         
-        #{'do_branch': 0, 'do_jump': 0, 'reg_write': 0, 'mem_write': 0, 
-        # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'MEM', 
-        # 'branch_ctrl': 0b000, 'alu_ctrl': alu_ctrl, 'mem_read': 1}
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
             branch_ctrl = const.BEQ, 
-            reg_write = 0, 
+            reg_write = 1, 
             reg_ctrl = const.REG_FROM_DMEM, 
             mem_read = 1, 
             mem_write = 0, 
             alu_op_1_ctrl = const.ALU_OP_1_FROM_REG, 
-            alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
+            alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM, 
             alu_ctrl = alu_ctrl)
 
     def execute_s_type(self):
-        #SB
         if self.get_func3() == 0:
-            s = 0 # What should happen here?
-        #SH
+            alu_ctrl = const.SB
+        
         elif self.get_func3() == 1:
-            s = 1 # What should happen here?
-        #SW
+            alu_ctrl = const.SH
+        
         elif  self.get_func3() == 2:
-            s = 2 # What should happen here?
+            alu_ctrl = const.SW
 
         else:
             print("This S-Type instruction is not supported!")
 
-        #{'do_branch': 0, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
-        # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'MEM', 
-        # 'branch_ctrl': 0b000, 'alu_ctrl': 'ADD', 'mem_read': 0}
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
@@ -286,8 +272,8 @@ class ControlUnit:
             mem_read = 0, 
             mem_write = 1, 
             alu_op_1_ctrl = const.ALU_OP_1_FROM_REG, 
-            alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
-            alu_ctrl = const.ADD)
+            alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM, 
+            alu_ctrl = alu_ctrl)
 
     def execute_b_type(self):
         if self.get_func3() == 0:
@@ -310,95 +296,80 @@ class ControlUnit:
         
         else:
             print("This B-Type instruction is not supported!")
-        
-        #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 0, 
-        # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'MEM', 
-        # 'branch_ctrl': branch, 'alu_ctrl': 'ADD', 'mem_read': 0}
+
         self.set_all_signals(
             do_branch = 1, 
             do_jump = 0, 
             branch_ctrl = branch_ctrl, 
             reg_write = 0, 
-            reg_ctrl = const.REG_FROM_DMEM, 
+            reg_ctrl = const.REG_FROM_ALU, 
             mem_read = 0, 
             mem_write = 0, 
             alu_op_1_ctrl = const.ALU_OP_1_FROM_PC, 
-            alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
-            alu_ctrl = const.ADD)
+            alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM, 
+            alu_ctrl = const.ADDI)
 
     def execute_j_type(self):
-        #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
-        # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'PC4', 
-        # 'branch_ctrl': 0b111, 'alu_ctrl': 'ADD', 'mem_read': 0}
         self.set_all_signals(
-            do_branch = 1, 
-            do_jump = 0, 
-            branch_ctrl = const.BGEU, 
-            reg_write = 0, 
+            do_branch = 0, 
+            do_jump = 1, 
+            branch_ctrl = const.BEQ, 
+            reg_write = 1, 
             reg_ctrl = const.REG_FROM_ADDER, 
-            mem_read = 0, 
-            mem_write = 1, 
-            alu_op_1_ctrl = const.ALU_OP_1_FROM_PC, 
-            alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
-            alu_ctrl = const.ADD)
+            mem_read = 0,
+            mem_write = 0,
+            alu_op_1_ctrl = const.ALU_OP_1_FROM_PC,
+            alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM,
+            alu_ctrl = const.JAL)
 
     def execute_i_type_jump(self):
-        #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 1, 
-        # 'alu_op_1_ctrl': 1, 'alu_op_2_ctrl': 0, 'reg_ctrl': 'PC4', 
-        # 'branch_ctrl': 0b111, 'alu_ctrl': 'ADD', 'mem_read': 0}
         self.set_all_signals(
-            do_branch = 1, 
-            do_jump = 0, 
-            branch_ctrl = const.BGEU, 
-            reg_write = 0, 
-            reg_ctrl = const.REG_FROM_ADDER, 
-            mem_read = 0, 
-            mem_write = 1, 
-            alu_op_1_ctrl = const.ALU_OP_1_FROM_REG, 
-            alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
-            alu_ctrl = const.ADD)
+            do_branch = 0,
+            do_jump = 1,
+            branch_ctrl = const.BEQ,
+            reg_write = 1,
+            reg_ctrl = const.REG_FROM_ADDER,
+            mem_read = 0,
+            mem_write = 0,
+            alu_op_1_ctrl = const.ALU_OP_1_FROM_REG,
+            alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM,
+            alu_ctrl = const.JALR)
 
     def execute_u_type_load(self):
-        #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 0, 
-        # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 1, 'reg_ctrl': 'IMM', 
-        # 'branch_ctrl': 0b000, 'alu_ctrl': 'ADD', 'mem_read': 0}
         self.set_all_signals(
-            do_branch = 1, 
+            do_branch = 0, 
             do_jump = 0, 
             branch_ctrl = const.BEQ, 
-            reg_write = 0, 
+            reg_write = 1, 
             reg_ctrl = const.REG_FROM_ALU, 
             mem_read = 0, 
             mem_write = 0, 
-            alu_op_1_ctrl = const.ALU_OP_1_FROM_PC, 
+            alu_op_1_ctrl = const.ALU_OP_1_FROM_REG, 
             alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM, 
-            alu_ctrl = const.ADD)
+            alu_ctrl = const.LUI)
 
     def execute_u_type_add(self):        
-        #{'do_branch': 1, 'do_jump': 0, 'reg_write': 0, 'mem_write': 0, 
-        # 'alu_op_1_ctrl': 0, 'alu_op_2_ctrl': 1, 'reg_ctrl': 'ALU', 
-        # 'branch_ctrl': 0b000, 'alu_ctrl': 'ADD', 'mem_read': 0}
         self.set_all_signals(
-            do_branch = 1, 
+            do_branch = 0, 
             do_jump = 0, 
             branch_ctrl = const.BEQ, 
-            reg_write = 0, 
+            reg_write = 1, 
             reg_ctrl = const.REG_FROM_ALU, 
             mem_read = 0, 
             mem_write = 0, 
             alu_op_1_ctrl = const.ALU_OP_1_FROM_PC, 
             alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM, 
-            alu_ctrl = const.ADD)
+            alu_ctrl = const.AUIPC)
 
     def execute_i_type_env(self):
         if self.get_imm() == 0:
-            # CALL
+            # ECALL
             self.set_all_signals(
                 # <--- Needs to be implemented!
             ) 
         
         elif self.get_imm() == 1:
-            # BREAK
+            # EBREAK
             self.set_all_signals(
                 # <--- Needs to be implemented!
             )
@@ -429,7 +400,7 @@ class ControlUnit:
         elif self.get_opcode() == const.J_TYPE:
             self.execute_j_type()
         
-        elif self.get_opcode() == const.I_TYPE_JUMP: # and self.get_func3() == 0: <--- Is this neccessary?
+        elif self.get_opcode() == const.I_TYPE_JUMP:
             self.execute_i_type_jump()
         
         elif self.get_opcode() == const.U_TYPE_LOAD:
@@ -462,9 +433,6 @@ class ControlUnit:
 if __name__ == "__main__":
     cu = ControlUnit()
     cu.print_fields()
-    
-
-    
     cu.set_opcode(55)
     cu.set_func3(0)
     cu.set_func7(64)
