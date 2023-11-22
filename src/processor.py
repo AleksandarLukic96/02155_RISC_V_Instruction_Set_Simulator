@@ -185,8 +185,8 @@ if __name__ == "__main__":
         # print(f"imem inst: {str_hex} {proc.imem.get_inst()}")
         # print(f"imm res: {proc.imm.get_res()}")
         # print(f"dec Opcode: {proc.dec.get_opcode()}, func3: {proc.dec.get_func3()}, func7: {proc.dec.get_func7()}, rd: {proc.dec.get_rd()}, reg_1: {proc.dec.get_reg_1()}, reg_2: {proc.dec.get_reg_2()}")
-        # print(f"cu do_branch: {proc.cu.get_do_branch()}, do_jump: {proc.cu.get_do_jump()}, branch_ctrl: {proc.cu.get_branch_ctrl()}, reg_write: {proc.cu.get_reg_write()}, reg_ctrl: {proc.cu.get_reg_ctrl()}, mem_read: {proc.cu.get_mem_read()}, mem_write: {proc.cu.get_mem_write()}, alu_op_1_ctrl: {proc.cu.get_alu_op_1_ctrl()}, alu_op_2_ctrl: {proc.cu.get_alu_op_2_ctrl()}. alu_ctrl: {proc.cu.get_alu_ctrl()}")
-        # print(f"ALU ctrl: {proc.alu.get_ctrl()}, op_1: {proc.alu.get_op_1()}, op_2: {proc.alu.get_op_2()}, res: {proc.alu.get_res()}")
+        proc.cu.print_fields()
+        proc.alu.print_fields()
         # print(f"Mux3 : {proc.mux3.get_select()}, out: {proc.mux3.get_out()}")
         
         
