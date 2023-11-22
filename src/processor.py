@@ -180,7 +180,7 @@ if __name__ == "__main__":
         print(f"\nAfter step execution of inst at ({i*4}):")
         proc.pc.print_fields()
         # print(f"mux2_2 out: {proc.mux2_2.get_out()}")
-        # print(f"adder out: {proc.adder.get_out()}")
+        proc.adder.print_fields()
         # str_hex = "{0:08x}".format(proc.imem.get_inst() % (1<<32))
         # print(f"imem inst: {str_hex} {proc.imem.get_inst()}")
         # print(f"imm res: {proc.imm.get_res()}")
