@@ -63,53 +63,18 @@ class Decoder:
         self.set_func3((self.inst >> 12) & 0b111)
         self.set_func7((self.inst >> 25) & 0b1111111)
 
+    def __repr__(self):
+        return "inst: %s, opcode: %s, reg_1: %s, reg_2: %s, rd: %s, func3: %s, func7: %s" % (
+            self.get_inst(), self.get_opcode(), self.get_reg_1(), self.get_reg_2(), self.get_rd(), self.get_func3(), self.get_func7())
+    
     def print_fields(self):
-        print(f"get_inst(): {self.get_inst()}")
-        print(f"get_opcode(): {self.get_opcode()}")
-        print(f"get_reg_1(): {self.get_reg_1()}")
-        print(f"get_reg_2(): {self.get_reg_2()}")
-        print(f"get_rd(): {self.get_rd()}")
-        print(f"get_func3(): {self.get_func3()}")
-        print(f"get_func7(): {self.get_func7()}")
+        print(f"Decoder")
+        print(f" inst   : {self.get_inst()}")
+        print(f" opcode : {self.get_opcode()}")
+        print(f" reg_1  : {self.get_reg_1()}")
+        print(f" reg_2  : {self.get_reg_2()}")
+        print(f" rd     : {self.get_rd()}")
+        print(f" func3  : {self.get_func3()}")
+        print(f" func7  : {self.get_func7()}")
         print()
         
-        
-        
-# If file is run as python file, test class functions
-if __name__ == "__main__":
-    dec = Decoder()
-    
-    test_inst = 0x80000537
-    dec.set_inst(test_inst)
-    dec.compute_decoding()
-    dec.print_fields()
-
-    test_inst = 0x00150513 
-    dec.set_inst(test_inst)
-    dec.compute_decoding()
-    dec.print_fields()
-
-    test_inst = 0x800005b7
-    dec.set_inst(test_inst)
-    dec.compute_decoding()
-    dec.print_fields()
-    
-    test_inst = 0xffe58593
-    dec.set_inst(test_inst)
-    dec.compute_decoding()
-    dec.print_fields()
-    
-    test_inst = 0x00b50633
-    dec.set_inst(test_inst)
-    dec.compute_decoding()
-    dec.print_fields()
-    
-    test_inst = 0x00a00893
-    dec.set_inst(test_inst)
-    dec.compute_decoding()
-    dec.print_fields()
-    
-    test_inst = 0x00000073
-    dec.set_inst(test_inst)
-    dec.compute_decoding()
-    dec.print_fields()

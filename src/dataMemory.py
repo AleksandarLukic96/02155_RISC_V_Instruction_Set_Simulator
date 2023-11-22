@@ -85,6 +85,8 @@ class DataMemory:
             # Read data_out from address in memory
             self.data_out = int32(self.mem_addrs[self.addr])
 
+    def __repr__(self):
+        return "addr: %s, data_in: %s, data_out: %s, read_enabled: %s, write_enabled: %s" % (self.get_addr(), self.get_data_in(), self.get_data_out(), self.get_read_enabled(), self.get_write_enabled())
 
 # If file is run as python file, test class functions
 if __name__ == "__main__":

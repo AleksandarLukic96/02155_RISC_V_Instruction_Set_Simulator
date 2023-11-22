@@ -77,6 +77,10 @@ class Registers:
             # Write data_in to register
             self.regs[self.get_rd()] = self.get_data_in()
 
+    def __repr__(self):
+        return "reg_1: %s, reg_2: %s, rd: %s, data_in: %s, write_enabled: %s" % (
+            self.get_reg_1(), self.get_reg_2(), self.get_rd(), self.get_data_in(), self.get_write_enabled())
+    
     def print_fields(self):
         print(f"Registers:")
         print(f"reg_1         : {self.get_reg_1()}")

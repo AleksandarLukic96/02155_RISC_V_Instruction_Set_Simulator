@@ -425,6 +425,10 @@ class ControlUnit:
             print("Opcode not supported")
             self.execute_nop()
 
+    def __repr__(self):
+        return "do_branch: %s, do_jump: %s, branch_ctrl: %s, reg_write: %s, reg_ctrl: %s, mem_read: %s, mem_write: %s, alu_op_1_ctrl: %s, alu_op_2_ctrl: %s, alu_ctrl: %s" % (
+            self.get_do_branch(), self.get_do_jump(), self.get_branch_ctrl(), self.get_reg_write(), self.get_reg_ctrl(), self.get_mem_read(), self.get_mem_write(), self.get_alu_op_1_ctrl(), self.get_alu_op_2_ctrl(), self.get_alu_ctrl())
+    
     def print_fields(self):
         print(f"ControlUnit:")
         print(f" do_branch    : {self.get_do_branch()}")
@@ -438,16 +442,4 @@ class ControlUnit:
         print(f" alu_op_2_ctrl: {self.get_alu_op_2_ctrl()}")
         print(f" alu_ctrl     : {self.get_alu_ctrl()}")
         print()
-        
-# If file is run as python file, test class functions
-if __name__ == "__main__":
-    cu = ControlUnit()
-    cu.print_fields()
-    cu.set_opcode(55)
-    cu.set_func3(0)
-    cu.set_func7(64)
-    cu.excute()
-    cu.print_fields()
-    
-        
     

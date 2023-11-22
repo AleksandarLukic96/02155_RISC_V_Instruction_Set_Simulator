@@ -108,8 +108,18 @@ class InstructionMemomry:
             str_opcode = "{0:07b}".format(inst & 127)
             str_i = "{0:03x}".format(i*4)
             print(f"{str_i} Bin: {str_bin} Hex: {str_hex} Int: {str_int} Opcode: {str_opcode}")
-            i += 1    
+            i += 1 
+    
+    def __repr__(self):
+        str_hex = "{0:08x}".format(self.get_inst() % (1<<32))
+        return "addr: %s, inst: (int)%s, (hex)0x%s" % (self.get_addr(), self.get_inst(), str_hex)
 
+    def print_fields(self):
+        str_hex = "{0:08x}".format(self.get_inst() % (1<<32))
+        print(f"Instruction Memory:")
+        print(f" addr : {self.get_addr()}")
+        print(f" inst : int: {self.get_inst()}, hex: 0x{str_hex}")
+        print()   
 
 # If file is run as python file, test class functions
 if __name__ == "__main__":

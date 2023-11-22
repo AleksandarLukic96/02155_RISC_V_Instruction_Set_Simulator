@@ -30,6 +30,9 @@ class OR:
             self.get_in_0() | self.get_in_1()
         )
 
+    def __repr__(self):
+        return "in_0: %s, in_1: %s, out: %s" % (self.get_in_0(), self.get_in_1(), self.get_out())
+    
     def print_fields(self):
         print(f"OR:")
         print(f" in_0 : {self.get_in_0()}")

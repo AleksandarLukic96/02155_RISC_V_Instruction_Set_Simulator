@@ -11,6 +11,9 @@ class ProgramCounter:
     def get_addr(self):
         return self.addr
 
+    def __repr__(self):
+        return "addr: %s" % (self.get_addr())
+    
     def print_fields(self):
         print(f"PC:")
         print(f" addr : {self.get_addr()}")

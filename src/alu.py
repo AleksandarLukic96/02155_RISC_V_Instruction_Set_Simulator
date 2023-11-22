@@ -39,14 +39,6 @@ class ALU:
     
     def get_res(self):
         return self.res
-
-    def print_fields(self):
-        print(f"ALU:")
-        print(f" ctrl: {self.get_ctrl()}")
-        print(f" op_1: {self.get_op_1()}")
-        print(f" op_2: {self.get_op_2()}")
-        print(f" res : {self.get_res()}")
-        print()
         
     # R-type operations
     def compute_add(self):
@@ -255,3 +247,15 @@ class ALU:
         # Unsupported operations
         else:
             pass
+    
+    def __repr__(self):
+        return "ctrl: %s, op_1: %s, op_2: %s, res: %s" % (self.get_ctrl(), self.get_op_1(), self.get_op_2(), self.get_res())
+    
+    def print_fields(self):
+        print(f"ALU:")
+        print(f" ctrl : {self.get_ctrl()}")
+        print(f" op_1 : {self.get_op_1()}")
+        print(f" op_2 : {self.get_op_2()}")
+        print(f" res  : {self.get_res()}")
+        print()
+        

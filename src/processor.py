@@ -176,19 +176,24 @@ if __name__ == "__main__":
         proc.regs.regs[i] = i
     
     for i in range(proc.imem.number_of_insts):
+    #for i in range(1):
         proc.execute_step()
         print(f"\nAfter step execution of inst at ({i*4}):")
-        proc.pc.print_fields()
-        # print(f"mux2_2 out: {proc.mux2_2.get_out()}")
-        proc.adder.print_fields()
-        # str_hex = "{0:08x}".format(proc.imem.get_inst() % (1<<32))
-        # print(f"imem inst: {str_hex} {proc.imem.get_inst()}")
-        proc.imm.print_fields()
-        # print(f"dec Opcode: {proc.dec.get_opcode()}, func3: {proc.dec.get_func3()}, func7: {proc.dec.get_func7()}, rd: {proc.dec.get_rd()}, reg_1: {proc.dec.get_reg_1()}, reg_2: {proc.dec.get_reg_2()}")
-        proc.cu.print_fields()
-        proc.alu.print_fields()
-        # print(f"Mux3 : {proc.mux3.get_select()}, out: {proc.mux3.get_out()}")
-        proc.and_1.print_fields()
-        proc.or_1.print_fields()
-        proc.regs.print_fields()
-        
+        print("[PC         ]", proc.pc) # proc.pc.print_fields()
+        print("[MUX2_2     ]", proc.mux2_2) # proc.mux2_2.print_fields()
+        print("[Adder      ]", proc.adder) # proc.adder.print_fields()
+        print("[Imemory    ]", proc.imem) # proc.imem.print_fields()
+        print("[Decoder    ]", proc.dec) # proc.dec.print_fields()
+        print("[Immediate  ]", proc.imm) # proc.imm.print_fields()
+        print("[ControlUnit]", proc.cu) # proc.cu.print_fields()
+        print("[MUX2_3     ]", proc.mux2_3) # proc.mux2_3.print_fields()
+        print("[MUX2_4     ]", proc.mux2_4) # proc.mux2_4.print_fields()
+        print("[ALU        ]", proc.alu) # proc.alu.print_fields()
+        print("[MUX3       ]", proc.mux3) # proc.mux3.print_fields()
+        print("[Branch     ]", proc.bra) # proc.bra.print_fields()
+        print("[AND        ]", proc.and_1) # proc.and_1.print_fields()
+        print("[OR         ]", proc.or_1) # proc.or_1.print_fields()
+        print("[Registers  ]", proc.regs) # proc.regs.print_fields()
+        print("[MUX2_1     ]", proc.mux2_1) # proc.mux2_1.print_fields()
+    
+    proc.regs.print_regs_int()

@@ -30,6 +30,9 @@ class Adder:
     def get_out(self):
         return self.out
 
+    def __repr__(self):
+        return "op_1: %s, op_2: %s, out: %s" % (self.get_op_1(), self.get_op_2(), self.get_out())
+        
     def print_fields(self):
         print(f"Adder:")
         print(f" op_1 : {self.get_op_1()}")

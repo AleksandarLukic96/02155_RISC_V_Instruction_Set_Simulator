@@ -67,3 +67,15 @@ class Branch:
             
         else:
             pass
+    
+    def __repr__(self):
+        return "op_1: %s, op_2: %s, branch_ctrl: %s, branch_taken: %s" % (self.get_op_1(), self.get_op_2(), self.get_branch_ctrl(), self.get_branch_taken())
+    
+    def print_fields(self):
+        print(f"Branch:")
+        print(f" op_1         : {self.get_op_1()}")
+        print(f" op_2         : {self.get_op_2()}")
+        print(f" branch_ctrl  : {self.get_branch_ctrl()}")
+        print(f" branch_taken : {self.get_branch_taken()}")
+        print()
+        
