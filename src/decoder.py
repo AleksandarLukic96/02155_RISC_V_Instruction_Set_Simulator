@@ -78,12 +78,38 @@ class Decoder:
 # If file is run as python file, test class functions
 if __name__ == "__main__":
     dec = Decoder()
-    dec.print_fields()
     
     test_inst = 0x80000537
     dec.set_inst(test_inst)
+    dec.compute_decoding()
     dec.print_fields()
-    
+
+    test_inst = 0x00150513 
+    dec.set_inst(test_inst)
+    dec.compute_decoding()
+    dec.print_fields()
+
+    test_inst = 0x800005b7
+    dec.set_inst(test_inst)
     dec.compute_decoding()
     dec.print_fields()
     
+    test_inst = 0xffe58593
+    dec.set_inst(test_inst)
+    dec.compute_decoding()
+    dec.print_fields()
+    
+    test_inst = 0x00b50633
+    dec.set_inst(test_inst)
+    dec.compute_decoding()
+    dec.print_fields()
+    
+    test_inst = 0x00a00893
+    dec.set_inst(test_inst)
+    dec.compute_decoding()
+    dec.print_fields()
+    
+    test_inst = 0x00000073
+    dec.set_inst(test_inst)
+    dec.compute_decoding()
+    dec.print_fields()
