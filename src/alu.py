@@ -73,31 +73,31 @@ class ALU:
     
     # I-type operations
     def compute_addi(self):
-        pass
+        self.compute_add()
     
     def compute_xori(self):
-        pass
+        self.compute_xor()
     
     def compute_ori(self):
-        pass
+        self.compute_or()
     
     def compute_andi(self):
-        pass
+        self.compute_and()
     
     def compute_slli(self):
-        pass
+        self.compute_sll()
     
     def compute_srli(self):
-        pass
+        self.compute_srl()
     
     def compute_srai(self):
-        pass
+        self.compute_sra()
     
     def compute_slti(self):
-        pass
+        self.compute_slt()
     
     def compute_sltiu(self):
-        pass
+        self.compute_sltu()
     
     # I-type load
     def compute_lb(self):
@@ -135,11 +135,11 @@ class ALU:
     
     # U_TYPE_LOAD
     def compute_lui(self):
-        self.set_res(self.get_op_2() << 12)
+        self.set_res(self.get_op_2())
     
     # U_TYPE_ADD
     def compute_auipc(self):
-        pass    
+        self.set_res(self.get_op_1() + self.get_op_2())
     
     def compute_res(self):
         # R-type
@@ -250,12 +250,4 @@ class ALU:
     
     def __repr__(self):
         return "ctrl: %s, op_1: %s, op_2: %s, res: %s" % (self.get_ctrl(), self.get_op_1(), self.get_op_2(), self.get_res())
-    
-    def print_fields(self):
-        print(f"ALU:")
-        print(f" ctrl : {self.get_ctrl()}")
-        print(f" op_1 : {self.get_op_1()}")
-        print(f" op_2 : {self.get_op_2()}")
-        print(f" res  : {self.get_res()}")
-        print()
         
