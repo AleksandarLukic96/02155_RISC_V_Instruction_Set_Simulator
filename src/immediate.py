@@ -114,14 +114,3 @@ class Immediate:
     def __repr__(self):
         return "func7: %s, reg_2: %s, reg_1: %s, rd: %s, func3: %s, opcode: %s, res: %s" % (
             self.get_func7(), self.get_reg_2(), self.get_reg_1(), self.get_rd(), self.get_func3(), self.get_opcode(), self.get_res())
-    
-    def print_fields(self):
-        print(f"Immediate:")
-        print(f" func7  : {self.get_func7()}")
-        print(f" reg_2  : {self.get_reg_2()}")
-        print(f" reg_1  : {self.get_reg_1()}")
-        print(f" rd     : {self.get_rd()}")
-        print(f" func3  : {self.get_func3()}")
-        print(f" opcode : {self.get_opcode()}")
-        print(f" res    : {self.get_res()}")
-        print()
