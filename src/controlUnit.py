@@ -130,6 +130,19 @@ class ControlUnit:
         self.set_alu_ctrl(alu_ctrl)
 
     # Execution functions
+    def execute_nop(self):
+        self.set_all_signals(
+            do_branch = 0, 
+            do_jump = 0, 
+            branch_ctrl = const.BEQ, 
+            reg_write = 0, 
+            reg_ctrl = const.REG_FROM_ALU, 
+            mem_read = 0, 
+            mem_write = 0, 
+            alu_op_1_ctrl = const.ALU_OP_1_FROM_REG, 
+            alu_op_2_ctrl = const.ALU_OP_2_FROM_REG, 
+            alu_ctrl = const.ADD)
+    
     def execute_r_type(self):
         if (self.get_func3() == 0) & (self.get_func7() == 0):
             alu_ctrl = const.ADD
@@ -363,16 +376,12 @@ class ControlUnit:
 
     def execute_i_type_env(self):
         if self.get_imm() == 0:
-            # ECALL
-            self.set_all_signals(
-                # <--- Needs to be implemented!
-            ) 
+            # ECALL <--- Needs to be implemented!
+            self.execute_nop() 
         
         elif self.get_imm() == 1:
-            # EBREAK
-            self.set_all_signals(
-                # <--- Needs to be implemented!
-            )
+            # EBREAK <--- Needs to be implemented!
+            self.execute_nop() 
         
         else:
             print("This I-Type Environment instruction is not supported!")
@@ -414,19 +423,20 @@ class ControlUnit:
         
         else:
             print("Opcode not supported")
-            # TODO: Implement NOP - In case of invalid instruction, simply skip instruction by disabling any write/read signals!
+            self.execute_nop()
 
     def print_fields(self):
-        print(f" do_branch : {self.get_do_branch()}")
-        print(f" do_jump: {self.get_do_jump()}")
-        print(f" branch_ctrl: {self.get_branch_ctrl()}")
-        print(f" reg_write: {self.get_reg_write()}")
-        print(f" reg_ctrl: {self.get_reg_ctrl()}")
-        print(f" mem_read: {self.get_mem_read()}")
-        print(f" mem_write: {self.get_mem_write()}")
+        print(f"ControlUnit:")
+        print(f" do_branch    : {self.get_do_branch()}")
+        print(f" do_jump      : {self.get_do_jump()}")
+        print(f" branch_ctrl  : {self.get_branch_ctrl()}")
+        print(f" reg_write    : {self.get_reg_write()}")
+        print(f" reg_ctrl     : {self.get_reg_ctrl()}")
+        print(f" mem_read     : {self.get_mem_read()}")
+        print(f" mem_write    : {self.get_mem_write()}")
         print(f" alu_op_1_ctrl: {self.get_alu_op_1_ctrl()}")
         print(f" alu_op_2_ctrl: {self.get_alu_op_2_ctrl()}")
-        print(f" alu_ctrl: {self.get_alu_ctrl()}")
+        print(f" alu_ctrl     : {self.get_alu_ctrl()}")
         print()
         
 # If file is run as python file, test class functions
