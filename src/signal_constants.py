@@ -41,6 +41,11 @@ LW      = 'LW'    # 0b00010 # 2
 LBU     = 'LBU'   # 0b00100 # 4
 LHU     = 'LHU'   # 0b00101 # 5
 
+# S-type
+SB = 'SB'
+SH = 'SH'
+SW = 'SW'
+
 # J-type
 JAL     = 'JAL'   # 0b1101111 # 111
 
