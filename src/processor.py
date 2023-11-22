@@ -12,6 +12,8 @@ from mux import Mux2, Mux3
 from or_ import OR
 from programCounter import ProgramCounter
 from registers import Registers
+import signal_constants as const
+import utils
 
 class Processor:
     def __init__(self, file_path = "NO_FILE_PROVIDED!"):
@@ -35,6 +37,11 @@ class Processor:
         self.adder = Adder()
         self.and_1 = AND()
         self.or_1 = OR()
+    
+    def print_register_content(self):
+        for i in range(len(self.regs.regs)):
+            reg_name = "{:>3}".format("x" + str(i))
+            print("%s %s" % (reg_name, utils.to_str_int_hex_bin(self.regs.regs[i]))) 
     
     def execute_step(self):
         check = False
@@ -87,14 +94,14 @@ class Processor:
         if check == True:  print("Check 6")
         
         # Prepare MUX for alu operand 1
-        self.mux2_3.set_in_0(self.pc.get_addr())
-        self.mux2_3.set_in_1(self.regs.get_reg_1())
+        self.mux2_3.set_in_0(self.regs.return_reg_1_content())
+        self.mux2_3.set_in_1(self.pc.get_addr())
         self.mux2_3.set_select(self.cu.get_alu_op_1_ctrl())
         self.mux2_3.compute_out()
         if check == True:  print("Check 7")
         
         # Prepare MUX for alu operand 2
-        self.mux2_4.set_in_0(self.regs.get_reg_2())
+        self.mux2_4.set_in_0(self.regs.return_reg_2_content())
         self.mux2_4.set_in_1(self.imm.get_res())
         self.mux2_4.set_select(self.cu.get_alu_op_2_ctrl())
         self.mux2_4.compute_out()
@@ -156,10 +163,39 @@ class Processor:
         self.pc.set_addr(self.mux2_1.get_out())
         if check == True:  print("Check 17")
     
-    def execute_program():
-        # TODO: Implement loop which executes every instruction in InstructionMemory
-        pass
+    def execute_program(self, do_print = False):
+        do_print = do_print
+        
+        if do_print == False:
+            while (self.pc.get_addr() <= len(self.imem.insts) * 4):             
+                self.execute_step()
+                if self.dec.get_opcode() == const.I_TYPE_ENV:
+                    break
+        else:
+            while (self.pc.get_addr() <= len(self.imem.insts) * 4):
+                print(f"\nAfter step execution of inst at (PC: {self.pc.get_addr()}):")
+                self.execute_step()
+                print("[PC         ]", self.pc)
+                print("[MUX2_2     ]", self.mux2_2)
+                print("[Adder      ]", self.adder)
+                print("[Imemory    ]", self.imem)
+                print("[Decoder    ]", self.dec)
+                print("[Immediate  ]", self.imm)
+                print("[ControlUnit]", self.cu)
+                print("[MUX2_3     ]", self.mux2_3)
+                print("[MUX2_4     ]", self.mux2_4)
+                print("[ALU        ]", self.alu)
+                print("[MUX3       ]", self.mux3)
+                print("[Branch     ]", self.bra)
+                print("[AND        ]", self.and_1)
+                print("[OR         ]", self.or_1)
+                print("[Registers  ]", self.regs)
+                print("[MUX2_1     ]", self.mux2_1)
 
+                # Break loop at environment call
+                if self.dec.get_opcode() == const.I_TYPE_ENV:
+                    break
+        
 
 # If file is run as python file, test class functions
 if __name__ == "__main__":
@@ -171,29 +207,6 @@ if __name__ == "__main__":
         #os.getcwd(), "tests", "task4", "t15.bin")
 
     proc = Processor(file_path = file_path)
+        
+    proc.execute_program()
     
-    for i in range(len(proc.regs.regs)):
-        proc.regs.regs[i] = i
-    
-    for i in range(proc.imem.number_of_insts):
-    #for i in range(1):
-        proc.execute_step()
-        print(f"\nAfter step execution of inst at ({i*4}):")
-        print("[PC         ]", proc.pc) # proc.pc.print_fields()
-        print("[MUX2_2     ]", proc.mux2_2) # proc.mux2_2.print_fields()
-        print("[Adder      ]", proc.adder) # proc.adder.print_fields()
-        print("[Imemory    ]", proc.imem) # proc.imem.print_fields()
-        print("[Decoder    ]", proc.dec) # proc.dec.print_fields()
-        print("[Immediate  ]", proc.imm) # proc.imm.print_fields()
-        print("[ControlUnit]", proc.cu) # proc.cu.print_fields()
-        print("[MUX2_3     ]", proc.mux2_3) # proc.mux2_3.print_fields()
-        print("[MUX2_4     ]", proc.mux2_4) # proc.mux2_4.print_fields()
-        print("[ALU        ]", proc.alu) # proc.alu.print_fields()
-        print("[MUX3       ]", proc.mux3) # proc.mux3.print_fields()
-        print("[Branch     ]", proc.bra) # proc.bra.print_fields()
-        print("[AND        ]", proc.and_1) # proc.and_1.print_fields()
-        print("[OR         ]", proc.or_1) # proc.or_1.print_fields()
-        print("[Registers  ]", proc.regs) # proc.regs.print_fields()
-        print("[MUX2_1     ]", proc.mux2_1) # proc.mux2_1.print_fields()
-    
-    proc.regs.print_regs_int()
