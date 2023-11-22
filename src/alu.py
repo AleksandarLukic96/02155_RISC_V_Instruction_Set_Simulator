@@ -115,6 +115,16 @@ class ALU:
     def compute_lhu(self):
         pass
     
+    # S-type
+    def compute_sb(self):
+        pass
+    
+    def compute_sh(self):
+        pass
+    
+    def compute_sw(self):
+        pass
+    
     # J_TYPE
     def compute_jal(self):
         pass
@@ -125,7 +135,7 @@ class ALU:
     
     # U_TYPE_LOAD
     def compute_lui(self):
-        pass
+        self.set_res(self.get_op_2() << 12)
     
     # U_TYPE_ADD
     def compute_auipc(self):
@@ -207,21 +217,31 @@ class ALU:
         elif self.get_ctrl() == const.LHU: 
             self.compute_lhu()
         
+        # S-type
+        elif self.get_ctrl() == const.SB: 
+            self.compute_sb()
+        
+        elif self.get_ctrl() == const.SH: 
+            self.compute_sh()
+        
+        elif self.get_ctrl() == const.SW: 
+            self.compute_sw()
+        
         # J_TYPE
-        elif self.get_ctrl() == const.J_TYPE:
+        elif self.get_ctrl() == const.JAL:
             self.compute_jal()
             
         # I_TYPE_JUMP
-        elif self.get_ctrl() == const.I_TYPE_JUMP:
+        elif self.get_ctrl() == const.JALR:
             self.compute_jalr()
             
         # U_TYPE_LOAD
-        elif self.get_ctrl() == const.U_TYPE_LOAD:
+        elif self.get_ctrl() == const.LUI:
             self.compute_lui()
             
 
         # U_TYPE_ADD
-        elif self.get_ctrl() == const.U_TYPE_ADD:
+        elif self.get_ctrl() == const.AUIPC:
             self.compute_auipc()
         
         # Unsupported operations
