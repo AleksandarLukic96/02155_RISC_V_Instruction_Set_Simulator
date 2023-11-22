@@ -177,7 +177,7 @@ if __name__ == "__main__":
     
     for i in range(proc.imem.number_of_insts):
         proc.execute_step()
-        # print(f"\nAfter step execution of inst at ({i*4}):")
+        print(f"\nAfter step execution of inst at ({i*4}):")
         # print(f"PC addr: {proc.pc.get_addr()}")
         # print(f"mux2_2 out: {proc.mux2_2.get_out()}")
         # print(f"adder out: {proc.adder.get_out()}")
@@ -188,6 +188,6 @@ if __name__ == "__main__":
         proc.cu.print_fields()
         proc.alu.print_fields()
         # print(f"Mux3 : {proc.mux3.get_select()}, out: {proc.mux3.get_out()}")
-        
+        proc.regs.print_fields()
         
     proc.regs.print_regs_int()

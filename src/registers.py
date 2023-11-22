@@ -77,6 +77,14 @@ class Registers:
             # Write data_in to register
             self.regs[self.get_rd()] = self.get_data_in()
 
+    def print_fields(self):
+        print(f"Registers:")
+        print(f"reg_1         : {self.get_reg_1()}")
+        print(f"reg_2         : {self.get_reg_2()}")
+        print(f"rd            : {self.get_rd()}")
+        print(f"data_in       : {self.get_data_in()}")
+        print(f"write_enabled : {self.get_write_enabled()}")
+        print()
 
     # Format content of register to string as Binary, Hex or Integer
     def reg_to_str_bin(self, index):
