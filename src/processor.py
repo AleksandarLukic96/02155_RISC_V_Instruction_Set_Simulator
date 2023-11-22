@@ -77,13 +77,13 @@ class Processor:
         self.regs.set_reg_1(self.dec.get_reg_1())
         self.regs.set_reg_2(self.dec.get_reg_2())
                 
-        # Prepare MUX for alu
+        # Prepare MUX for alu operand 1
         self.mux2_3.set_in_0(self.pc.get_addr())
         self.mux2_3.set_in_1(self.regs.get_reg_1())
         self.mux2_3.set_select(self.cu.get_alu_op_1_ctrl())
         self.mux2_3.compute_out()
         
-        # Prepare MUX for alu
+        # Prepare MUX for alu operand 2
         self.mux2_4.set_in_0(self.regs.get_reg_2())
         self.mux2_4.set_in_1(self.imm.get_res())
         self.mux2_4.set_select(self.cu.get_alu_op_2_ctrl())
@@ -113,7 +113,7 @@ class Processor:
         # If writing is enabled then write to register rd
         self.regs.set_data_in(self.mux3.get_out())
         self.regs.write_to_rd()
-        
+                
         # Update branch and assert if jump should be done
         self.bra.set_op_1(self.regs.get_reg_1())
         self.bra.set_op_2(self.regs.get_reg_2())
@@ -156,20 +156,18 @@ if __name__ == "__main__":
     for i in range(len(proc.regs.regs)):
         proc.regs.regs[i] = i
     
-    #proc.imem.insts[0] = 0x00b50633
-    #proc.imem.insts[1] = 0x00c68733
-    #proc.imem.insts[2] = 0x00f808b3
-    
-    for i in range(3):
-        print(f"\nAfter step execution ({i}):")
+    for i in range(proc.imem.number_of_insts):
+        proc.execute_step()
+        print(f"\nAfter step execution of inst at ({i*4}):")
         print(f"PC addr: {proc.pc.get_addr()}")
         print(f"mux2_2 out: {proc.mux2_2.get_out()}")
         print(f"adder out: {proc.adder.get_out()}")
         print(f"imem inst: {proc.imem.get_inst()}")
+        print(f"imm res: {proc.imm.get_res()}")
         print(f"dec Opcode: {proc.dec.get_opcode()}, func3: {proc.dec.get_func3()}, func7: {proc.dec.get_func7()}, rd: {proc.dec.get_rd()}, reg_1: {proc.dec.get_reg_1()}, reg_2: {proc.dec.get_reg_2()}")
         print(f"cu do_branch: {proc.cu.get_do_branch()}, do_jump: {proc.cu.get_do_jump()}, branch_ctrl: {proc.cu.get_branch_ctrl()}, reg_write: {proc.cu.get_reg_write()}, reg_ctrl: {proc.cu.get_reg_ctrl()}, mem_read: {proc.cu.get_mem_read()}, mem_write: {proc.cu.get_mem_write()}, alu_op_1_ctrl: {proc.cu.get_alu_op_1_ctrl()}, alu_op_2_ctrl: {proc.cu.get_alu_op_2_ctrl()}. alu_ctrl: {proc.cu.get_alu_ctrl()}")
         print(f"ALU ctrl: {proc.alu.get_ctrl()}, op_1: {proc.alu.get_op_1()}, op_2: {proc.alu.get_op_2()}, res: {proc.alu.get_res()}")
         print(f"Mux3 : {proc.mux3.get_select()}, out: {proc.mux3.get_out()}")
         
-        proc.execute_step()
+        
     proc.regs.print_regs_int()

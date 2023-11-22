@@ -1,9 +1,4 @@
 # Implementation of Registers Class and functions 
-from ctypes import c_int32
-
-# Function to handle 32-bit overflow
-def int32(val):
-    return c_int32(val).value
 
 # Instruction Memory Class
 class Registers:
@@ -50,7 +45,7 @@ class Registers:
         return self.rd
 
     def set_data_in(self, data_in):
-        self.data_in = int32(data_in)
+        self.data_in = data_in
 
     def get_data_in(self):
         return self.data_in
@@ -80,7 +75,7 @@ class Registers:
                 return
 
             # Write data_in to register
-            self.regs[self.get_rd()] = int32(self.get_data_in())
+            self.regs[self.get_rd()] = self.get_data_in()
 
 
     # Format content of register to string as Binary, Hex or Integer

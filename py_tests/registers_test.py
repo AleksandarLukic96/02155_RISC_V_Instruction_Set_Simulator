@@ -25,7 +25,7 @@ class Test_Registers:
     content_check = list(zip(valid_registers, valid_data))
     content_check = list(zip(content_check, valid_data))
     
-    valid_data_check = [(0, 0), (-1, -1), (0xFFFFFFFF, -1), (0x1FFFFFFFF, -1), (8589934591, -1), (0x7FFFFFFF, 2147483647), (0x12345678, 305419896)]
+    valid_data_check = [(0, 0), (-1, -1), (0xF0EC4420, -252951520), (0xFFFFFFFF, -1), (0x7FFFFFFF, 2147483647), (0x80000000, -2147483648)]
 
 
         
