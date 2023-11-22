@@ -29,3 +29,10 @@ class OR:
         self.set_out(
             self.get_in_0() | self.get_in_1()
         )
+
+    def print_fields(self):
+        print(f"OR:")
+        print(f" in_0 : {self.get_in_0()}")
+        print(f" in_1 : {self.get_in_1()}")
+        print(f" out  : {self.get_out()}")
+        print()

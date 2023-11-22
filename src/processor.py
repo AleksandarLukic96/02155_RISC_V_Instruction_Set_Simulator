@@ -188,5 +188,6 @@ if __name__ == "__main__":
         proc.cu.print_fields()
         proc.alu.print_fields()
         # print(f"Mux3 : {proc.mux3.get_select()}, out: {proc.mux3.get_out()}")
+        proc.or_1.print_fields()
         proc.regs.print_fields()
         
