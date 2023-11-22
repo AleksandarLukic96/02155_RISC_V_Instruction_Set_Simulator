@@ -111,3 +111,13 @@ class Immediate:
         elif self.get_opcode() == const.J_TYPE:
             self.execute_j_type()
     
+    def print_fields(self):
+        print(f"Immediate:")
+        print(f" func7  : {self.get_func7()}")
+        print(f" reg_2  : {self.get_reg_2()}")
+        print(f" reg_1  : {self.get_reg_1()}")
+        print(f" rd     : {self.get_rd()}")
+        print(f" func3  : {self.get_func3()}")
+        print(f" opcode : {self.get_opcode()}")
+        print(f" res    : {self.get_res()}")
+        print()

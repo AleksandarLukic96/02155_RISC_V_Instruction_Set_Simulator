@@ -183,7 +183,7 @@ if __name__ == "__main__":
         proc.adder.print_fields()
         # str_hex = "{0:08x}".format(proc.imem.get_inst() % (1<<32))
         # print(f"imem inst: {str_hex} {proc.imem.get_inst()}")
-        # print(f"imm res: {proc.imm.get_res()}")
+        proc.imm.print_fields()
         # print(f"dec Opcode: {proc.dec.get_opcode()}, func3: {proc.dec.get_func3()}, func7: {proc.dec.get_func7()}, rd: {proc.dec.get_rd()}, reg_1: {proc.dec.get_reg_1()}, reg_2: {proc.dec.get_reg_2()}")
         proc.cu.print_fields()
         proc.alu.print_fields()
