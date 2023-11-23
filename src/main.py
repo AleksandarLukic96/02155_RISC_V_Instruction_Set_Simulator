@@ -8,11 +8,13 @@ def print_intro():
     str_2 = '{: ^{width}}'.format("This program loads a given binary file,", width = width)
     str_3 = '{: ^{width}}'.format("and interprets it as a RISC-V program.", width = width)
     str_0 = "#" * width
+    print()
     print(f"##{str_0}##")
     print(f"##{str_1}##")
     print(f"##{str_2}##")
     print(f"##{str_3}##")
     print(f"##{str_0}##")
+    print()
 
 def print_help_menu():
     print("Help Menu: ")
@@ -24,16 +26,19 @@ def print_help_menu():
     print(" 'r' : Reset processor, clearing all signals, registers and memory.")
     print(" 'x' : Exit program.")
 
+def print_error(message = "ERROR!"):
+    print(f"[!] {message}")
+
 def check_file_path_is_bin(file_path):
     if os.path.exists(file_path):
         _, file_extension = os.path.splitext(file_path)
         if file_extension == ".bin":                    
             return True
         else:
-            print(" File found, but file extension is not '.bin'!")
+            print_error("File found, but file extension is not '.bin'!")
             return False
     else:
-        print(" File not found!")
+        print_error("File not found!")
         return False
 
 def main():
@@ -52,10 +57,10 @@ def main():
         
         if user_input == 's':
             if proc == None:
-                print("Program not yet loaded, please provide a path to a binary file.")
+                print_error("Program not yet loaded, please provide a path to a binary file.")
             
             elif (proc.pc.get_addr() > (len(proc.imem.insts) * 4)) | (proc.dec.get_opcode() == const.I_TYPE_ENV):
-                print("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
+                print_error("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
             
             else:
                 proc.execute_step()            
@@ -65,27 +70,27 @@ def main():
             
             if check_file_path_is_bin(file_path):
                 proc = Processor(file_path = file_path)
-                print(" Program loaded successfully from: '%s'!" % os.path.basename(file_path).split('/')[-1])
+                print("Program loaded successfully from: '%s'!" % os.path.basename(file_path).split('/')[-1])
                     
         if user_input == 'e':
             if proc == None:
-                print("Program not yet loaded, please provide a path to a binary file.")
+                print_error("Program not yet loaded, please provide a path to a binary file.")
             
             elif (proc.pc.get_addr() > (len(proc.imem.insts) * 4)) | (proc.dec.get_opcode() == const.I_TYPE_ENV):
-                print("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
+                print_error("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
                 
             else:
                 proc.execute_program(do_print = False)
 
         if user_input == 'p':
             if proc == None:
-                print("Program not yet loaded, please provide a path to a binary file.")
+                print_error("Program not yet loaded, please provide a path to a binary file.")
             else:
                 proc.print_register_content(repr = 'hex')
 
         if user_input == 'r':
             if proc == None:
-                print("Program not yet loaded, please provide a path to a binary file.")
+                print_error("Program not yet loaded, please provide a path to a binary file.")
             else:
                 proc = Processor(file_path = file_path)
 
@@ -94,7 +99,7 @@ def main():
             break
 
         if user_input not in ['h', 's', 'c', 'e', 'p', 'r', 'x']:
-            print("Invalid input, try again!")
+            print_error("Invalid input, try again!")
 
 if __name__ == "__main__":
     main()
