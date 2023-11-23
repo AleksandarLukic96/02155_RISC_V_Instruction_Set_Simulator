@@ -194,7 +194,6 @@ class Processor:
         else:
             while (self.pc.get_addr() <= len(self.imem.insts) * 4):
                 self.execute_step(do_print = do_print)
-                self.do_print_processor_fields()
 
                 # Break loop at environment call
                 if self.dec.get_opcode() == const.I_TYPE_ENV:
@@ -216,11 +215,11 @@ class Processor:
             for j in range(4):
                 reg_name = "{:>3}".format("x" + str(i+j))
                 if repr == 'int':
-                    reg_value = utils.to_str_int(self.regs.regs[i])
+                    reg_value = utils.to_str_int(self.regs.regs[i+j])
                 elif repr == 'hex':
-                    reg_value = utils.to_str_hex(self.regs.regs[i])
+                    reg_value = utils.to_str_hex(self.regs.regs[i+j])
                 elif repr == 'bin':
-                    reg_value = utils.to_str_bin(self.regs.regs[i])
+                    reg_value = utils.to_str_bin(self.regs.regs[i+j])
                 line += reg_name + " = " + reg_value + ", "
             i += 4
             line = line[:-2]
