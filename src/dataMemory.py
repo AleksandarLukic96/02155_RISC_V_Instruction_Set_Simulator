@@ -1,9 +1,4 @@
 # Implementation of Registers Class and functions 
-from ctypes import c_int32
-
-# Function to handle 32-bit overflow
-def int32(val):
-    return c_int32(val).value
 
 # Memory sizes in bytes
 KB  = 1000
@@ -78,12 +73,12 @@ class DataMemory:
     def write_to_addr(self):
         if self.get_write_enabled() == 1:
             # Write data_in to address in memory
-            self.mem_addrs[self.addr] = int32(self.data_in)    
+            self.mem_addrs[self.addr] = self.data_in    
     
     def read_from_addr(self):
         if self.get_read_enabled() == 1:
             # Read data_out from address in memory
-            self.data_out = int32(self.mem_addrs[self.addr])
+            self.data_out = self.mem_addrs[self.addr]
 
     def __repr__(self):
         return "addr: %s, data_in: %s, data_out: %s, read_enabled: %s, write_enabled: %s" % (self.get_addr(), self.get_data_in(), self.get_data_out(), self.get_read_enabled(), self.get_write_enabled())

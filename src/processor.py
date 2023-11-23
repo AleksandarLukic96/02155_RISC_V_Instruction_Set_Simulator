@@ -208,5 +208,5 @@ if __name__ == "__main__":
 
     proc = Processor(file_path = file_path)
         
-    proc.execute_program()
-    
+    proc.execute_program(do_print = True)
+    proc.print_register_content()
