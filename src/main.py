@@ -24,6 +24,7 @@ def print_help_menu():
     print(" 'e' : Execute all instructions starting from PC.")
     print(" 'p' : Print out register contents.")
     print(" 'r' : Reset processor, clearing all signals, registers and memory.")
+    print(" 'd' : Enable dump content from processor.")
     print(" 'x' : Exit program.")
 
 def print_error(message = "ERROR!"):
@@ -45,6 +46,7 @@ def main():
     # Placeholders until file is parsed
     proc = None
     file_path = ""
+    dump_enabled = False
     
     print_intro()
     print_help_menu()
@@ -55,6 +57,13 @@ def main():
         if user_input == 'h':
             print_help_menu()            
         
+        if user_input == 'c':
+            file_path = input("Please enter file path : ")
+            
+            if check_file_path_is_bin(file_path):
+                proc = Processor(file_path = file_path)
+                print("Program loaded successfully from: '%s'!" % os.path.basename(file_path).split('/')[-1])
+        
         if user_input == 's':
             if proc == None:
                 print_error("Program not yet loaded, please provide a path to a binary file.")
@@ -63,15 +72,8 @@ def main():
                 print_error("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
             
             else:
-                proc.execute_step()            
-        
-        if user_input == 'c':
-            file_path = input("Please enter file path : ")
-            
-            if check_file_path_is_bin(file_path):
-                proc = Processor(file_path = file_path)
-                print("Program loaded successfully from: '%s'!" % os.path.basename(file_path).split('/')[-1])
-                    
+                proc.execute_step(do_print = dump_enabled)            
+                            
         if user_input == 'e':
             if proc == None:
                 print_error("Program not yet loaded, please provide a path to a binary file.")
@@ -80,7 +82,7 @@ def main():
                 print_error("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
                 
             else:
-                proc.execute_program(do_print = False)
+                proc.execute_program(do_print = dump_enabled)
 
         if user_input == 'p':
             if proc == None:
@@ -93,12 +95,27 @@ def main():
                 print_error("Program not yet loaded, please provide a path to a binary file.")
             else:
                 proc = Processor(file_path = file_path)
+        
+        if user_input == 'd':
+            while True:
+                user_choice = input("Enable dump ['e'] or Disable dump ['d']: ")
+                if user_choice == 'e':
+                    dump_enabled = True
+                    print("Enabled dump!")
+                    break
+                elif user_choice == 'd':
+                    dump_enabled = False
+                    print("Disabled dump!")
+                    break
+                else:
+                    print_error("Input was not 'e' or 'd'!")
+                    
 
         if user_input == 'x':
             print("Closing simulation, bye!")
             break
 
-        if user_input not in ['h', 's', 'c', 'e', 'p', 'r', 'x']:
+        if user_input not in ['h', 's', 'c', 'e', 'p', 'r', 'd', 'x']:
             print_error("Invalid input, try again!")
 
 if __name__ == "__main__":
