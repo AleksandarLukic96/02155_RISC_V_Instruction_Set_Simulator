@@ -144,34 +144,34 @@ class ControlUnit:
             alu_ctrl = const.ADD)
     
     def execute_r_type(self):
-        if (self.get_func3() == 0) & (self.get_func7() == 0):
+        if (self.get_func3() == 0x0) & (self.get_func7() == 0x00):
             alu_ctrl = const.ADD
 
-        elif (self.get_opcode() == 0) & (self.get_func7() == 20):
+        elif (self.get_func3() == 0x0) & (self.get_func7() == 0x20):
             alu_ctrl = const.SUB
 
-        elif self.get_func3() == 4:
+        elif self.get_func3() == 0x4:
             alu_ctrl = const.XOR
 
-        elif self.get_func3() == 6:
+        elif self.get_func3() == 0x6:
             alu_ctrl = const.OR
 
-        elif self.get_func3() == 7:
+        elif self.get_func3() == 0x7:
             alu_ctrl = const.AND
 
-        elif self.get_func3() == 1:
+        elif self.get_func3() == 0x1:
             alu_ctrl = const.SLL
 
-        elif (self.get_func3() == 5) & (self.get_func7() == 0):
+        elif (self.get_func3() == 0x5) & (self.get_func7() == 0x00):
             alu_ctrl = const.SRL
 
-        elif (self.get_func3() == 5) & (self.get_func7() == 20):
+        elif (self.get_func3() == 0x5) & (self.get_func7() == 0x20):
             alu_ctrl = const.SRA
 
-        elif self.get_func3() == 2:
+        elif self.get_func3() == 0x2:
             alu_ctrl = const.SLT
 
-        elif self.get_func3() == 3:
+        elif self.get_func3() == 0x3:
             alu_ctrl = const.SLTU
 
         else:
@@ -190,31 +190,31 @@ class ControlUnit:
             alu_ctrl = alu_ctrl)
 
     def execute_i_type(self):
-        if self.get_func3() == 0:
+        if self.get_func3() == 0x0:
             alu_ctrl = const.ADDI
 
-        elif self.get_func3() == 4:
+        elif self.get_func3() == 0x4:
             alu_ctrl = const.XORI
 
-        elif  self.get_func3() == 6:
+        elif  self.get_func3() == 0x6:
             alu_ctrl = const.ORI
 
-        elif self.get_func3() == 7:
+        elif self.get_func3() == 0x7:
             alu_ctrl = const.ANDI
 
-        elif (self.get_func3() == 1) & (self.get_imm() == 0):
+        elif (self.get_func3() == 0x1) & (self.get_imm() == 0x00):
             alu_ctrl = const.SLLI
 
-        elif (self.get_func3() == 5) & (self.get_imm() == 0):
+        elif (self.get_func3() == 0x5) & (self.get_imm() == 0x00):
             alu_ctrl = const.SRLI
 
-        elif (self.get_func3() == 5) & (self.get_imm() == 20):
+        elif (self.get_func3() == 0x5) & (self.get_imm() == 0x20):
             alu_ctrl = const.SRAI
 
-        elif self.get_func3() == 2:
+        elif self.get_func3() == 0x2:
             alu_ctrl = const.SLTI
 
-        elif self.get_func3() == 3:
+        elif self.get_func3() == 0x3:
             alu_ctrl = const.SLTIU
 
         else:
@@ -233,19 +233,19 @@ class ControlUnit:
             alu_ctrl = alu_ctrl)
 
     def execute_i_type_load(self):
-        if self.get_func3() == 0:
+        if self.get_func3() == 0x0:
             alu_ctrl = const.LB
 
-        elif self.get_func3() == 1:
+        elif self.get_func3() == 0x1:
             alu_ctrl = const.LH
 
-        elif self.get_func3() == 2:
+        elif self.get_func3() == 0x2:
             alu_ctrl = const.LW
 
-        elif self.get_func3() == 4:
+        elif self.get_func3() == 0x4:
             alu_ctrl = const.LBU
 
-        elif self.get_func3() == 5:
+        elif self.get_func3() == 0x5:
             alu_ctrl = const.LHU
         
         else:
@@ -264,13 +264,13 @@ class ControlUnit:
             alu_ctrl = alu_ctrl)
 
     def execute_s_type(self):
-        if self.get_func3() == 0:
+        if self.get_func3() == 0x0:
             alu_ctrl = const.SB
         
-        elif self.get_func3() == 1:
+        elif self.get_func3() == 0x1:
             alu_ctrl = const.SH
         
-        elif  self.get_func3() == 2:
+        elif  self.get_func3() == 0x2:
             alu_ctrl = const.SW
 
         else:
@@ -289,22 +289,22 @@ class ControlUnit:
             alu_ctrl = alu_ctrl)
 
     def execute_b_type(self):
-        if self.get_func3() == 0:
+        if self.get_func3() == 0x0:
             branch_ctrl = const.BEQ
         
-        elif self.get_func3() == 1:
+        elif self.get_func3() == 0x1:
             branch_ctrl = const.BNE
         
-        elif self.get_func3()== 4:
+        elif self.get_func3()== 0x4:
             branch_ctrl = const.BLT
         
-        elif self.get_func3() == 5:
+        elif self.get_func3() == 0x5:
             branch_ctrl = const.BGE
         
-        elif self.get_func3() == 6:
+        elif self.get_func3() == 0x6:
             branch_ctrl = const.BLTU
         
-        elif self.get_func3() == 7:
+        elif self.get_func3() == 0x7:
             branch_ctrl = const.BGEU
         
         else:
@@ -375,11 +375,11 @@ class ControlUnit:
             alu_ctrl = const.AUIPC)
 
     def execute_i_type_env(self):
-        if self.get_imm() == 0:
+        if self.get_imm() == 0x0:
             # ECALL <--- Needs to be implemented!
             self.execute_nop() 
         
-        elif self.get_imm() == 1:
+        elif self.get_imm() == 0x1:
             # EBREAK <--- Needs to be implemented!
             self.execute_nop() 
         
@@ -442,4 +442,15 @@ class ControlUnit:
         print(f" alu_op_2_ctrl: {self.get_alu_op_2_ctrl()}")
         print(f" alu_ctrl     : {self.get_alu_ctrl()}")
         print()
+
+if __name__ == "__main__":
+    cu = ControlUnit()
+    cu.set_opcode(51)
+    cu.set_func3(0)
+    cu.set_func7(0x20)
+
+    
+    cu.excute()
+    
+    print(cu)
     
