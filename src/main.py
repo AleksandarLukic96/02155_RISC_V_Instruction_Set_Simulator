@@ -1,5 +1,6 @@
 import os
 from processor import Processor
+import signal_constants as const
 
 def print_intro():
     width = 50
@@ -52,6 +53,10 @@ def main():
         if user_input == 's':
             if proc == None:
                 print("Program not yet loaded, please provide a path to a binary file.")
+            
+            elif (proc.pc.get_addr() > (len(proc.imem.insts) * 4)) | (proc.dec.get_opcode() == const.I_TYPE_ENV):
+                print("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
+            
             else:
                 proc.execute_step()            
         
@@ -60,13 +65,17 @@ def main():
             
             if check_file_path_is_bin(file_path):
                 proc = Processor(file_path = file_path)
-                print(" Program loaded successfully!")
+                print(" Program loaded successfully from: '%s'!" % os.path.basename(file_path).split('/')[-1])
                     
         if user_input == 'e':
             if proc == None:
                 print("Program not yet loaded, please provide a path to a binary file.")
+            
+            elif (proc.pc.get_addr() > (len(proc.imem.insts) * 4)) | (proc.dec.get_opcode() == const.I_TYPE_ENV):
+                print("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
+                
             else:
-                proc.execute_program(do_print = True)
+                proc.execute_program(do_print = False)
 
         if user_input == 'p':
             if proc == None:
