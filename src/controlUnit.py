@@ -388,7 +388,7 @@ class ControlUnit:
     
     def excute(self):
         # Interpret immediate
-        self.set_imm(self.get_func7() >> 5 )
+        self.set_imm(self.get_func7())
         
         # Interpret opcode and update output signals accordingly
         if self.get_opcode() == const.R_TYPE:
