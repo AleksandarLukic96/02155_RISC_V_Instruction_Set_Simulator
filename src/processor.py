@@ -214,6 +214,7 @@ class Processor:
                     reg_value = utils.to_str_bin(self.regs.regs[i])
                 line += reg_name + " = " + reg_value + ", "
             i += 4
+            line = line[:-2]
             print(line)
             
 # If file is run as python file, test class functions
