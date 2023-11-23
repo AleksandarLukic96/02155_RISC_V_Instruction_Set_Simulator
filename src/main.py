@@ -72,7 +72,7 @@ def main():
             if proc == None:
                 print("Program not yet loaded, please provide a path to a binary file.")
             else:
-                proc.print_register_content()
+                proc.print_register_content(repr = 'hex')
 
         if user_input == 'r':
             if proc == None:

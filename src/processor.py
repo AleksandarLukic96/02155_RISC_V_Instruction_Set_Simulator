@@ -37,12 +37,7 @@ class Processor:
         self.adder = Adder()
         self.and_1 = AND()
         self.or_1 = OR()
-    
-    def print_register_content(self):
-        for i in range(len(self.regs.regs)):
-            reg_name = "{:>3}".format("x" + str(i))
-            print("%s %s" % (reg_name, utils.to_str_int_hex_bin(self.regs.regs[i]))) 
-    
+        
     def execute_step(self):
         check = False
         
@@ -196,7 +191,31 @@ class Processor:
                 if self.dec.get_opcode() == const.I_TYPE_ENV:
                     break
         
-
+    def print_register_content_int_hex_bin(self):
+        for i in range(len(self.regs.regs)):
+            reg_name = "{:>3}".format("x" + str(i))
+            print("%s %s" % (reg_name, utils.to_str_int_hex_bin(self.regs.regs[i]))) 
+        
+    def print_register_content(self, repr = 'hex'):
+        repr = repr
+        i = 0
+        while i < len(self.regs.regs):
+            if repr not in ['int', 'hex', 'bin']:
+                self.print_register_content_int_hex_bin()
+                break
+            line = ""
+            for j in range(4):
+                reg_name = "{:>3}".format("x" + str(i))
+                if repr == 'int':
+                    reg_value = utils.to_str_int(self.regs.regs[i])
+                elif repr == 'hex':
+                    reg_value = utils.to_str_hex(self.regs.regs[i])
+                elif repr == 'bin':
+                    reg_value = utils.to_str_bin(self.regs.regs[i])
+                line += reg_name + " = " + reg_value + ", "
+            i += 4
+            print(line)
+            
 # If file is run as python file, test class functions
 if __name__ == "__main__":
 
