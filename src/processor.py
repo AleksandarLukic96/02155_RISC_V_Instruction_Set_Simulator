@@ -37,9 +37,29 @@ class Processor:
         self.adder = Adder()
         self.and_1 = AND()
         self.or_1 = OR()
+
+    def do_print_processor_fields(self):
+        print("[PC         ]", self.pc)
+        print("[MUX2_2     ]", self.mux2_2)
+        print("[Adder      ]", self.adder)
+        print("[Imemory    ]", self.imem)
+        print("[Decoder    ]", self.dec)
+        print("[Immediate  ]", self.imm)
+        print("[ControlUnit]", self.cu)
+        print("[MUX2_3     ]", self.mux2_3)
+        print("[MUX2_4     ]", self.mux2_4)
+        print("[ALU        ]", self.alu)
+        print("[MUX3       ]", self.mux3)
+        print("[Branch     ]", self.bra)
+        print("[AND        ]", self.and_1)
+        print("[OR         ]", self.or_1)
+        print("[Registers  ]", self.regs)
+        print("[MUX2_1     ]", self.mux2_1)
         
-    def execute_step(self):
+    def execute_step(self, do_print = False):
         check = False
+        do_print = do_print
+        pc_before_execution = self.pc.get_addr()
         
         # Prepare MUX for Adder (currently hardwired to 4)
         self.mux2_2.set_in_0(2)
@@ -157,35 +177,24 @@ class Processor:
         # End sequence by updating PC
         self.pc.set_addr(self.mux2_1.get_out())
         if check == True:  print("Check 17")
+        
+        if do_print == True:
+            print()
+            print(f"Executed instruction from PC: {pc_before_execution}")
+            self.do_print_processor_fields()
     
     def execute_program(self, do_print = False):
         do_print = do_print
         
         if do_print == False:
             while (self.pc.get_addr() <= len(self.imem.insts) * 4):             
-                self.execute_step()
+                self.execute_step(do_print = do_print)
                 if self.dec.get_opcode() == const.I_TYPE_ENV:
                     break
         else:
             while (self.pc.get_addr() <= len(self.imem.insts) * 4):
-                print(f"\nAfter step execution of inst at (PC: {self.pc.get_addr()}):")
-                self.execute_step()
-                print("[PC         ]", self.pc)
-                print("[MUX2_2     ]", self.mux2_2)
-                print("[Adder      ]", self.adder)
-                print("[Imemory    ]", self.imem)
-                print("[Decoder    ]", self.dec)
-                print("[Immediate  ]", self.imm)
-                print("[ControlUnit]", self.cu)
-                print("[MUX2_3     ]", self.mux2_3)
-                print("[MUX2_4     ]", self.mux2_4)
-                print("[ALU        ]", self.alu)
-                print("[MUX3       ]", self.mux3)
-                print("[Branch     ]", self.bra)
-                print("[AND        ]", self.and_1)
-                print("[OR         ]", self.or_1)
-                print("[Registers  ]", self.regs)
-                print("[MUX2_1     ]", self.mux2_1)
+                self.execute_step(do_print = do_print)
+                self.do_print_processor_fields()
 
                 # Break loop at environment call
                 if self.dec.get_opcode() == const.I_TYPE_ENV:
@@ -205,7 +214,7 @@ class Processor:
                 break
             line = ""
             for j in range(4):
-                reg_name = "{:>3}".format("x" + str(i))
+                reg_name = "{:>3}".format("x" + str(i+j))
                 if repr == 'int':
                     reg_value = utils.to_str_int(self.regs.regs[i])
                 elif repr == 'hex':
