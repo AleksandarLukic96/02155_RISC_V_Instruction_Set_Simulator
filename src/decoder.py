@@ -77,4 +77,12 @@ class Decoder:
         print(f" func3  : {self.get_func3()}")
         print(f" func7  : {self.get_func7()}")
         print()
-        
+
+if __name__ == "__main__":
+    dec = Decoder()
+    dec.set_inst(0x40628633)
+    
+    dec.compute_decoding()
+    
+    print(dec)
+    
