@@ -63,21 +63,30 @@ class ALU:
     
     def compute_sll(self):
         self.set_res(utils.remove_overflow(
-            self.op_1 << self.op_2)
+            self.op_1 << (self.op_2 & 0x0000001F))
         )
     
     def compute_srl(self):
-        self.set_res(self.op_1 >> self.op_2)
+        self.set_res(self.op_1 >> (self.op_2 & 0x0000001F))
     
-    def compute_sra(self): # <--- TODO: Sign extend binary instead of HEX (MUST BE REWRITTEN COMEPLETELY)
-        self.set_res((self.op_1 >> self.op_2) if (self.op_1 >= 0) else ((self.op_1 + (1 << self.op_2) - 1) >> self.op_2))
+    def compute_sra(self):
+        shift_by_value = self.op_2 & 0x0000001F
+        shifted_val = self.op_1 >> shift_by_value 
+        msb_pos_shifted = 32 - shift_by_value
+        exteded_val = utils.sign_extend(shifted_val, msb_pos = msb_pos_shifted)
+        self.set_res(exteded_val)
     
     def compute_slt(self):
-        self.set_res(0 | (self.op_1 < self.op_2)) 
+        if (self.op_1 >> 31 == 1) & (self.op_2 >> 31 == 0):
+            res = 1
+        elif (self.op_1 >> 31 == 0) & (self.op_2 >> 31 == 1):
+            res = 0
+        else:
+            res = (0 | (self.op_1 < self.op_2))
+        self.set_res(res) 
     
     def compute_sltu(self):
-        self.compute_slt()
-        # self.set_res(0 | (to_uint32(self.op_1) < to_uint32(self.op_2)))
+        self.set_res(0 | (self.op_1 < self.op_2))
     
     # I-type operations
     def compute_addi(self):
@@ -98,7 +107,7 @@ class ALU:
     def compute_srli(self):
         self.compute_srl()
     
-    def compute_srai(self): # <--- TODO: Sign extend binary instead of HEX
+    def compute_srai(self):
         self.compute_sra()
     
     def compute_slti(self):
