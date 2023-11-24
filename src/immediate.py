@@ -1,5 +1,6 @@
 # Implementation of Immediate Class and functions 
 import signal_constants as const
+import utils
 
 class Immediate:
     def __init__(self):
@@ -60,18 +61,23 @@ class Immediate:
         pass
 
     def execute_i_type(self):
-        self.set_res((self.get_func7() << 5) | self.get_reg_2())
+        self.set_res(utils.sign_extend(
+            (self.get_func7() << 5) | self.get_reg_2()
+            , n_bits = 12))
 
     def execute_s_type(self):
-        self.set_res((self.get_func7() << 5) | self.get_rd())
+        self.set_res(utils.sign_extend(
+            (self.get_func7() << 5) | self.get_rd()
+            , n_bits = 12))
 
     def execute_b_type(self):
-        self.set_res((
-            ((self.get_func7() & 0b1000000) << 5)
+        self.set_res(utils.sign_extend(
+            (((self.get_func7() & 0b1000000) << 5)
             | ((self.get_rd() & 0b1) << 10)
             | ((self.get_func7() & 0b0111111) << 4)
             | (self.get_rd() >> 1)
-            ) << 1) 
+            )
+            , n_bits = 12) << 1) 
         
     def execute_u_type(self):
         self.set_res(
@@ -82,14 +88,15 @@ class Immediate:
             )
         
     def execute_j_type(self):
-        self.set_res((
-            ((self.get_func7() & 0b1000000) << 13)
+        self.set_res(utils.sign_extend(
+            (((self.get_func7() & 0b1000000) << 13)
             | (self.get_reg_1() << 14)
             | (self.get_func3() << 11)
             | ((self.get_reg_2() & 0b00001) << 10)
             | ((self.get_func7() & 0b0111111) << 4)
             | (self.get_reg_2() >> 1)
-            ) << 1)
+            )
+            , n_bits = 12) << 1)
 
     def compute_res(self):
         # Interpret opcode and set immediate according to instruction type
