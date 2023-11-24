@@ -63,12 +63,12 @@ class Immediate:
     def execute_i_type(self):
         self.set_res(utils.sign_extend(
             (self.get_func7() << 5) | self.get_reg_2()
-            , n_bits = 12))
+            , msb_pos = 12))
 
     def execute_s_type(self):
         self.set_res(utils.sign_extend(
             (self.get_func7() << 5) | self.get_rd()
-            , n_bits = 12))
+            , msb_pos = 12))
 
     def execute_b_type(self):
         self.set_res(utils.sign_extend(
@@ -77,7 +77,7 @@ class Immediate:
             | ((self.get_func7() & 0b0111111) << 4)
             | (self.get_rd() >> 1)
             )
-            , n_bits = 12) << 1) 
+            , msb_pos = 12) << 1) 
         
     def execute_u_type(self):
         self.set_res(
@@ -96,7 +96,7 @@ class Immediate:
             | ((self.get_func7() & 0b0111111) << 4)
             | (self.get_reg_2() >> 1)
             )
-            , n_bits = 12) << 1)
+            , msb_pos = 12) << 1)
 
     def compute_res(self):
         # Interpret opcode and set immediate according to instruction type
