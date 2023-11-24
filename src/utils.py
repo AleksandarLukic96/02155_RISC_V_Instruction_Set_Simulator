@@ -13,32 +13,30 @@ def to_str_int(val):
 def to_str_int_hex_bin(val):
     return to_str_int(val) + " " + to_str_hex(val) + " " + to_str_bin(val)
 
-def sign_extend(num, n_bits = 16):
-    n_bits = n_bits
+def sign_extend(num, msb_pos = 16):  # Always 32 bits values
+    if (msb_pos <= 0) | (msb_pos > 32):
+        return 0
     
     # Placeholder for result
     sign_extension_mask = 0x0
     res = 0x0
-    
-    # Number of bytes used for storing input
-    n_bytes = n_bits // 4
 
     # Find sign mask according to number of bits        
-    sign_mask = 0x8 << ((n_bytes - 1) * 4)
+    sign_mask = 0b1 << msb_pos - 1 
     
     # Extract signed bit accroding to number of bits
-    signed_bit = (num & sign_mask) >> (n_bits - 1)
+    signed_bit = (num & sign_mask) >> (msb_pos - 1)
     
     # Extend according to signed bit
     if signed_bit == 1:
-        sign_extension = 0xF
+        sign_extension = 0x1
     else:
         sign_extension = 0x0
         
-    for i in range(8 - n_bytes): # Always 32 bits / 8 bytes result
-        sign_extension_mask = sign_extension_mask | (sign_extension << (i*4))
+    for i in range(32 - msb_pos):
+        sign_extension_mask = sign_extension_mask | (sign_extension << i)
 
-    sign_extension_mask = sign_extension_mask << n_bits
+    sign_extension_mask = sign_extension_mask << msb_pos
         
     res = sign_extension_mask | num
     return res
