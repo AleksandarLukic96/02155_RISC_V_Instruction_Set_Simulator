@@ -1,5 +1,6 @@
 # Implementation of ALU Class and functions
 import signal_constants as const
+import utils
 
 # Function to convert signed to unsigned int
 def to_uint32(num):
@@ -41,11 +42,15 @@ class ALU:
         return self.res
         
     # R-type operations
-    def compute_add(self):
-        self.set_res(self.op_1 + self.op_2)
+    def compute_add(self): 
+        self.set_res(utils.remove_overflow(
+            self.op_1 + self.op_2)
+        )
 
     def compute_sub(self):
-        self.set_res(self.op_1 - self.op_2)
+        self.set_res(utils.remove_overflow(
+            self.op_1 - self.op_2)
+        )
     
     def compute_xor(self):
         self.set_res(self.op_1 ^ self.op_2)
@@ -57,19 +62,22 @@ class ALU:
         self.set_res(self.op_1 & self.op_2)
     
     def compute_sll(self):
-        self.set_res(self.op_1 << self.op_2)
+        self.set_res(utils.remove_overflow(
+            self.op_1 << self.op_2)
+        )
     
     def compute_srl(self):
         self.set_res(self.op_1 >> self.op_2)
     
-    def compute_sra(self):
+    def compute_sra(self): # <--- TODO: Sign extend binary instead of HEX (MUST BE REWRITTEN COMEPLETELY)
         self.set_res((self.op_1 >> self.op_2) if (self.op_1 >= 0) else ((self.op_1 + (1 << self.op_2) - 1) >> self.op_2))
     
     def compute_slt(self):
         self.set_res(0 | (self.op_1 < self.op_2)) 
     
     def compute_sltu(self):
-        self.set_res(0 | (to_uint32(self.op_1) < to_uint32(self.op_2)))
+        self.compute_slt()
+        # self.set_res(0 | (to_uint32(self.op_1) < to_uint32(self.op_2)))
     
     # I-type operations
     def compute_addi(self):
@@ -90,7 +98,7 @@ class ALU:
     def compute_srli(self):
         self.compute_srl()
     
-    def compute_srai(self):
+    def compute_srai(self): # <--- TODO: Sign extend binary instead of HEX
         self.compute_sra()
     
     def compute_slti(self):
@@ -139,7 +147,9 @@ class ALU:
     
     # U_TYPE_ADD
     def compute_auipc(self):
-        self.set_res(self.get_op_1() + self.get_op_2())
+        self.set_res(utils.remove_overflow(
+            self.get_op_1() + self.get_op_2()) # Uncertain if needed overflow handling?
+        )
     
     def compute_res(self):
         # R-type
