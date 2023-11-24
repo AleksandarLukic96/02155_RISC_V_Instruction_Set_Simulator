@@ -53,10 +53,10 @@ class Branch:
         elif self.get_branch_ctrl() == const.BNE:
             self.branch_taken_enable() if self.op_1 != self.op_2 else self.branch_taken_disable()
 
-        elif self.get_branch_ctrl() == const.BLT:
+        elif self.get_branch_ctrl() == const.BLT: # <--- TODO: Binary comparison with twos complement.
             self.branch_taken_enable() if self.op_1 < self.op_2 else self.branch_taken_disable()
         
-        elif self.get_branch_ctrl() == const.BGE:
+        elif self.get_branch_ctrl() == const.BGE: # <--- TODO: Binary comparison with twos complement.
             self.branch_taken_enable() if self.op_1 >= self.op_2 else self.branch_taken_disable()
         
         elif self.get_branch_ctrl() == const.BLTU:
@@ -70,12 +70,4 @@ class Branch:
     
     def __repr__(self):
         return "op_1: %s, op_2: %s, branch_ctrl: %s, branch_taken: %s" % (self.get_op_1(), self.get_op_2(), self.get_branch_ctrl(), self.get_branch_taken())
-    
-    def print_fields(self):
-        print(f"Branch:")
-        print(f" op_1         : {self.get_op_1()}")
-        print(f" op_2         : {self.get_op_2()}")
-        print(f" branch_ctrl  : {self.get_branch_ctrl()}")
-        print(f" branch_taken : {self.get_branch_taken()}")
-        print()
         
