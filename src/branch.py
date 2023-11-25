@@ -1,10 +1,6 @@
 # Implementation of Branch Class and functions
 import signal_constants as const
 
-# Function to convert signed to unsigned int
-def to_uint32(num):
-    return num + 2**32
-
 # Branch Class
 class Branch:
     def __init__(self):
@@ -71,10 +67,10 @@ class Branch:
                 self.branch_taken_enable() if self.op_1 >= self.op_2 else self.branch_taken_disable() 
             
         elif self.get_branch_ctrl() == const.BLTU:
-            self.branch_taken_enable() if to_uint32(self.op_1) < to_uint32(self.op_2) else self.branch_taken_disable()
+            self.branch_taken_enable() if (self.op_1 < self.op_2) else self.branch_taken_disable()
         
         elif self.get_branch_ctrl() == const.BGEU:
-            self.branch_taken_enable() if to_uint32(self.op_1) >= to_uint32(self.op_2) else self.branch_taken_disable()
+            self.branch_taken_enable() if (self.op_1 >= self.op_2) else self.branch_taken_disable()
             
         else:
             pass
