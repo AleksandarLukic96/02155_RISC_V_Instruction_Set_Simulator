@@ -68,7 +68,7 @@ def main():
             if proc == None:
                 print_error("Program not yet loaded, please provide a path to a binary file.")
             
-            elif (proc.pc.get_addr() > (len(proc.imem.insts) * 4)) | (proc.dec.get_opcode() == const.I_TYPE_ENV):
+            elif (proc.pc.get_addr() > (len(proc.imem.mem_slot))) | (proc.dec.get_opcode() == const.I_TYPE_ENV):
                 print_error("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
             
             else:
@@ -78,7 +78,7 @@ def main():
             if proc == None:
                 print_error("Program not yet loaded, please provide a path to a binary file.")
             
-            elif (proc.pc.get_addr() > (len(proc.imem.insts) * 4)) | (proc.dec.get_opcode() == const.I_TYPE_ENV):
+            elif (proc.pc.get_addr() > (len(proc.imem.mem_slot))) | (proc.dec.get_opcode() == const.I_TYPE_ENV):
                 print_error("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
                 
             else:
