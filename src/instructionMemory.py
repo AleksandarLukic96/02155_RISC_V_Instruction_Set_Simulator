@@ -7,7 +7,6 @@ class InstructionMemomry:
         # Load bin file into pyton
         f = open(file_path, mode = "rb")
         
-
         # Reading file data with read() method
         self.data = f.read()
         
