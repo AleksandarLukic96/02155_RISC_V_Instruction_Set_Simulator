@@ -60,6 +60,7 @@ class Processor:
         check = False
         do_print = do_print
         pc_before_execution = self.pc.get_addr()
+        if check == True:  print(f"PC: {self.pc.get_addr()}")
         
         # Prepare MUX for Adder (currently hardwired to 4)
         self.mux2_2.set_in_0(2)
@@ -152,9 +153,10 @@ class Processor:
         if check == True:  print("Check 12")
         
         # Update branch and assert if jump should be done
-        self.bra.set_op_1(self.regs.get_reg_1())
-        self.bra.set_op_2(self.regs.get_reg_2())
+        self.bra.set_op_1(self.regs.return_reg_1_content())
+        self.bra.set_op_2(self.regs.return_reg_2_content())
         self.bra.set_branch_ctrl(self.cu.get_branch_ctrl())
+        self.bra.compute_branch_taken()
         if check == True:  print("Check 13")
         
         self.and_1.set_in_0(self.bra.get_branch_taken())
