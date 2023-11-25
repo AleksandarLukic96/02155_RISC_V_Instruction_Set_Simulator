@@ -144,11 +144,11 @@ class ALU:
     
     # J_TYPE
     def compute_jal(self):
-        pass
+        self.set_res(self.op_1 + self.op_2)
     
     # I_TYPE_JUMP
     def compute_jalr(self):
-        pass
+        self.set_res(self.op_1 + self.op_2)
     
     # U_TYPE_LOAD
     def compute_lui(self):
