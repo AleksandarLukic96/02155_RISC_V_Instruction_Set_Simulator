@@ -11,9 +11,6 @@ class InstructionMemomry:
         # Reading file data with read() method
         self.data = f.read()
         
-        # Total number of instructions in program        
-        self.number_of_insts = len(self.data) // 4
-        
         # Set current address as parsed, otherwise initialise to 0
         self.addr = addr
         
@@ -24,26 +21,24 @@ class InstructionMemomry:
         self.little_endian = little_endian
         
         # Concatinate bytes into 32-bit instructions as int-array
-        self.insts = []
+        self.mem_slot = []
         
         i = 0   
         if self.little_endian:
             while i < (len(self.data)):
-                self.insts.append(
-                    (self.data[i + 3] << 24) | 
-                    (self.data[i + 2] << 16) | 
-                    (self.data[i + 1] <<  8) | 
-                    self.data[i])
+                self.mem_slot.append(self.data[i + 3])
+                self.mem_slot.append(self.data[i + 2])
+                self.mem_slot.append(self.data[i + 1])
+                self.mem_slot.append(self.data[i + 0])
                 i += 4
-        else:        
+        else:
             while i < (len(self.data)):
-                self.insts.append(
-                    (self.data[i] << 24) | 
-                    (self.data[i + 1] << 16) | 
-                    (self.data[i + 2] <<  8) | 
-                    self.data[i + 3])
+                self.mem_slot.append(self.data[i + 0])
+                self.mem_slot.append(self.data[i + 1])
+                self.mem_slot.append(self.data[i + 2])
+                self.mem_slot.append(self.data[i + 3])
                 i += 4
-          
+        
         # Closing the opened file
         f.close()
         
@@ -59,132 +54,24 @@ class InstructionMemomry:
     def get_inst(self):
         return self.inst
 
-    # Return instruction from current address
+    # Return 32-bit instruction from current address
     def fetch_inst_at_addr(self):
-        self.set_inst(self.insts[self.get_addr() // 4])
-    
-    
-    # Printing to console functions
-    def print_type(self):
-        print(type(self.data))
-    
-    def print_bytes(self):
-        print(f"{len(self.data)} bytes")
-        
-    def print_total_insts(self):
-        print(f"{self.number_of_insts} x 32-bit instructions")
-    
-    def print_insts_bin(self):
-        i = 0
-        for inst in self.insts:
-            str_bin = "{0:032b}".format(inst % (1<<32))
-            str_i = "{0:03x}".format(i*4)
-            print(f"{str_i} Bin: {str_bin}")
-            i += 1
-    
-    def print_insts_hex(self):
-        i = 0
-        for inst in self.insts:
-            str_hex = "{0:08x}".format(inst % (1<<32))
-            str_i = "{0:03x}".format(i*4)
-            print(f"{str_i} Hex: {str_hex}")
-            i += 1
-    
-    def print_insts_int(self):
-        i = 0
-        for inst in self.insts:
-            str_int = "{0:10}".format(inst)
-            str_i = "{0:03x}".format(i*4)
-            print(f"{str_i} Int: {str_int}")
-            i += 1
-    
-    def print_insts(self):
-        # Print out program in binary, hex and decimal
-        i = 0
-        for inst in self.insts:
-            str_bin = "{0:032b}".format(inst)
-            str_hex = "{0:08x}".format(inst)
-            str_int = "{0:10}".format(inst)
-            str_opcode = "{0:07b}".format(inst & 127)
-            str_i = "{0:03x}".format(i*4)
-            print(f"{str_i} Bin: {str_bin} Hex: {str_hex} Int: {str_int} Opcode: {str_opcode}")
-            i += 1 
-    
+        i = 0   
+        if self.little_endian:
+            self.set_inst(
+                  (self.mem_slot[self.addr + 0] << 24)
+                | (self.mem_slot[self.addr + 1] << 16)
+                | (self.mem_slot[self.addr + 2] <<  8) 
+                | (self.mem_slot[self.addr + 3] <<  0)
+            )
+        else:
+            self.set_inst(
+                  (self.mem_slot[self.addr + 3] << 24)
+                | (self.mem_slot[self.addr + 2] << 16)
+                | (self.mem_slot[self.addr + 1] <<  8) 
+                | (self.mem_slot[self.addr + 0] <<  0)
+            )
+
     def __repr__(self):
         str_hex = "{0:08x}".format(self.get_inst() % (1<<32))
         return "addr: %s, inst: (int)%s, (hex)0x%s" % (self.get_addr(), self.get_inst(), str_hex)
-
-    def print_fields(self):
-        str_hex = "{0:08x}".format(self.get_inst() % (1<<32))
-        print(f"Instruction Memory:")
-        print(f" addr : {self.get_addr()}")
-        print(f" inst : int: {self.get_inst()}, hex: 0x{str_hex}")
-        print()   
-
-# If file is run as python file, test class functions
-if __name__ == "__main__":
-
-    # Get path to test file
-    dir = os.getcwd()
-    test_folder = "tests"
-
-    # Choose task
-    tasks = [
-        "task1"
-        ,"task2"
-        ,"task3"
-        ,"task4"        
-    ]
-    task = tasks[1 - 1]
-
-    # Choose test file 
-    file_names = [
-        "addlarge.bin"
-        ,"addneg.bin"
-        ,"addpos.bin"
-        ,"bool.bin"
-        ,"set.bin"
-        ,"shift.bin"
-        ,"shift2.bin"
-        ]
-    file_name = file_names[1-1]
-    
-    task = "task3"
-    file_name = "string.bin"
-    
-    # Concat into full file path
-    file_path = os.path.join(dir, test_folder, task, file_name)
-    print(f"file_path:\n{file_path}")
-    
-    try:
-        imem = InstructionMemomry(file_path = file_path, little_endian = True)
-        print("\nimem.print_type()")
-        imem.print_type()
-        print("\nimem.print_bytes()")
-        imem.print_bytes()
-        print("\nimem.print_total_insts()")
-        imem.print_total_insts()
-        #print("\nimem.print_insts_bin()")
-        #imem.print_insts_bin()
-        print("\nimem.print_insts_hex()")
-        imem.print_insts_hex()
-        #print("\nimem.print_insts_int()")
-        #imem.print_insts_int()
-        #print("\nimem.print_insts():")
-        #imem.print_insts()
-    except (IOError, ValueError, EOFError) as e:
-        print(e)
-    except:
-        pass    
-    
-    
-    try:
-        imem = InstructionMemomry()
-        print(imem.addr)
-        print(imem.data)
-        print(imem.number_of_insts)
-        print(*imem.insts, sep = "\n")
-    except (IOError, ValueError, EOFError) as e:
-        print(e)
-    except:
-        pass
