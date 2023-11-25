@@ -21,7 +21,7 @@ class Processor:
         self.alu = ALU()
         self.bra = Branch()
         self.cu = ControlUnit()
-        self.dmem = DataMemory(file_path = file_path)
+        self.dmem = DataMemory(file_path = file_path, mem_size = const.MiB)
         self.dec = Decoder()
         self.imm = Immediate()
         self.imem = InstructionMemomry(file_path = file_path)
@@ -131,7 +131,7 @@ class Processor:
         if check == True:  print("Check 9")
         
         # Write to or read from DataMemory if enabled
-        self.dmem.set_addr(self.alu.get_res())
+        self.dmem.update_addr(self.alu.get_res())
         self.dmem.set_data_in(self.regs.return_reg_2_content())
         self.dmem.set_read_enabled(self.cu.get_mem_read())
         self.dmem.set_write_enabled(self.cu.get_mem_write())
