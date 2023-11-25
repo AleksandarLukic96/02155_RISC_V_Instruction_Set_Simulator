@@ -180,7 +180,7 @@ class ControlUnit:
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
-            branch_ctrl = const.BEQ, 
+            branch_ctrl = const.NOBRANCH, 
             reg_write = 1, 
             reg_ctrl = const.REG_FROM_ALU, 
             mem_read = 0, 
@@ -223,7 +223,7 @@ class ControlUnit:
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
-            branch_ctrl = const.BEQ, 
+            branch_ctrl = const.NOBRANCH, 
             reg_write = 1, 
             reg_ctrl = const.REG_FROM_ALU, 
             mem_read = 0, 
@@ -254,7 +254,7 @@ class ControlUnit:
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
-            branch_ctrl = const.BEQ, 
+            branch_ctrl = const.NOBRANCH, 
             reg_write = 1, 
             reg_ctrl = const.REG_FROM_DMEM, 
             mem_read = 1, 
@@ -279,7 +279,7 @@ class ControlUnit:
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
-            branch_ctrl = const.BEQ, 
+            branch_ctrl = const.NOBRANCH, 
             reg_write = 0, 
             reg_ctrl = const.REG_FROM_DMEM, 
             mem_read = 0, 
@@ -326,9 +326,9 @@ class ControlUnit:
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 1, 
-            branch_ctrl = const.BEQ, 
+            branch_ctrl = const.JAL, 
             reg_write = 1, 
-            reg_ctrl = const.REG_FROM_ADDER, 
+            reg_ctrl = const.REG_FROM_ALU, 
             mem_read = 0,
             mem_write = 0,
             alu_op_1_ctrl = const.ALU_OP_1_FROM_PC,
@@ -339,7 +339,7 @@ class ControlUnit:
         self.set_all_signals(
             do_branch = 0,
             do_jump = 1,
-            branch_ctrl = const.BEQ,
+            branch_ctrl = const.JALR,
             reg_write = 1,
             reg_ctrl = const.REG_FROM_ADDER,
             mem_read = 0,
@@ -352,7 +352,7 @@ class ControlUnit:
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
-            branch_ctrl = const.BEQ, 
+            branch_ctrl = const.NOBRANCH, 
             reg_write = 1, 
             reg_ctrl = const.REG_FROM_ALU, 
             mem_read = 0, 
@@ -365,7 +365,7 @@ class ControlUnit:
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
-            branch_ctrl = const.BEQ, 
+            branch_ctrl = const.NOBRANCH, 
             reg_write = 1, 
             reg_ctrl = const.REG_FROM_ALU, 
             mem_read = 0, 
