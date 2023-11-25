@@ -21,7 +21,7 @@ class Processor:
         self.alu = ALU()
         self.bra = Branch()
         self.cu = ControlUnit()
-        self.dmem = DataMemory()
+        self.dmem = DataMemory(file_path = file_path)
         self.dec = Decoder()
         self.imm = Immediate()
         self.imem = InstructionMemomry(file_path = file_path)
@@ -132,9 +132,11 @@ class Processor:
         
         # Write to or read from DataMemory if enabled
         self.dmem.set_addr(self.alu.get_res())
-        self.dmem.set_data_in(self.regs.get_reg_2())
+        self.dmem.set_data_in(self.regs.return_reg_2_content())
         self.dmem.set_read_enabled(self.cu.get_mem_read())
         self.dmem.set_write_enabled(self.cu.get_mem_write())
+        self.dmem.set_inst_signal(self.cu.get_alu_ctrl())
+        self.dmem.set_offset(self.imm.get_res())
         self.dmem.read_from_addr()
         self.dmem.write_to_addr()
         if check == True:  print("Check 10")
@@ -189,12 +191,12 @@ class Processor:
         do_print = do_print
         
         if do_print == False:
-            while (self.pc.get_addr() <= len(self.imem.insts) * 4):             
+            while (self.pc.get_addr() <= len(self.imem.mem_slot)):             
                 self.execute_step(do_print = do_print)
                 if self.dec.get_opcode() == const.I_TYPE_ENV:
                     break
         else:
-            while (self.pc.get_addr() <= len(self.imem.insts) * 4):
+            while (self.pc.get_addr() <= len(self.imem.mem_slot)):
                 self.execute_step(do_print = do_print)
 
                 # Break loop at environment call
