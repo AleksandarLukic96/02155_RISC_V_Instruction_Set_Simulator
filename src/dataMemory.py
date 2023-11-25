@@ -27,7 +27,7 @@ class DataMemory:
         self.little_endian = little_endian
         
         # Concatinate bytes into 32-bit instructions as int-array
-        self.mem_addrs = [0] * self.mem_size # <--- TODO: Rename to mem_addrs 
+        self.mem_addrs = [0] * self.mem_size
         
         # Stored as Little endian [LSB ----> MSB]        
         i = 0   
@@ -69,6 +69,12 @@ class DataMemory:
     def set_addr(self, addr):
         self.addr = addr
     
+    def update_addr(self, addr):
+        if self.write_enable == 1:
+            self.set_addr(addr)
+        else:
+            pass
+    
     def get_addr(self):
         return self.addr
     
@@ -92,6 +98,10 @@ class DataMemory:
     
     def set_offset(self, offset):
         self.offset = offset
+    
+    def validate_signed_offset(self):
+        if self.offset >> 31 == 1:
+            self.offset = ~(self.offset ^ 0xFFFFFFFF)
     
     def get_offset(self):
         return self.offset
@@ -127,6 +137,9 @@ class DataMemory:
         data_2 = (self.data_in & 0x00FF0000) >> 16
         data_3 = (self.data_in & 0xFF000000) >> 24
         
+        # If negative twos complement offset, then adapt python with workaround
+        self.validate_signed_offset()
+        
         if self.get_write_enabled() == 1:
             # Write data_in to address in memory
             if self.inst_signal == const.SB:
@@ -146,6 +159,9 @@ class DataMemory:
                 pass
             
     def read_from_addr(self):
+        # Check for negative offset
+        self.validate_signed_offset()
+        
         if self.get_read_enabled() == 1:
             # Read 4 bytes from memory in Little endian and parse into output data order 32-bit data
 

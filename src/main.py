@@ -72,7 +72,7 @@ def main():
                 print_error("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
             
             else:
-                proc.execute_step(do_print = dump_enabled)            
+                proc.execute_step(do_print = dump_enabled)          
                             
         if user_input == 'e':
             if proc == None:
