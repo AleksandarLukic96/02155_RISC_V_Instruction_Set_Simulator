@@ -53,12 +53,23 @@ class Branch:
         elif self.get_branch_ctrl() == const.BNE:
             self.branch_taken_enable() if self.op_1 != self.op_2 else self.branch_taken_disable()
 
-        elif self.get_branch_ctrl() == const.BLT: # <--- TODO: Binary comparison with twos complement.
-            self.branch_taken_enable() if self.op_1 < self.op_2 else self.branch_taken_disable()
+        elif self.get_branch_ctrl() == const.BLT:
+            if (self.op_1 >> 31 == 1) & (self.op_2 >> 31 == 0):
+                self.branch_taken_enable()
+            elif (self.op_1 >> 31 == 0) & (self.op_2 >> 31 == 1):
+                self.branch_taken_disable()
+            else:
+                self.branch_taken_enable() if self.op_1 < self.op_2 else self.branch_taken_disable() 
+            
         
-        elif self.get_branch_ctrl() == const.BGE: # <--- TODO: Binary comparison with twos complement.
-            self.branch_taken_enable() if self.op_1 >= self.op_2 else self.branch_taken_disable()
-        
+        elif self.get_branch_ctrl() == const.BGE:
+            if (self.op_1 >> 31 == 0) & (self.op_2 >> 31 == 1):
+                self.branch_taken_enable()
+            elif (self.op_1 >> 31 == 1) & (self.op_2 >> 31 == 0):
+                self.branch_taken_disable()
+            else:
+                self.branch_taken_enable() if self.op_1 >= self.op_2 else self.branch_taken_disable() 
+            
         elif self.get_branch_ctrl() == const.BLTU:
             self.branch_taken_enable() if to_uint32(self.op_1) < to_uint32(self.op_2) else self.branch_taken_disable()
         
