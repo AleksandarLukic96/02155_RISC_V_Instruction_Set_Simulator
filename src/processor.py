@@ -229,17 +229,3 @@ class Processor:
             i += 4
             line = line[:-2]
             print(line)
-            
-# If file is run as python file, test class functions
-if __name__ == "__main__":
-
-    # Test path
-    import os
-    file_path = os.path.join(
-        os.getcwd(), "tests", "task1", "addlarge.bin")
-        #os.getcwd(), "tests", "task4", "t15.bin")
-
-    proc = Processor(file_path = file_path)
-        
-    proc.execute_program(do_print = True)
-    proc.print_register_content()
