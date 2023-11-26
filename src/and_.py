@@ -33,10 +33,3 @@ class AND:
     def __repr__(self):
         return "in_0: %s, in_1: %s, out: %s" % (self.get_in_0(), self.get_in_1(), self.get_out())
     
-    def print_fields(self):
-        print(f"AND:")
-        print(f" in_0 : {self.get_in_0()}")
-        print(f" in_1 : {self.get_in_1()}")
-        print(f" out  : {self.get_out()}")
-        print()   
-    
