@@ -66,23 +66,3 @@ class Decoder:
     def __repr__(self):
         return "inst: %s, opcode: %s, reg_1: %s, reg_2: %s, rd: %s, func3: %s, func7: %s" % (
             self.get_inst(), self.get_opcode(), self.get_reg_1(), self.get_reg_2(), self.get_rd(), self.get_func3(), self.get_func7())
-    
-    def print_fields(self):
-        print(f"Decoder")
-        print(f" inst   : {self.get_inst()}")
-        print(f" opcode : {self.get_opcode()}")
-        print(f" reg_1  : {self.get_reg_1()}")
-        print(f" reg_2  : {self.get_reg_2()}")
-        print(f" rd     : {self.get_rd()}")
-        print(f" func3  : {self.get_func3()}")
-        print(f" func7  : {self.get_func7()}")
-        print()
-
-if __name__ == "__main__":
-    dec = Decoder()
-    dec.set_inst(0x40628633)
-    
-    dec.compute_decoding()
-    
-    print(dec)
-    
