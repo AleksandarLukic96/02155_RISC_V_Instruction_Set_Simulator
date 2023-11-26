@@ -55,6 +55,7 @@ class Processor:
         print("[OR         ]", self.or_1)
         print("[Registers  ]", self.regs)
         print("[MUX2_1     ]", self.mux2_1)
+        print("[Dmemory    ]", self.dmem)
         
     def execute_step(self, do_print = False):
         check = False
@@ -131,7 +132,7 @@ class Processor:
         if check == True:  print("Check 9")
         
         # Write to or read from DataMemory if enabled
-        self.dmem.update_addr(self.alu.get_res())
+        self.dmem.set_addr(self.alu.get_res())
         self.dmem.set_data_in(self.regs.return_reg_2_content())
         self.dmem.set_read_enabled(self.cu.get_mem_read())
         self.dmem.set_write_enabled(self.cu.get_mem_write())
