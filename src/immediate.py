@@ -87,16 +87,15 @@ class Immediate:
             | (self.get_func3() << 12)
             )
         
-    def execute_j_type(self):
-        self.set_res(utils.sign_extend(
-            (((self.get_func7() & 0b1000000) << 13)
-            | (self.get_reg_1() << 14)
-            | (self.get_func3() << 11)
-            | ((self.get_reg_2() & 0b00001) << 10)
-            | ((self.get_func7() & 0b0111111) << 4)
-            | (self.get_reg_2() >> 1)
-            )
-            , msb_pos = 12) << 1)
+    def execute_j_type(self): # <---- Needs to be handled correctly!
+        func7 = self.func7 << 21
+        reg_2 = self.reg_2 << 20
+        reg_1 = self.reg_1 << 15
+        func3 = self.func3 << 12
+        print(bin(func7), bin(reg_2), bin(reg_1), bin(func3), sep="\n")
+        combined = func7 | reg_2 | reg_1 | func3
+        self.res = combined
+        print(f"imm res: {bin(self.res)}")
 
     def compute_res(self):
         # Interpret opcode and set immediate according to instruction type
