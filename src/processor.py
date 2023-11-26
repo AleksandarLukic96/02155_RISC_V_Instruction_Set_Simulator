@@ -16,12 +16,12 @@ import signal_constants as const
 import utils
 
 class Processor:
-    def __init__(self, file_path = "NO_FILE_PROVIDED!"):
+    def __init__(self, file_path = "NO_FILE_PROVIDED!", mem_size = const.MiB):
         # Initialise processor components
         self.alu = ALU()
         self.bra = Branch()
         self.cu = ControlUnit()
-        self.dmem = DataMemory(file_path = file_path, mem_size = const.MiB)
+        self.dmem = DataMemory(file_path = file_path, mem_size = mem_size)
         self.dec = Decoder()
         self.imm = Immediate()
         self.imem = InstructionMemomry(file_path = file_path)
