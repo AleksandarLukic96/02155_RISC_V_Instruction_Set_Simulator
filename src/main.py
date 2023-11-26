@@ -83,6 +83,8 @@ def main():
                 
             else:
                 proc.execute_program(do_print = dump_enabled)
+                if dump_enabled:
+                    proc.print_register_content(repr = 'hex')
 
         if user_input == 'p':
             if proc == None:
