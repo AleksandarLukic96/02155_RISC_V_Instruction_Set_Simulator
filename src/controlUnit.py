@@ -134,7 +134,7 @@ class ControlUnit:
         self.set_all_signals(
             do_branch = 0, 
             do_jump = 0, 
-            branch_ctrl = const.BEQ, 
+            branch_ctrl = const.NOBRANCH, 
             reg_write = 0, 
             reg_ctrl = const.REG_FROM_ALU, 
             mem_read = 0, 
@@ -258,7 +258,7 @@ class ControlUnit:
             reg_write = 1, 
             reg_ctrl = const.REG_FROM_DMEM, 
             mem_read = 1, 
-            mem_write = 0, 
+            mem_write = 1, 
             alu_op_1_ctrl = const.ALU_OP_1_FROM_REG, 
             alu_op_2_ctrl = const.ALU_OP_2_FROM_IMM, 
             alu_ctrl = alu_ctrl)
