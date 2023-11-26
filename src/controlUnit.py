@@ -1,11 +1,6 @@
 # Implementation of ControlUnit Class and functions
 import signal_constants as const
 
-# NOTES:
-# Input: Opode 6:0, func7 6:0, func3 2:0
-# Output: 1bit: Do_Branch, Do_Jump. reg_write, Mux_Reg, Mux_ALU, mem_write, reg_ctrl,
-#          ALU_cnt 4:0,  mem_cnt 3:0, branch, imm 11:5 for I-types
-
 # Control Unit Class
 class ControlUnit:
     def __init__(self):
@@ -428,29 +423,3 @@ class ControlUnit:
     def __repr__(self):
         return "do_branch: %s, do_jump: %s, branch_ctrl: %s, reg_write: %s, reg_ctrl: %s, mem_read: %s, mem_write: %s, alu_op_1_ctrl: %s, alu_op_2_ctrl: %s, alu_ctrl: %s" % (
             self.get_do_branch(), self.get_do_jump(), self.get_branch_ctrl(), self.get_reg_write(), self.get_reg_ctrl(), self.get_mem_read(), self.get_mem_write(), self.get_alu_op_1_ctrl(), self.get_alu_op_2_ctrl(), self.get_alu_ctrl())
-    
-    def print_fields(self):
-        print(f"ControlUnit:")
-        print(f" do_branch    : {self.get_do_branch()}")
-        print(f" do_jump      : {self.get_do_jump()}")
-        print(f" branch_ctrl  : {self.get_branch_ctrl()}")
-        print(f" reg_write    : {self.get_reg_write()}")
-        print(f" reg_ctrl     : {self.get_reg_ctrl()}")
-        print(f" mem_read     : {self.get_mem_read()}")
-        print(f" mem_write    : {self.get_mem_write()}")
-        print(f" alu_op_1_ctrl: {self.get_alu_op_1_ctrl()}")
-        print(f" alu_op_2_ctrl: {self.get_alu_op_2_ctrl()}")
-        print(f" alu_ctrl     : {self.get_alu_ctrl()}")
-        print()
-
-if __name__ == "__main__":
-    cu = ControlUnit()
-    cu.set_opcode(51)
-    cu.set_func3(0)
-    cu.set_func7(0x20)
-
-    
-    cu.excute()
-    
-    print(cu)
-    
