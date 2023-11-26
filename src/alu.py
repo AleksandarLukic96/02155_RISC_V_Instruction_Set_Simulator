@@ -40,7 +40,11 @@ class ALU:
     
     def get_res(self):
         return self.res
-        
+    
+    def validate_signed_offset(self):
+        if self.op_2 >> 19 == 1:
+            self.op_2 = ~(self.offset ^ 0xFFFFFFFF)
+    
     # R-type operations
     def compute_add(self): 
         self.set_res(utils.remove_overflow(
@@ -144,10 +148,12 @@ class ALU:
     
     # J_TYPE
     def compute_jal(self):
+        self.validate_signed_offset()
         self.set_res(self.op_1 + self.op_2)
     
     # I_TYPE_JUMP
     def compute_jalr(self):
+        self.validate_signed_offset()
         self.set_res(self.op_1 + self.op_2)
     
     # U_TYPE_LOAD
