@@ -19,12 +19,13 @@ def print_intro():
 def print_help_menu():
     print("Help Menu: ")
     print(" 'h' : Print out actions to terminal.")
-    print(" 'c' : Provide file path to binary file.")
+    print(" 'f' : Provide file path to binary file.")
     print(" 's' : Execute current instruction at PC.")
     print(" 'e' : Execute all instructions starting from PC.")
     print(" 'p' : Print out register contents.")
     print(" 'r' : Reset processor, clearing all signals, registers and memory.")
     print(" 'd' : Enable dump content from processor.")
+    print(" 'c' : Choose endianess.")
     print(" 'x' : Exit program.")
 
 def print_error(message = "ERROR!"):
@@ -47,6 +48,7 @@ def main():
     proc = None
     file_path = ""
     dump_enabled = False
+    little_endian = True
     
     print_intro()
     print_help_menu()
@@ -57,7 +59,7 @@ def main():
         if user_input == 'h':
             print_help_menu()            
         
-        if user_input == 'c':
+        if user_input == 'f':
             file_path = input("Please enter file path : ")
             
             if check_file_path_is_bin(file_path):
@@ -69,7 +71,7 @@ def main():
                 print_error("Program not yet loaded, please provide a path to a binary file.")
             
             elif (proc.pc.get_addr() > (len(proc.imem.mem_slot))) | (proc.dec.get_opcode() == const.I_TYPE_ENV):
-                print_error("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
+                print_error("Program already fully executed! Parse a new file via 'f' or restart via 'r'.")
             
             else:
                 proc.execute_step(do_print = dump_enabled)          
@@ -79,7 +81,7 @@ def main():
                 print_error("Program not yet loaded, please provide a path to a binary file.")
             
             elif (proc.pc.get_addr() > (len(proc.imem.mem_slot))) | (proc.dec.get_opcode() == const.I_TYPE_ENV):
-                print_error("Program already fully executed! Parse a new file via 'c' or restart via 'r'.")
+                print_error("Program already fully executed! Parse a new file via 'f' or restart via 'r'.")
                 
             else:
                 proc.execute_program(do_print = dump_enabled)
@@ -90,7 +92,7 @@ def main():
             if proc == None:
                 print_error("Program not yet loaded, please provide a path to a binary file.")
             else:
-                proc.print_register_content(repr = 'hex')
+                proc.print_register_content(repr = 'hex', little_endian = little_endian)
 
         if user_input == 'r':
             if proc == None:
@@ -111,13 +113,26 @@ def main():
                     break
                 else:
                     print_error("Input was not 'e' or 'd'!")
-                    
+        
+        if user_input == 'c':
+            while True:
+                user_choice = input("Little Endian ['l'] or Big Endian ['b']: ")
+                if user_choice == 'l':
+                    little_endian = True
+                    print("Little Endian chosen!")
+                    break
+                elif user_choice == 'b':
+                    little_endian = False
+                    print("Big Endian chosen!")
+                    break
+                else:
+                    print_error("Input was not 'l' or 'b'!")
 
         if user_input == 'x':
             print("Closing simulation, bye!")
             break
 
-        if user_input not in ['h', 's', 'c', 'e', 'p', 'r', 'd', 'x']:
+        if user_input not in ['h', 's', 'f', 'e', 'p', 'r', 'd', 'c', 'x']:
             print_error("Invalid input, try again!")
 
 if __name__ == "__main__":
