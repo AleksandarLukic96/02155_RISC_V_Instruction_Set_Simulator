@@ -101,7 +101,7 @@ def convert_to_bytearray(data, little_endian = True):
     b_arr = bytearray()
     
     if little_endian == False:
-        convert_endianess(data)
+        data = convert_endianess(data)
     
     i = 0   
     while i < (len(data)):
@@ -113,14 +113,13 @@ def convert_to_bytearray(data, little_endian = True):
     
     return b_arr
 
-
-def list_to_bin_file(data, file_path, little_endian = True):  
+def list_to_bin_file(data, file_path, little_endian = True):
     # move into subfolder "exports"
     file_path = file_path.replace('/tests/bin_files_only/', '/exports/')
     
     print(file_path)
     # Convert data to bytearray
-    b_arr = convert_to_bytearray(data)
+    b_arr = convert_to_bytearray(data = data, little_endian = little_endian)
     
     # Create or overwrite bin file with export data
     with open(file_path, "wb") as file:

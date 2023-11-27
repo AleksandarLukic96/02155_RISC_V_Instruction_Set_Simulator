@@ -212,10 +212,13 @@ class Processor:
     def print_register_content(self, repr = 'hex', little_endian = True):
         repr = repr
         
-        self.regs.regs = utils.convert_endianess(self.regs.regs)
+        regs_data = self.regs.regs
+        
+        if little_endian:
+            regs_data = utils.convert_endianess(regs_data)
         
         i = 0
-        while i < len(self.regs.regs):
+        while i < len(regs_data):
             if repr not in ['int', 'hex', 'bin']:
                 self.print_register_content_int_hex_bin()
                 break
@@ -223,15 +226,20 @@ class Processor:
             for j in range(4):
                 reg_name = "{:>3}".format("x" + str(i+j))
                 if repr == 'int':
-                    reg_value = utils.to_str_int(self.regs.regs[i+j])
+                    reg_value = utils.to_str_int(regs_data[i+j])
                 elif repr == 'hex':
-                    reg_value = utils.to_str_hex(self.regs.regs[i+j])
+                    reg_value = utils.to_str_hex(regs_data[i+j])
                 elif repr == 'bin':
-                    reg_value = utils.to_str_bin(self.regs.regs[i+j])
+                    reg_value = utils.to_str_bin(regs_data[i+j])
                 line += reg_name + " = " + reg_value + ", "
             i += 4
             line = line[:-2]
             print(line)
     
-    def binary_dump(self, file_path, little_endian):
-        utils.list_to_bin_file(data = self.regs.regs, file_path = file_path, little_endian = little_endian)
+    def binary_dump(self, file_path, little_endian = True):
+        regs_data = self.regs.regs
+        
+        if not little_endian:
+            regs_data = utils.convert_endianess(regs_data)
+        
+        utils.list_to_bin_file(data = regs_data, file_path = file_path, little_endian = little_endian)
