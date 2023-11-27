@@ -26,7 +26,8 @@ def print_help_menu():
     print(" 'r' : Reset processor, clearing all signals, registers and memory.")
     print(" 'd' : Enable dump content from processor.")
     print(" 'c' : Choose endianess.")
-    print(" 'x' : Exit program.")
+    print(" 'x' : Export register content as binary.")
+    print(" 'q' : Quit program.")
 
 def print_error(message = "ERROR!"):
     print(f"[!] {message}")
@@ -127,12 +128,15 @@ def main():
                     break
                 else:
                     print_error("Input was not 'l' or 'b'!")
-
+        
         if user_input == 'x':
+            print("Export feature not yet implemented! :)")
+
+        if user_input == 'q':
             print("Closing simulation, bye!")
             break
 
-        if user_input not in ['h', 's', 'f', 'e', 'p', 'r', 'd', 'c', 'x']:
+        if user_input not in ['h', 's', 'f', 'e', 'p', 'r', 'd', 'c', 'x', 'q']:
             print_error("Invalid input, try again!")
 
 if __name__ == "__main__":
