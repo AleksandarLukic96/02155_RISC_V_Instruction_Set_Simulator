@@ -83,6 +83,7 @@ def prepare_result(file_path, little_endian = True):
     return res
 
 def convert_endianess(data):
+    # Reverse the byte order of the data to the opposite endian
     res = []
     
     i = 0   
@@ -94,5 +95,31 @@ def convert_endianess(data):
             |((data[i] & 0xFF000000) >> 24)
             )
         i += 1
-    
     return res
+
+def convert_to_bytearray(data, little_endian = True):
+    b_arr = bytearray()
+    
+    if little_endian == False:
+        convert_endianess(data)
+    
+    i = 0   
+    while i < (len(data)):
+        b_arr.append((data[i] & 0x000000FF) >>  0)
+        b_arr.append((data[i] & 0x0000FF00) >>  8)
+        b_arr.append((data[i] & 0x00FF0000) >> 16)
+        b_arr.append((data[i] & 0xFF000000) >> 24)
+        i += 1
+    
+    return b_arr
+
+
+def list_to_bin_file(data, file_path, little_endian = True):  
+    # Convert data to bytearray
+    b_arr = convert_to_bytearray(data)
+    
+    # Create or overwrite bin file with export data
+    with open(file_path, "wb") as file:
+        file.write(b_arr)
+    
+    file.close()
