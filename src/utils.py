@@ -43,3 +43,56 @@ def sign_extend(num, msb_pos = 16):  # Always 32 bits values
 
 def remove_overflow(num):
     return num & 0x00000000FFFFFFFF
+
+def prepare_result(file_path, little_endian = True):
+    # Load bin file into pyton
+    f = open(file_path, mode = "rb")
+    
+    # Reading file data with read() method
+    data = f.read()
+    
+    # If False, then read bytes in big endian order
+    little_endian = little_endian
+    
+    # Concatinate bytes into 32-bit instructions as int-array
+    res = []
+         
+    i = 0   
+    if little_endian:
+        while i < (len(data)):
+            res.append(
+             (data[i + 0] << 24)
+            |(data[i + 1] << 16)
+            |(data[i + 2] <<  8)
+            |(data[i + 3] <<  0)
+            )
+            i += 4
+    else:
+        while i < (len(data)):
+            res.append(
+             (data[i + 3] << 24)
+            |(data[i + 2] << 16)
+            |(data[i + 1] <<  8)
+            |(data[i + 0] <<  0)
+            )
+            i += 4
+    
+    # Closing the opened file
+    f.close()
+    
+    return res
+
+def convert_endianess(data):
+    res = []
+    
+    i = 0   
+    while i < (len(data)):
+        res.append(
+            ((data[i] & 0x000000FF) << 24)
+            |((data[i] & 0x0000FF00) <<  8)
+            |((data[i] & 0x00FF0000) >>  8)
+            |((data[i] & 0xFF000000) >> 24)
+            )
+        i += 1
+    
+    return res
