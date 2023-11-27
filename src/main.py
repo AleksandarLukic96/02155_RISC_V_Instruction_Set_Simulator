@@ -1,6 +1,7 @@
 import os
 from processor import Processor
 import signal_constants as const
+import utils
 
 def print_intro():
     width = 50
@@ -49,7 +50,7 @@ def main():
     proc = None
     file_path = ""
     dump_enabled = False
-    little_endian = True
+    little_endian = False
     file_path = ""
     
     print_intro()
@@ -64,7 +65,6 @@ def main():
         if user_input == 'f':
             file_path = input("Please enter file path : ")
             file_path = file_path.replace("\"", "").replace("\\", "/")
-            print(file_path)
             
             if check_file_path_is_bin(file_path):
                 proc = Processor(file_path = file_path)
@@ -78,7 +78,9 @@ def main():
                 print_error("Program already fully executed! Parse a new file via 'f' or restart via 'r'.")
             
             else:
+                print(f"Executed step from PC: {proc.pc.get_addr()}")
                 proc.execute_step(do_print = dump_enabled)          
+                
                             
         if user_input == 'e':
             if proc == None:
@@ -91,6 +93,7 @@ def main():
                 proc.execute_program(do_print = dump_enabled)
                 if dump_enabled:
                     proc.print_register_content(repr = 'hex')
+                print("Program executed!")
 
         if user_input == 'p':
             if proc == None:
@@ -102,6 +105,7 @@ def main():
             if proc == None:
                 print_error("Program not yet loaded, please provide a path to a binary file.")
             else:
+                print("Program counter set to 0 and registers are cleared!")
                 proc = Processor(file_path = file_path)
         
         if user_input == 'd':
@@ -137,8 +141,8 @@ def main():
                 print_error("Program not yet loaded, please provide a path to a binary file.")
             else:
                 print("Register content successfully exported as: '%s'!" % os.path.basename(file_path).split('/')[-1])
-                proc.binary_dump(file_path = file_path, little_endian = little_endian)
-
+                utils.list_to_bin_file(proc.regs.regs, file_path, little_endian = little_endian)
+                
         if user_input == 'q':
             print("Closing simulation, bye!")
             break
