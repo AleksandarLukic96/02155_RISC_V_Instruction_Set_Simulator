@@ -232,3 +232,6 @@ class Processor:
             i += 4
             line = line[:-2]
             print(line)
+    
+    def binary_dump(self, file_path, little_endian):
+        utils.list_to_bin_file(data = self.regs.regs, file_path = file_path, little_endian = little_endian)
