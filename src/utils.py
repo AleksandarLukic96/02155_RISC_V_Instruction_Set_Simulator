@@ -115,6 +115,10 @@ def convert_to_bytearray(data, little_endian = True):
 
 
 def list_to_bin_file(data, file_path, little_endian = True):  
+    # move into subfolder "exports"
+    file_path = file_path.replace('/tests/bin_files_only/', '/exports/')
+    
+    print(file_path)
     # Convert data to bytearray
     b_arr = convert_to_bytearray(data)
     
