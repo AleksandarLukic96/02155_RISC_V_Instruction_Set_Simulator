@@ -209,8 +209,11 @@ class Processor:
             reg_name = "{:>3}".format("x" + str(i))
             print("%s %s" % (reg_name, utils.to_str_int_hex_bin(self.regs.regs[i]))) 
         
-    def print_register_content(self, repr = 'hex'):
+    def print_register_content(self, repr = 'hex', little_endian = True):
         repr = repr
+        
+        self.regs.regs = utils.convert_endianess(self.regs.regs)
+        
         i = 0
         while i < len(self.regs.regs):
             if repr not in ['int', 'hex', 'bin']:
