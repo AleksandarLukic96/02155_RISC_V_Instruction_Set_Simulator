@@ -145,14 +145,12 @@ class DataMemory:
             if self.inst_signal == const.SB:
                 addr_0 = self.addr + self.offset + 0
                 self.mem_addrs[addr_0] = data_0
-                print(f"{self.inst_signal}\naddr_0 : {addr_0}")
             
             elif self.inst_signal == const.SH:
                 addr_0 = self.addr + self.offset + 0
                 addr_1 = self.addr + self.offset + 1
                 self.mem_addrs[addr_0] = data_0
                 self.mem_addrs[addr_1] = data_1
-                print(f"{self.inst_signal}\naddr_0 : {addr_0}\naddr_1 : {addr_1}")
             
             elif self.inst_signal == const.SW:
                 addr_0 = self.addr + self.offset + 0
@@ -163,7 +161,6 @@ class DataMemory:
                 self.mem_addrs[addr_1] = data_1
                 self.mem_addrs[addr_2] = data_2
                 self.mem_addrs[addr_3] = data_3
-                print(f"{self.inst_signal}\naddr_0 : {addr_0}\naddr_1 : {addr_1}\naddr_2 : {addr_2}\naddr_3 : {addr_3}")
                 
             else:
                 pass
@@ -179,7 +176,6 @@ class DataMemory:
                 addr_0 = self.addr + self.offset + 0
                 data_0 = self.mem_addrs[addr_0]
                 self.data_out = utils.sign_extend(data_0, 8)
-                print(f"{self.inst_signal}\naddr_0 : {addr_0}")
                 
             elif self.inst_signal == const.LH:
                 addr_0 = self.addr + self.offset + 0
@@ -190,7 +186,6 @@ class DataMemory:
                       (data_0 << 0)
                     | (data_1 << 8)
                     , 16)
-                print(f"{self.inst_signal}\naddr_0 : {addr_0}\naddr_1 : {addr_1}")
                 
             elif self.inst_signal == const.LW:
                 addr_0 = self.addr + self.offset + 0
@@ -207,13 +202,11 @@ class DataMemory:
                     | (data_2 << 16)
                     | (data_3 << 24)
                     , 32)
-                print(f"{self.inst_signal}\naddr_0 : {addr_0}\naddr_1 : {addr_1}\naddr_2 : {addr_2}\naddr_3 : {addr_3}")
                 
             elif self.inst_signal == const.LBU:
                 addr_0 = self.addr + self.offset + 0
                 data_0 = self.mem_addrs[addr_0]
                 self.data_out = data_0
-                print(f"{self.inst_signal}\naddr_0 : {addr_0}")
                 
             elif self.inst_signal == const.LHU:
                 addr_0 = self.addr + self.offset + 0
@@ -221,7 +214,6 @@ class DataMemory:
                 data_0 = self.mem_addrs[addr_0]
                 data_1 = self.mem_addrs[addr_1]
                 self.data_out = (data_0 << 0) | (data_1 << 8)
-                print(f"{self.inst_signal}\naddr_0 : {addr_0}\naddr_1 : {addr_1}")
             
             else:
                 pass
