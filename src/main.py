@@ -50,6 +50,7 @@ def main():
     file_path = ""
     dump_enabled = False
     little_endian = True
+    file_path = ""
     
     print_intro()
     print_help_menu()
@@ -62,6 +63,8 @@ def main():
         
         if user_input == 'f':
             file_path = input("Please enter file path : ")
+            file_path = file_path.replace("\"", "").replace("\\", "/")
+            print(file_path)
             
             if check_file_path_is_bin(file_path):
                 proc = Processor(file_path = file_path)
@@ -130,7 +133,11 @@ def main():
                     print_error("Input was not 'l' or 'b'!")
         
         if user_input == 'x':
-            print("Export feature not yet implemented! :)")
+            if proc == None:
+                print_error("Program not yet loaded, please provide a path to a binary file.")
+            else:
+                print("Register content successfully exported as: '%s'!" % os.path.basename(file_path).split('/')[-1])
+                proc.binary_dump(file_path = file_path, little_endian = little_endian)
 
         if user_input == 'q':
             print("Closing simulation, bye!")
