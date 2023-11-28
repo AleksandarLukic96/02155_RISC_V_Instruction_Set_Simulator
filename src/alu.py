@@ -149,12 +149,17 @@ class ALU:
     # J_TYPE
     def compute_jal(self):
         self.validate_signed_offset()
-        self.set_res(self.op_1 + self.op_2)
+        self.set_res(utils.remove_overflow(
+                        self.op_1 + self.op_2)
+                     )
+                     
     
     # I_TYPE_JUMP
     def compute_jalr(self):
         self.validate_signed_offset()
-        self.set_res(self.op_1 + self.op_2)
+        self.set_res(utils.remove_overflow(
+                        self.op_1 + self.op_2)
+                     )
     
     # U_TYPE_LOAD
     def compute_lui(self):
@@ -163,8 +168,8 @@ class ALU:
     # U_TYPE_ADD
     def compute_auipc(self):
         self.set_res(utils.remove_overflow(
-            self.get_op_1() + self.get_op_2()) # Uncertain if needed overflow handling?
-        )
+                        self.get_op_1() + self.get_op_2()) # Uncertain if needed overflow handling?
+                     )
     
     def compute_res(self):
         # R-type

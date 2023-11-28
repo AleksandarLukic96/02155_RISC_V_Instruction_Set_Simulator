@@ -148,7 +148,7 @@ class DataMemory:
         
         if self.get_write_enabled() == 1:
             # Update address according to offset
-            self.update_addr_write(self.addr + self.offset)
+            self.update_addr_write(utils.remove_overflow(self.addr + self.offset))
             
             # Write data_in to address in memory
             if self.inst_signal == const.SB:
@@ -173,7 +173,7 @@ class DataMemory:
         
         if self.get_read_enabled() == 1:
             # Update address according to offset
-            self.update_addr_read(self.addr + self.offset)
+            self.update_addr_read(utils.remove_overflow(self.addr + self.offset))
             
             # Read 4 bytes from memory in Little endian and parse into output data order 32-bit data
             if self.inst_signal == const.LB:
