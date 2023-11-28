@@ -69,8 +69,14 @@ class DataMemory:
     def set_addr(self, addr):
         self.addr = addr
     
-    def update_addr(self, addr):
-        if self.write_enable == 1:
+    def update_addr_write(self, addr):
+        if self.write_enabled == 1:
+            self.set_addr(addr)
+        else:
+            pass
+    
+    def update_addr_read(self, addr):
+        if self.read_enabled == 1:
             self.set_addr(addr)
         else:
             pass
@@ -141,26 +147,22 @@ class DataMemory:
         self.validate_signed_offset()
         
         if self.get_write_enabled() == 1:
+            # Update address according to offset
+            self.update_addr_write(self.addr + self.offset)
+            
             # Write data_in to address in memory
             if self.inst_signal == const.SB:
-                addr_0 = self.addr + self.offset + 0
-                self.mem_addrs[addr_0] = data_0
+                self.mem_addrs[self.addr + 0] = data_0
             
             elif self.inst_signal == const.SH:
-                addr_0 = self.addr + self.offset + 0
-                addr_1 = self.addr + self.offset + 1
-                self.mem_addrs[addr_0] = data_0
-                self.mem_addrs[addr_1] = data_1
+                self.mem_addrs[self.addr + 0] = data_0
+                self.mem_addrs[self.addr + 1] = data_1
             
             elif self.inst_signal == const.SW:
-                addr_0 = self.addr + self.offset + 0
-                addr_1 = self.addr + self.offset + 1
-                addr_2 = self.addr + self.offset + 2
-                addr_3 = self.addr + self.offset + 3
-                self.mem_addrs[addr_0] = data_0
-                self.mem_addrs[addr_1] = data_1
-                self.mem_addrs[addr_2] = data_2
-                self.mem_addrs[addr_3] = data_3
+                self.mem_addrs[self.addr + 0] = data_0
+                self.mem_addrs[self.addr + 1] = data_1
+                self.mem_addrs[self.addr + 2] = data_2
+                self.mem_addrs[self.addr + 3] = data_3
                 
             else:
                 pass
@@ -170,32 +172,27 @@ class DataMemory:
         self.validate_signed_offset()
         
         if self.get_read_enabled() == 1:
+            # Update address according to offset
+            self.update_addr_read(self.addr + self.offset)
+            
             # Read 4 bytes from memory in Little endian and parse into output data order 32-bit data
-
             if self.inst_signal == const.LB:
-                addr_0 = self.addr + self.offset + 0
-                data_0 = self.mem_addrs[addr_0]
+                data_0 = self.mem_addrs[self.addr + 0]
                 self.data_out = utils.sign_extend(data_0, 8)
                 
             elif self.inst_signal == const.LH:
-                addr_0 = self.addr + self.offset + 0
-                addr_1 = self.addr + self.offset + 1
-                data_0 = self.mem_addrs[addr_0]
-                data_1 = self.mem_addrs[addr_1]
+                data_0 = self.mem_addrs[self.addr + 0]
+                data_1 = self.mem_addrs[self.addr + 1]
                 self.data_out = utils.sign_extend(
                       (data_0 << 0)
                     | (data_1 << 8)
                     , 16)
                 
             elif self.inst_signal == const.LW:
-                addr_0 = self.addr + self.offset + 0
-                addr_1 = self.addr + self.offset + 1
-                addr_2 = self.addr + self.offset + 2
-                addr_3 = self.addr + self.offset + 3
-                data_0 = self.mem_addrs[addr_0]
-                data_1 = self.mem_addrs[addr_1]
-                data_2 = self.mem_addrs[addr_2]
-                data_3 = self.mem_addrs[addr_3]
+                data_0 = self.mem_addrs[self.addr + 0]
+                data_1 = self.mem_addrs[self.addr + 1]
+                data_2 = self.mem_addrs[self.addr + 2]
+                data_3 = self.mem_addrs[self.addr + 3]
                 self.data_out = utils.sign_extend(
                       (data_0 <<  0)
                     | (data_1 <<  8)
@@ -204,15 +201,12 @@ class DataMemory:
                     , 32)
                 
             elif self.inst_signal == const.LBU:
-                addr_0 = self.addr + self.offset + 0
-                data_0 = self.mem_addrs[addr_0]
+                data_0 = self.mem_addrs[self.addr + 0]
                 self.data_out = data_0
                 
             elif self.inst_signal == const.LHU:
-                addr_0 = self.addr + self.offset + 0
-                addr_1 = self.addr + self.offset + 1
-                data_0 = self.mem_addrs[addr_0]
-                data_1 = self.mem_addrs[addr_1]
+                data_0 = self.mem_addrs[self.addr + 0]
+                data_1 = self.mem_addrs[self.addr + 1]
                 self.data_out = (data_0 << 0) | (data_1 << 8)
             
             else:
