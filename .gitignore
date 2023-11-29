@@ -3,6 +3,7 @@
 .cached/
 .pycache/
 .pytest_cache/
+__pycache__/
 
 # VS Code related folders
 .vscode/
