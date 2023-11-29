@@ -16,6 +16,9 @@ class Registers:
 
         # Initialise 32 registers to 0
         self.regs = [0] * 32 
+        
+        self.reg_1_content = 0
+        self.reg_2_content = 0
 
     def set_reg_1(self, reg_1):
         if (reg_1 > 31) | (reg_1 < 0):
@@ -62,12 +65,18 @@ class Registers:
     def write_disable(self):
         self.set_write_enabled(0)
 
-    def return_reg_1_content(self):
-        return self.regs[self.get_reg_1()]
-
-    def return_reg_2_content(self):
-        return self.regs[self.get_reg_2()]
-
+    def set_reg_1_content(self, reg_1_content):
+        self.reg_1_content = reg_1_content
+    
+    def get_reg_1_content(self):
+        return self.reg_1_content
+    
+    def set_reg_2_content(self, reg_2_content):
+        self.reg_2_content = reg_2_content
+    
+    def get_reg_2_content(self):
+        return self.reg_2_content
+    
     def write_to_rd(self):
         if self.get_write_enabled() == 1:
             # Hardwired x0 to zero
@@ -77,6 +86,11 @@ class Registers:
             # Write data_in to register
             self.regs[self.get_rd()] = self.get_data_in()
 
+    def read_from_regs(self):
+        # Read from registers
+        self.set_reg_1_content(self.regs[self.get_reg_1()])
+        self.set_reg_2_content(self.regs[self.get_reg_2()])
+    
     def __repr__(self):
         return "reg_1: %s, reg_2: %s, rd: %s, data_in: %s, write_enabled: %s" % (
             self.get_reg_1(), self.get_reg_2(), self.get_rd(), self.get_data_in(), self.get_write_enabled())

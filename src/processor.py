@@ -108,17 +108,18 @@ class Processor:
         self.regs.set_rd(self.dec.get_rd())
         self.regs.set_reg_1(self.dec.get_reg_1())
         self.regs.set_reg_2(self.dec.get_reg_2())
+        self.regs.read_from_regs()
         if check == True:  print("Check 6")
         
         # Prepare MUX for alu operand 1
-        self.mux2_3.set_in_0(self.regs.return_reg_1_content())
+        self.mux2_3.set_in_0(self.regs.get_reg_1_content())
         self.mux2_3.set_in_1(self.pc.get_addr())
         self.mux2_3.set_select(self.cu.get_alu_op_1_ctrl())
         self.mux2_3.compute_out()
         if check == True:  print("Check 7")
         
         # Prepare MUX for alu operand 2
-        self.mux2_4.set_in_0(self.regs.return_reg_2_content())
+        self.mux2_4.set_in_0(self.regs.get_reg_2_content())
         self.mux2_4.set_in_1(self.imm.get_res())
         self.mux2_4.set_select(self.cu.get_alu_op_2_ctrl())
         self.mux2_4.compute_out()
@@ -133,7 +134,7 @@ class Processor:
         
         # Write to or read from DataMemory if enabled
         self.dmem.set_addr(self.alu.get_res())
-        self.dmem.set_data_in(self.regs.return_reg_2_content())
+        self.dmem.set_data_in(self.regs.get_reg_2_content())
         self.dmem.set_read_enabled(self.cu.get_mem_read())
         self.dmem.set_write_enabled(self.cu.get_mem_write())
         self.dmem.set_inst_signal(self.cu.get_alu_ctrl())
@@ -156,8 +157,8 @@ class Processor:
         if check == True:  print("Check 12")
         
         # Update branch and assert if jump should be done
-        self.bra.set_op_1(self.regs.return_reg_1_content())
-        self.bra.set_op_2(self.regs.return_reg_2_content())
+        self.bra.set_op_1(self.regs.get_reg_1_content())
+        self.bra.set_op_2(self.regs.get_reg_2_content())
         self.bra.set_branch_ctrl(self.cu.get_branch_ctrl())
         self.bra.compute_branch_taken()
         if check == True:  print("Check 13")
