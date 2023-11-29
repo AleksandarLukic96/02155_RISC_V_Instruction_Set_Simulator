@@ -1,7 +1,6 @@
 # Implementation of Registers Class and functions 
 import signal_constants as const
 import utils
-import os
 
 # Memory sizes in bytes
 KB  = 1000
