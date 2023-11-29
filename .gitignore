@@ -1,0 +1,10 @@
+# Cache folders
+.cache/
+.cached/
+.pycache/
+.pytest_cache/
+
+# VS Code related folders
+.vscode/
+*.code-workspace
+.history/
