@@ -58,40 +58,33 @@ class Processor:
         print("[Dmemory    ]", self.dmem)
         
     def execute_step(self, do_print = False):
-        check = False
         do_print = do_print
         pc_before_execution = self.pc.get_addr()
-        if check == True:  print(f"PC: {self.pc.get_addr()}")
         
         # Prepare MUX for Adder (currently hardwired to 4)
         self.mux2_2.set_in_0(2)
         self.mux2_2.set_in_1(4)
         self.mux2_2.set_select(1) # Needs implementation from decoder? / Currently hardwired
         self.mux2_2.compute_out()
-        if check == True:  print("Check 0")
         
         # Calculate next address for ProgramCounter
         self.adder.set_op_1(self.mux2_2.get_out())
         self.adder.set_op_2(self.pc.get_addr())
         self.adder.compute_out()
-        if check == True:  print("Check 1")
         
         # Fetch instruction at current PC in instruction memory
         self.imem.set_addr(self.pc.get_addr())
         self.imem.fetch_inst_at_addr()
-        if check == True:  print("Check 2")
         
         # Decode instruction
         self.dec.set_inst(self.imem.get_inst())
         self.dec.compute_decoding()
-        if check == True:  print("Check 3")
                 
         # Interpret decoded instruction in the Control Unit
         self.cu.set_opcode(self.dec.get_opcode())
         self.cu.set_func3(self.dec.get_func3())
         self.cu.set_func7(self.dec.get_func7())
         self.cu.excute()
-        if check == True:  print("Check 4")
         
         # Handle imidiate interpretation from instruction
         self.imm.set_opcode(self.dec.get_opcode())
@@ -101,7 +94,6 @@ class Processor:
         self.imm.set_reg_1(self.dec.get_reg_1())
         self.imm.set_reg_2(self.dec.get_reg_2())
         self.imm.compute_res()
-        if check == True:  print("Check 5")
         
         # Prepare Registers for instruction execution
         self.regs.set_write_enabled(self.cu.get_reg_write())
@@ -109,28 +101,24 @@ class Processor:
         self.regs.set_reg_1(self.dec.get_reg_1())
         self.regs.set_reg_2(self.dec.get_reg_2())
         self.regs.read_from_regs()
-        if check == True:  print("Check 6")
         
         # Prepare MUX for alu operand 1
         self.mux2_3.set_in_0(self.regs.get_reg_1_content())
         self.mux2_3.set_in_1(self.pc.get_addr())
         self.mux2_3.set_select(self.cu.get_alu_op_1_ctrl())
         self.mux2_3.compute_out()
-        if check == True:  print("Check 7")
         
         # Prepare MUX for alu operand 2
         self.mux2_4.set_in_0(self.regs.get_reg_2_content())
         self.mux2_4.set_in_1(self.imm.get_res())
         self.mux2_4.set_select(self.cu.get_alu_op_2_ctrl())
         self.mux2_4.compute_out()
-        if check == True:  print("Check 8")
         
         # Execute operation in the ALU
         self.alu.set_op_1(self.mux2_3.get_out())      
         self.alu.set_op_2(self.mux2_4.get_out())
         self.alu.set_ctrl(self.cu.get_alu_ctrl())
         self.alu.compute_res()
-        if check == True:  print("Check 9")
         
         # Write to or read from DataMemory if enabled
         self.dmem.set_addr(self.alu.get_res())
@@ -141,7 +129,6 @@ class Processor:
         self.dmem.set_offset(self.imm.get_res())
         self.dmem.read_from_addr()
         self.dmem.write_to_addr()
-        if check == True:  print("Check 10")
         
         # Prepare MUX for Registers
         self.mux3.set_in_0(self.dmem.get_data_out())
@@ -149,40 +136,33 @@ class Processor:
         self.mux3.set_in_2(self.adder.get_out())
         self.mux3.set_select(self.cu.get_reg_ctrl())
         self.mux3.compute_out()
-        if check == True:  print("Check 11")
         
         # If writing is enabled then write to register rd
         self.regs.set_data_in(self.mux3.get_out())
         self.regs.write_to_rd()
-        if check == True:  print("Check 12")
         
         # Update branch and assert if jump should be done
         self.bra.set_op_1(self.regs.get_reg_1_content())
         self.bra.set_op_2(self.regs.get_reg_2_content())
         self.bra.set_branch_ctrl(self.cu.get_branch_ctrl())
         self.bra.compute_branch_taken()
-        if check == True:  print("Check 13")
         
         self.and_1.set_in_0(self.bra.get_branch_taken())
         self.and_1.set_in_1(self.cu.get_do_branch())
         self.and_1.compute_out()
-        if check == True:  print("Check 14")
         
         self.or_1.set_in_0(self.and_1.get_out())
         self.or_1.set_in_1(self.cu.get_do_jump())
         self.or_1.compute_out()
-        if check == True:  print("Check 15")
         
         # Prepare MUX for ProgramCounter
         self.mux2_1.set_in_0(self.adder.get_out())
         self.mux2_1.set_in_1(self.alu.get_res())
         self.mux2_1.set_select(self.or_1.get_out())
-        self.mux2_1.compute_out()
-        if check == True: print("Check 16") 
+        self.mux2_1.compute_out() 
         
         # End sequence by updating PC
         self.pc.set_addr(self.mux2_1.get_out())
-        if check == True:  print("Check 17")
         
         if do_print == True:
             print()
